@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Maths — Teste ton niveau</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0f1a;
+  --bg-card: #141829;
+  --bg-card-hover: #1a1f38;
+  --border: #252a45;
+  --border-active: #6366f1;
+  --text: #e2e4f0;
+  --text-muted: #8b8fa8;
+  --text-dim: #5c6080;
+  --accent: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.25);
+  --accent-light: #818cf8;
+  --green: #34d399;
+  --green-bg: rgba(52, 211, 153, 0.1);
+  --green-border: rgba(52, 211, 153, 0.3);
+  --red: #f87171;
+  --red-bg: rgba(248, 113, 113, 0.1);
+  --red-border: rgba(248, 113, 113, 0.3);
+  --gold: #fbbf24;
+  --gold-bg: rgba(251, 191, 36, 0.1);
+  --premium-gradient: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== BACKGROUND EFFECTS ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.header-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--accent-light);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #e2e4f0 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== SCREEN MANAGEMENT ===== */
+.screen { display: none; animation: fadeUp 0.4s ease; }
+.screen.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== LEVEL CARDS ===== */
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.level-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.level-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
+.level-card:hover::before { opacity: 1; }
+.level-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.level-card .level-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.level-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.level-card p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ===== MODE SELECTOR ===== */
+.mode-section {
+  margin-bottom: 32px;
+}
+
+.mode-section h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.mode-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.mode-card:hover { border-color: var(--border-active); }
+.mode-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.mode-card.premium-card { border-color: rgba(251, 191, 36, 0.25); }
+.mode-card.premium-card:hover { border-color: rgba(251, 191, 36, 0.5); }
+.mode-card.premium-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-bg); }
+
+.mode-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.mode-tag.free { background: rgba(99, 102, 241, 0.15); color: var(--accent-light); }
+.mode-tag.premium { background: var(--gold-bg); color: var(--gold); }
+
+.mode-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.mode-card p { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+
+/* ===== PREMIUM CODE INPUT ===== */
+.premium-unlock {
+  margin-top: 16px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius);
+  display: none;
+}
+
+.premium-unlock.visible { display: block; animation: fadeUp 0.3s ease; }
+
+.premium-unlock label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--gold);
+}
+
+.premium-unlock .input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.premium-unlock input {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.premium-unlock input:focus { border-color: var(--gold); }
+
+.premium-unlock .unlock-btn {
+  padding: 10px 20px;
+  background: var(--premium-gradient);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.premium-unlock .or-buy {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.premium-unlock .or-buy a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.premium-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover { border-color: var(--border-active); }
+
+.btn-center { display: flex; justify-content: center; margin-top: 24px; }
+
+/* ===== QUIZ SCREEN ===== */
+.quiz-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.quiz-level-badge {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--accent-light);
+}
+
+.quiz-counter {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.quiz-counter span { color: var(--text); font-weight: 700; }
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* Question */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  margin-bottom: 20px;
+}
+
+.question-number {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+}
+
+.question-text {
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* Choices */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.choice:hover { border-color: var(--border-active); background: var(--bg-card-hover); }
+.choice.selected { border-color: var(--accent); background: rgba(99, 102, 241, 0.08); }
+
+.choice-letter {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-light);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.choice.selected .choice-letter {
+  background: var(--accent);
+  color: #fff;
+}
+
+.choice-text { flex: 1; }
+
+/* Quiz nav */
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== EMAIL GATE ===== */
+.email-screen {
+  text-align: center;
+}
+
+.email-screen .icon-lock {
+  width: 72px; height: 72px;
+  margin: 0 auto 24px;
+  background: rgba(99, 102, 241, 0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+
+.email-screen h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.email-screen p {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 28px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.email-form {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.email-form input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 15px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.email-form input:focus { border-color: var(--accent); }
+.email-form input::placeholder { color: var(--text-dim); }
+
+.email-legal {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ===== RESULTS SCREEN ===== */
+.results-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.score-ring {
+  width: 160px; height: 160px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+.score-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s ease;
+}
+
+.score-ring .score-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-value .number {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.score-value .total {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.results-appreciation {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.results-level-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(99, 102, 241, 0.12);
+  color: var(--accent-light);
+  margin-bottom: 8px;
+}
+
+/* Correction list */
+.corrections { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+
+.correction-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.correction-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.correction-status {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.correction-status.correct { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.correction-status.wrong { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+
+.correction-q {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.correction-detail {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.correction-item.open .correction-detail { display: block; }
+
+.correction-detail .your-answer { color: var(--red); }
+.correction-detail .correct-answer { color: var(--green); }
+.correction-detail .explanation { margin-top: 8px; color: var(--text); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .container { padding: 24px 16px; }
+  .levels-grid, .mode-cards { grid-template-columns: 1fr; }
+  .question-card { padding: 24px 20px; }
+  .question-text { font-size: 16px; }
+  .choice { padding: 14px 16px; font-size: 15px; }
+  .quiz-nav { flex-wrap: wrap; gap: 10px; }
+}
+
+/* ===== KATEX OVERRIDES ===== */
+.katex { font-size: 1.05em; }
+.katex-display { margin: 12px 0; overflow-x: auto; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #c9a84c;
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute;
+  top: 50%; left: 16px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+  max-width: 220px;
+}
+.tm-left-logo img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: #e2c06a; letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex; align-items: center; gap: 0;
+  opacity: 0;
+  animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a,
+.tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.78rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 8px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover,
+.tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 220px;
+  background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0;
+  z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none;
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  z-index: 300;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block;
+  width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-menu > a,
+  .tm-dd > a { font-size: 0.72rem; padding: 8px 6px; letter-spacing: 1.5px; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+  }
+
+</style>
+
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="tm-left-logo">
+    <img src="logo.jpg" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="container">
+  <!-- ===== HEADER ===== -->
+  <div class="header" id="mainHeader">
+    <div class="header-badge">QCM Mathématiques</div>
+    <h1>Teste ton niveau en maths</h1>
+    <p>Du Brevet à la MP — choisis ton niveau et découvre ton bilan détaillé.</p>
+  </div>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div class="screen active" id="screenHome">
+    <!-- Level selection -->
+    <div class="levels-grid">
+      <div class="level-card" data-level="brevet" onclick="selectLevel(this)">
+        <span class="level-icon">📐</span>
+        <h3>Brevet</h3>
+        <p>Niveau collège — 3ème</p>
+      </div>
+      <div class="level-card" data-level="bac" onclick="selectLevel(this)">
+        <span class="level-icon">📊</span>
+        <h3>Bac</h3>
+        <p>Niveau lycée — Terminale</p>
+      </div>
+      <div class="level-card" data-level="mpsi" onclick="selectLevel(this)">
+        <span class="level-icon">🔬</span>
+        <h3>Fin MPSI</h3>
+        <p>Prépa — 1ère année</p>
+      </div>
+      <div class="level-card" data-level="mp" onclick="selectLevel(this)">
+        <span class="level-icon">🧮</span>
+        <h3>Fin MP</h3>
+        <p>Prépa — 2ème année</p>
+      </div>
+    </div>
+
+    <!-- Mode selection -->
+    <div class="mode-section">
+      <h2>Choisis ton mode</h2>
+      <div class="mode-cards">
+        <div class="mode-card selected" data-mode="free" onclick="selectMode(this)">
+          <span class="mode-tag free">Gratuit</span>
+          <h3>10 questions</h3>
+          <p>Idéal pour un test rapide. Bilan envoyé par email.</p>
+        </div>
+        <div class="mode-card premium-card" data-mode="premium" onclick="selectMode(this)">
+          <span class="mode-tag premium">Premium</span>
+          <h3>50 questions</h3>
+          <p>Évaluation complète avec bilan détaillé par thème.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium unlock -->
+    <div class="premium-unlock" id="premiumUnlock">
+      <label>🔑 Entre ton code d'accès Premium</label>
+      <div class="input-row">
+        <input type="text" id="premiumCode" placeholder="Ex : PREMIUM2025">
+        <button class="unlock-btn" onclick="checkPremiumCode()">Débloquer</button>
+      </div>
+      <div class="premium-error" id="premiumError">Code invalide. Réessaye.</div>
+      <p class="or-buy">Pas encore de code ? <a href="https://TON-LIEN-DE-PAIEMENT.com" target="_blank">Acheter l'accès Premium →</a></p>
+    </div>
+
+    <div class="btn-center">
+      <button class="btn btn-primary" id="btnStart" disabled onclick="startQuiz()">Commencer le QCM →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: QUIZ ===== -->
+  <div class="screen" id="screenQuiz">
+    <div class="quiz-top-bar">
+      <span class="quiz-level-badge" id="quizLevelBadge"></span>
+      <span class="quiz-counter">Question <span id="quizCurrent">1</span> / <span id="quizTotal">10</span></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="questionNumber">QUESTION 1</div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+    <div class="choices" id="choicesContainer"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-secondary" id="btnPrev" onclick="prevQuestion()">← Précédente</button>
+      <button class="btn btn-primary" id="btnNext" onclick="nextQuestion()">Suivante →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: EMAIL GATE ===== -->
+  <div class="screen" id="screenEmail">
+    <div class="email-screen">
+      <div class="icon-lock">🎯</div>
+      <h2>Ton QCM est terminé !</h2>
+      <p>Entre ton email pour recevoir ton bilan détaillé avec les corrections.</p>
+      <div class="email-form">
+        <input type="email" id="emailInput" placeholder="ton.email@exemple.com" required>
+        <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Voir mon bilan →</button>
+        <p class="email-legal">En soumettant, tu acceptes de recevoir ton bilan par email. Pas de spam.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: RESULTS ===== -->
+  <div class="screen" id="screenResults">
+    <div class="results-header">
+      <div class="score-ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="score-ring-bg" cx="80" cy="80" r="68"/>
+          <circle class="score-ring-fill" id="scoreCircle" cx="80" cy="80" r="68"
+            stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
+        </svg>
+        <div class="score-value">
+          <span class="number" id="scoreNumber">0</span>
+          <span class="total" id="scoreTotal">/ 10</span>
+        </div>
+      </div>
+      <span class="results-level-badge" id="resultsLevelBadge"></span>
+      <p class="results-appreciation" id="appreciation"></p>
+    </div>
+
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:16px;">Correction détaillée</h2>
+    <div class="corrections" id="correctionsContainer"></div>
+
+    <div class="btn-center" style="gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="restartQuiz()">↺ Recommencer</button>
+      <button class="btn btn-primary" onclick="goHome()">Changer de niveau →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  📝 QUESTIONS DATABASE — TEMPLATE
+//  Ajoute tes questions ici ! Utilise du LaTeX avec $ ... $ ou $$ ... $$
+//  Structure :
+//  {
+//    question: "Texte avec $\\LaTeX$",
+//    choices: ["Choix A", "Choix B $x^2$", "Choix C", "Choix D"],
+//    correct: 0,  // index de la bonne réponse (0 = A, 1 = B, ...)
+//    explanation: "Explication avec $\\LaTeX$ si besoin"
+//  }
+// ============================================================
+
+const QUESTIONS = {
+  brevet: {
+    free: [
+      {
+        question: "Quel est le résultat de $(-3)^2$ ?",
+        choices: ["$-9$", "$9$", "$6$", "$-6$"],
+        correct: 1,
+        explanation: "$(-3)^2 = (-3) \\times (-3) = 9$. Attention : $-3^2 = -9$ mais $(-3)^2 = 9$."
+      },
+      {
+        question: "Simplifier la fraction $\\dfrac{12}{18}$.",
+        choices: ["$\\dfrac{3}{4}$", "$\\dfrac{2}{3}$", "$\\dfrac{4}{6}$", "$\\dfrac{6}{9}$"],
+        correct: 1,
+        explanation: "$\\text{PGCD}(12,18) = 6$, donc $\\dfrac{12}{18} = \\dfrac{2}{3}$."
+      },
+      {
+        question: "Dans un triangle rectangle, si les deux côtés de l'angle droit mesurent $3$ cm et $4$ cm, combien mesure l'hypoténuse ?",
+        choices: ["$6$ cm", "$7$ cm", "$5$ cm", "$\\sqrt{7}$ cm"],
+        correct: 2,
+        explanation: "Par le théorème de Pythagore : $c = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$ cm."
+      },
+      // AJOUTE ICI tes questions brevet gratuites (10 au total)
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions brevet premium
+      // Copie le même format que ci-dessus
+    ]
+  },
+
+  bac: {
+    free: [
+      {
+        question: "Quelle est la dérivée de $f(x) = e^{2x}$ ?",
+        choices: ["$e^{2x}$", "$2e^{2x}$", "$2xe^{2x}$", "$e^{2x+1}$"],
+        correct: 1,
+        explanation: "Par la règle de la chaîne : $f'(x) = 2e^{2x}$."
+      },
+      {
+        question: "La suite $(u_n)$ définie par $u_n = \\left(1 + \\dfrac{1}{n}\\right)^n$ converge vers :",
+        choices: ["$1$", "$+\\infty$", "$e$", "$2$"],
+        correct: 2,
+        explanation: "C'est une limite classique : $\\lim_{n \\to +\\infty} \\left(1 + \\frac{1}{n}\\right)^n = e$."
+      },
+      {
+        question: "Calculer $\\displaystyle\\int_0^1 2x\\,dx$.",
+        choices: ["$0$", "$1$", "$2$", "$\\dfrac{1}{2}$"],
+        correct: 1,
+        explanation: "$\\int_0^1 2x\\,dx = \\left[x^2\\right]_0^1 = 1 - 0 = 1$."
+      },
+      // AJOUTE ICI tes questions bac gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions bac premium
+    ]
+  },
+
+  mpsi: {
+    free: [
+      {
+        question: "Soit $A \\in \\mathcal{M}_n(\\mathbb{R})$ telle que $A^2 = A$. Alors $A$ est :",
+        choices: ["Inversible", "Nilpotente", "Un projecteur", "Antisymétrique"],
+        correct: 2,
+        explanation: "$A^2 = A$ signifie que $A$ est idempotente, c'est la définition matricielle d'un projecteur."
+      },
+      {
+        question: "Le rayon de convergence de $\\displaystyle\\sum_{n \\geq 1} \\frac{x^n}{n}$ est :",
+        choices: ["$0$", "$1$", "$+\\infty$", "$e$"],
+        correct: 1,
+        explanation: "Par la règle de d'Alembert, $R = \\lim \\frac{n+1}{n} = 1$. C'est la série de $-\\ln(1-x)$."
+      },
+      {
+        question: "Le groupe $(\\mathbb{Z}/6\\mathbb{Z}, +)$ est isomorphe à :",
+        choices: ["$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$", "$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$", "$S_3$", "$\\mathbb{Z}/6\\mathbb{Z}$ uniquement"],
+        correct: 0,
+        explanation: "Par le théorème chinois, comme $\\text{pgcd}(2,3)=1$, $\\mathbb{Z}/6\\mathbb{Z} \\simeq \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$."
+      },
+      // AJOUTE ICI tes questions MPSI gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions MPSI premium
+    ]
+  },
+
+  mp: {
+    free: [
+      {
+        question: "Soit $E$ un espace de Banach et $T : E \\to E$ une application linéaire contractante. Alors :",
+        choices: [
+          "$T$ admet exactement un point fixe",
+          "$T$ n'a pas de point fixe",
+          "$T$ admet une infinité de points fixes",
+          "On ne peut pas conclure"
+        ],
+        correct: 0,
+        explanation: "C'est le théorème du point fixe de Banach-Picard : toute contraction sur un espace complet admet un unique point fixe."
+      },
+      {
+        question: "L'espace dual de $\\ell^1(\\mathbb{N})$ est :",
+        choices: ["$\\ell^1(\\mathbb{N})$", "$\\ell^2(\\mathbb{N})$", "$\\ell^\\infty(\\mathbb{N})$", "$c_0(\\mathbb{N})$"],
+        correct: 2,
+        explanation: "C'est un résultat classique d'analyse fonctionnelle : $(\\ell^1)' = \\ell^\\infty$."
+      },
+      {
+        question: "Soit $f$ holomorphe sur $\\mathbb{C}$ et bornée. Alors :",
+        choices: [
+          "$f$ est un polynôme",
+          "$f$ est constante",
+          "$f$ est périodique",
+          "$f$ admet une infinité de zéros"
+        ],
+        correct: 1,
+        explanation: "C'est le théorème de Liouville : toute fonction entière bornée est constante."
+      },
+      // AJOUTE ICI tes questions MP gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions MP premium
+    ]
+  }
+};
+
+// ============================================================
+//  ⚙️ CONFIG — Modifie ici
+// ============================================================
+
+// Code premium (change-le !)
+const PREMIUM_CODE = "PREMIUM2025";
+
+// Lien de paiement (remplace dans le HTML aussi)
+// const PAYMENT_LINK = "https://TON-LIEN-DE-PAIEMENT.com";
+
+// ============================================================
+//  🎮 GAME STATE
+// ============================================================
+let state = {
+  level: null,
+  mode: 'free',
+  premiumUnlocked: false,
+  questions: [],
+  answers: [],    // index of chosen answer per question, -1 = not answered
+  currentQ: 0,
+  email: ''
+};
+
+// ============================================================
+//  🧭 NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+//  🏠 HOME SCREEN LOGIC
+// ============================================================
+function selectLevel(el) {
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.level = el.dataset.level;
+  updateStartButton();
+}
+
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.mode = el.dataset.mode;
+
+  const unlock = document.getElementById('premiumUnlock');
+  if (state.mode === 'premium' && !state.premiumUnlocked) {
+    unlock.classList.add('visible');
+  } else {
+    unlock.classList.remove('visible');
+  }
+  updateStartButton();
+}
+
+function checkPremiumCode() {
+  const code = document.getElementById('premiumCode').value.trim();
+  if (code === PREMIUM_CODE) {
+    state.premiumUnlocked = true;
+    document.getElementById('premiumUnlock').classList.remove('visible');
+    document.getElementById('premiumError').style.display = 'none';
+    // Visual feedback
+    document.querySelector('.premium-card .mode-tag').textContent = '✓ DÉBLOQUÉ';
+    updateStartButton();
+  } else {
+    document.getElementById('premiumError').style.display = 'block';
+  }
+}
+
+function updateStartButton() {
+  const btn = document.getElementById('btnStart');
+  const canStart = state.level && (state.mode === 'free' || state.premiumUnlocked);
+  btn.disabled = !canStart;
+}
+
+// ============================================================
+//  🧩 QUIZ LOGIC
+// ============================================================
+function startQuiz() {
+  const pool = QUESTIONS[state.level][state.mode];
+  if (!pool || pool.length === 0) {
+    alert("Pas encore de questions pour ce niveau/mode. Ajoute-les dans l'objet QUESTIONS !");
+    return;
+  }
+  state.questions = [...pool];
+  state.answers = new Array(state.questions.length).fill(-1);
+  state.currentQ = 0;
+
+  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
+  document.getElementById('quizLevelBadge').textContent = levelNames[state.level];
+  document.getElementById('quizTotal').textContent = state.questions.length;
+
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = state.questions[state.currentQ];
+  const i = state.currentQ;
+  const total = state.questions.length;
+
+  document.getElementById('quizCurrent').textContent = i + 1;
+  document.getElementById('questionNumber').textContent = `QUESTION ${i + 1}`;
+  document.getElementById('questionText').innerHTML = q.question;
+
+  // Progress
+  document.getElementById('progressFill').style.width = `${((i + 1) / total) * 100}%`;
+
+  // Choices
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const container = document.getElementById('choicesContainer');
+  container.innerHTML = '';
+  q.choices.forEach((choice, ci) => {
+    const div = document.createElement('div');
+    div.className = 'choice' + (state.answers[i] === ci ? ' selected' : '');
+    div.innerHTML = `<span class="choice-letter">${letters[ci]}</span><span class="choice-text">${choice}</span>`;
+    div.onclick = () => selectChoice(ci);
+    container.appendChild(div);
+  });
+
+  // Nav buttons
+  document.getElementById('btnPrev').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').textContent = i === total - 1 ? 'Terminer ✓' : 'Suivante →';
+
+  // Render LaTeX
+  renderMathInElement(document.getElementById('screenQuiz'), {
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+      { left: '\\(', right: '\\)', display: false },
+      { left: '\\[', right: '\\]', display: true }
+    ],
+    throwOnError: false
+  });
+}
+
+function selectChoice(ci) {
+  state.answers[state.currentQ] = ci;
+  document.querySelectorAll('.choice').forEach((c, idx) => {
+    c.classList.toggle('selected', idx === ci);
+  });
+}
+
+function nextQuestion() {
+  if (state.currentQ < state.questions.length - 1) {
+    state.currentQ++;
+    renderQuestion();
+  } else {
+    showScreen('screenEmail');
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQ > 0) {
+    state.currentQ--;
+    renderQuestion();
+  }
+}
+
+// ============================================================
+//  📧 EMAIL GATE
+// ============================================================
+function submitEmail() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    return;
+  }
+  state.email = email;
+
+  // ===== ICI : envoie l'email à ton backend / webhook =====
+  // Exemple avec fetch :
+  // fetch('https://ton-endpoint.com/collect', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({
+  //     email: state.email,
+  //     level: state.level,
+  //     mode: state.mode,
+  //     score: computeScore(),
+  //     date: new Date().toISOString()
+  //   })
+  // });
+  console.log('📧 Email collecté :', email);
+
+  showResults();
+}
+
+// ============================================================
+//  📊 RESULTS
+// ============================================================
+function computeScore() {
+  let correct = 0;
+  state.questions.forEach((q, i) => {
+    if (state.answers[i] === q.correct) correct++;
+  });
+  return correct;
+}
+
+function showResults() {
+  showScreen('screenResults');
+  const total = state.questions.length;
+  const score = computeScore();
+  const pct = score / total;
+
+  // Score circle animation
+  const circle = document.getElementById('scoreCircle');
+  const circumference = 2 * Math.PI * 68; // r=68
+  setTimeout(() => {
+    circle.style.strokeDashoffset = circumference * (1 - pct);
+    if (pct >= 0.7) circle.style.stroke = 'var(--green)';
+    else if (pct >= 0.4) circle.style.stroke = 'var(--gold)';
+    else circle.style.stroke = 'var(--red)';
+  }, 100);
+
+  document.getElementById('scoreNumber').textContent = score;
+  document.getElementById('scoreTotal').textContent = `/ ${total}`;
+
+  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
+  document.getElementById('resultsLevelBadge').textContent = levelNames[state.level];
+
+  // Appreciation
+  let msg = '';
+  if (pct === 1) msg = 'Parfait ! Score impeccable 🏆';
+  else if (pct >= 0.8) msg = 'Excellent ! Très bonne maîtrise 🎯';
+  else if (pct >= 0.6) msg = 'Bien ! Quelques points à revoir 📖';
+  else if (pct >= 0.4) msg = 'Moyen — du travail en perspective 💪';
+  else msg = 'Il faut reprendre les bases 📚';
+  document.getElementById('appreciation').textContent = msg;
+
+  // Corrections
+  const container = document.getElementById('correctionsContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  state.questions.forEach((q, i) => {
+    const isCorrect = state.answers[i] === q.correct;
+    const userAnswer = state.answers[i] >= 0 ? letters[state.answers[i]] + '. ' + q.choices[state.answers[i]] : 'Pas de réponse';
+    const correctAnswer = letters[q.correct] + '. ' + q.choices[q.correct];
+
+    const item = document.createElement('div');
+    item.className = 'correction-item';
+    item.innerHTML = `
+      <div class="correction-top">
+        <span class="correction-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓' : '✗'}</span>
+        <span class="correction-q"><strong>Q${i + 1}.</strong> ${q.question}</span>
+      </div>
+      <div class="correction-detail">
+        ${!isCorrect ? `<div class="your-answer">Ta réponse : ${userAnswer}</div>` : ''}
+        <div class="correct-answer">Bonne réponse : ${correctAnswer}</div>
+        ${q.explanation ? `<div class="explanation">💡 ${q.explanation}</div>` : ''}
+      </div>
+    `;
+    item.onclick = () => item.classList.toggle('open');
+    container.appendChild(item);
+  });
+
+  // Render LaTeX in results
+  renderMathInElement(document.getElementById('screenResults'), {
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+      { left: '\\(', right: '\\)', display: false },
+      { left: '\\[', right: '\\]', display: true }
+    ],
+    throwOnError: false
+  });
+}
+
+function restartQuiz() {
+  state.currentQ = 0;
+  state.answers = new Array(state.questions.length).fill(-1);
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function goHome() {
+  state.level = null;
+  state.mode = 'free';
+  state.questions = [];
+  state.answers = [];
+  state.currentQ = 0;
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-mode="free"]').classList.add('selected');
+  document.getElementById('premiumUnlock').classList.remove('visible');
+  document.getElementById('btnStart').disabled = true;
+  showScreen('screenHome');
+}
+</script>
+
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

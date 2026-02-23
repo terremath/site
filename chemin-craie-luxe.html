@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Chemin de la Craie</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8d48b;
+    --gold-dim: #8b7632;
+    --gold-dark: #5a4a20;
+    --bg-deep: #060606;
+    --bg-mid: #0a0a08;
+    --text-gold: rgba(201,168,76,0.88);
+    --text-gold-dim: rgba(201,168,76,0.45);
+    --text-gold-faint: rgba(201,168,76,0.22);
+  }
+
+  body {
+    background: var(--bg-deep);
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-gold);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg-deep); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 3px; }
+
+  /* ===== THE CANVAS ===== */
+  .canvas {
+    width: 100%;
+    min-height: 600vh;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(201,168,76,0.03) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 30%, rgba(201,168,76,0.02) 0%, transparent 40%),
+      radial-gradient(ellipse at 40% 60%, rgba(201,168,76,0.02) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 85%, rgba(201,168,76,0.03) 0%, transparent 45%),
+      linear-gradient(180deg, #080806 0%, #060604 50%, #080806 100%);
+  }
+
+  /* Subtle noise texture */
+  .canvas::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.015'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Thin gold border lines */
+  .border-line {
+    position: fixed;
+    z-index: 50;
+    background: linear-gradient(90deg, transparent, var(--gold-dark), rgba(201,168,76,0.3), var(--gold-dark), transparent);
+  }
+  .border-top { top: 0; left: 0; width: 100%; height: 1px; }
+  .border-bottom { bottom: 0; left: 0; width: 100%; height: 1px; }
+  .border-left-line {
+    position: fixed; top: 0; left: 30px;
+    width: 1px; height: 100%;
+    background: linear-gradient(180deg, transparent, var(--gold-dark), rgba(201,168,76,0.15), var(--gold-dark), transparent);
+    z-index: 50;
+  }
+  .border-right-line {
+    position: fixed; top: 0; right: 30px;
+    width: 1px; height: 100%;
+    background: linear-gradient(180deg, transparent, var(--gold-dark), rgba(201,168,76,0.15), var(--gold-dark), transparent);
+    z-index: 50;
+  }
+
+  /* ===== SCENE ===== */
+  .scene {
+    position: relative;
+    z-index: 10;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ===== ACT SECTIONS ===== */
+  .act-section {
+    min-height: 100vh;
+    padding: 120px 0;
+    position: relative;
+  }
+
+  .act-label {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 0.75rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text-gold-faint);
+    margin-bottom: 50px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .act-label.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .act-label::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold-dark);
+    margin-top: 15px;
+  }
+
+  /* ===== TEXT STYLES ===== */
+  .text {
+    color: var(--text-gold);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .text-narrative {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: var(--text-gold);
+  }
+  .text-dim {
+    color: var(--text-gold-dim);
+  }
+  .text-faint {
+    color: var(--text-gold-faint);
+  }
+  .text-accent {
+    color: var(--gold-light);
+    text-shadow: 0 0 20px rgba(201,168,76,0.2);
+  }
+
+  /* ===== SILHOUETTE FIGURES ===== */
+  .stage-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 50px;
+    margin: 50px 0;
+  }
+  .stage-content { flex: 1; }
+
+  .character {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+  .character.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .silhouette {
+    filter: drop-shadow(0 0 12px rgba(201,168,76,0.15));
+  }
+  .silhouette path, .silhouette line, .silhouette circle, .silhouette ellipse, .silhouette polygon {
+    fill: rgba(201,168,76,0.08);
+    stroke: var(--gold);
+    stroke-width: 1.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .silhouette .detail {
+    stroke: var(--gold-dim);
+    stroke-width: 0.8;
+    fill: none;
+  }
+  .silhouette .glow {
+    fill: none;
+    stroke: none;
+  }
+
+  /* ===== GEOMETRIC SHAPES ===== */
+  .geo-shapes {
+    display: flex;
+    gap: 45px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 35px 0;
+  }
+  .geo-shape {
+    opacity: 0;
+    transform: scale(0.6) rotate(-8deg);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .geo-shape.visible {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+  .geo-shape svg * {
+    stroke: var(--gold);
+    stroke-width: 1.2;
+    fill: none;
+    filter: drop-shadow(0 0 6px rgba(201,168,76,0.2));
+  }
+
+  /* ===== NUMBERS ===== */
+  .numbers-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin: 30px 0;
+  }
+  .number-item {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.5rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .number-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== FORMULAS ===== */
+  .formula-block {
+    margin: 35px 0;
+    padding: 8px 0;
+  }
+  .formula-line {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.35rem;
+    line-height: 2;
+    margin: 10px 0;
+    color: var(--text-gold);
+    opacity: 0;
+    transform: translateX(-25px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .formula-line.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .formula-line.large {
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    text-shadow: 0 0 15px rgba(201,168,76,0.15);
+  }
+
+  .annotation {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: var(--text-gold-faint);
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+  .annotation.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== PHILOSOPHY BLOCKS ===== */
+  .philo-block {
+    margin: 45px 0;
+    padding: 25px 35px;
+    border-left: 1px solid var(--gold-dark);
+    position: relative;
+  }
+  .philo-block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -1px;
+    width: 1px; height: 100%;
+    background: linear-gradient(180deg, transparent, var(--gold), transparent);
+    opacity: 0.3;
+  }
+  .philo-author {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--gold-light);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .philo-author.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .philo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--text-gold-dim);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+  }
+  .philo-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== DIVIDERS ===== */
+  .gold-divider {
+    width: 120px;
+    height: 1px;
+    margin: 80px 0;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0;
+    transition: all 2s ease-out;
+  }
+  .gold-divider.visible { opacity: 0.4; }
+  .gold-divider.center {
+    margin-left: auto;
+    margin-right: auto;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ===== DUAL PATH ===== */
+  .dual-path {
+    display: flex;
+    gap: 80px;
+    margin: 50px 0;
+  }
+  .path-left, .path-right { flex: 1; }
+
+  .path-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-gold-dim);
+    margin-bottom: 30px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .path-label.visible { opacity: 1; }
+
+  @media (max-width: 860px) {
+    .dual-path { flex-direction: column; gap: 60px; }
+    .scene { padding: 0 35px; }
+    .formula-line { font-size: 1.1rem; }
+    .formula-line.large { font-size: 1.3rem; }
+    .text-narrative { font-size: 1.3rem; }
+    .stage-row { flex-direction: column; align-items: flex-start; gap: 25px; }
+  }
+
+  /* ===== CONVERGENCE / FINAL ===== */
+  .convergence {
+    text-align: center;
+    padding: 60px 0;
+  }
+  .convergence .formula-line {
+    transform: translateX(0) translateY(20px);
+  }
+  .convergence .formula-line.visible {
+    transform: translateX(0) translateY(0);
+  }
+
+  .final-glow {
+    position: relative;
+    padding: 80px 0;
+  }
+  .final-glow::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 65%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ===== TITLE ===== */
+  .main-heading {
+    font-family: 'Playfair Display', serif;
+    font-weight: 400;
+    font-size: 3.2rem;
+    text-align: center;
+    color: var(--gold);
+    letter-spacing: 6px;
+    text-shadow: 0 0 40px rgba(201,168,76,0.15);
+    padding: 120px 0 15px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .main-heading.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .main-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--text-gold-faint);
+    letter-spacing: 4px;
+    margin-bottom: 80px;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+  }
+  .main-subtitle.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== PARTICLE CANVAS ===== */
+  .particle-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light));
+    z-index: 100;
+    width: 0%;
+    transition: width 0.1s;
+    box-shadow: 0 0 8px rgba(201,168,76,0.3);
+  }
+</style>
+</head>
+<body>
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #c9a84c;
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute;
+  top: 50%; left: 16px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+  max-width: 220px;
+}
+.tm-left-logo img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: #e2c06a; letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex; align-items: center; gap: 0;
+  opacity: 0;
+  animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a,
+.tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.78rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 8px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover,
+.tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 220px;
+  background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0;
+  z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none;
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  z-index: 300;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block;
+  width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-menu > a,
+  .tm-dd > a { font-size: 0.72rem; padding: 8px 6px; letter-spacing: 1.5px; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+  }
+
+</style>
+
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="tm-left-logo">
+    <img src="logo.jpg" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<!-- Decorative borders -->
+<div class="border-line border-top"></div>
+<div class="border-line border-bottom"></div>
+<div class="border-left-line"></div>
+<div class="border-right-line"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Floating particles -->
+<canvas class="particle-canvas" id="particleCanvas"></canvas>
+
+<div class="canvas">
+<div class="scene">
+
+  <!-- ===== TITLE ===== -->
+  <div class="main-heading anim">Le Chemin de la Craie</div>
+  <div class="main-subtitle anim">une vie d'émerveillement</div>
+
+  <!-- ============ ACTE I : L'ÉVEIL ============ -->
+  <div class="act-section">
+    <div class="act-label anim">Acte I — L'Éveil</div>
+
+    <div class="stage-row">
+      <div class="character anim">
+        <svg class="silhouette" width="70" height="110" viewBox="0 0 70 110">
+          <!-- Elegant small child silhouette -->
+          <ellipse cx="35" cy="18" rx="11" ry="13" fill="rgba(201,168,76,0.06)" stroke="var(--gold)" stroke-width="1"/>
+          <!-- Hair suggestion -->
+          <path class="detail" d="M 24,14 Q 28,5 35,4 Q 42,5 46,14" />
+          <!-- Body — simple elegant line -->
+          <path d="M 35,31 L 35,65" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <!-- Shoulders -->
+          <path d="M 25,38 Q 30,35 35,36 Q 40,35 45,38" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Arms — reaching down for something -->
+          <path d="M 26,39 Q 18,52 16,62" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <path d="M 44,39 Q 52,52 54,62" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Legs -->
+          <path d="M 35,65 Q 30,80 26,100" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <path d="M 35,65 Q 40,80 44,100" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <!-- Golden spark in hand -->
+          <circle cx="16" cy="63" r="3" fill="rgba(201,168,76,0.3)" stroke="var(--gold)" stroke-width="0.5"/>
+          <circle cx="16" cy="63" r="6" fill="none" stroke="rgba(201,168,76,0.1)" stroke-width="0.5"/>
+        </svg>
+      </div>
+      <div class="stage-content">
+        <div class="text text-narrative anim">
+          Il ramasse la craie...
+        </div>
+        <div class="annotation anim" style="margin-top:12px;">— tout commence ici</div>
+      </div>
+    </div>
+
+    <!-- Geometric shapes -->
+    <div class="text text-dim anim" style="font-size:1.2rem; margin: 40px 0 20px; font-weight: 300;">
+      ...et dessine ses premières formes
+    </div>
+    <div class="geo-shapes">
+      <div class="geo-shape anim">
+        <svg width="65" height="65" viewBox="0 0 65 65"><circle cx="32" cy="32" r="26"/></svg>
+      </div>
+      <div class="geo-shape anim">
+        <svg width="65" height="65" viewBox="0 0 65 65"><polygon points="32,5 60,55 4,55"/></svg>
+      </div>
+      <div class="geo-shape anim">
+        <svg width="65" height="65" viewBox="0 0 65 65"><rect x="10" y="10" width="45" height="45"/></svg>
+      </div>
+      <div class="geo-shape anim">
+        <svg width="65" height="65" viewBox="0 0 65 65"><polygon points="32,5 58,23 48,55 16,55 6,23"/></svg>
+      </div>
+      <div class="geo-shape anim">
+        <svg width="65" height="65" viewBox="0 0 65 65"><ellipse cx="32" cy="32" rx="28" ry="16"/></svg>
+      </div>
+    </div>
+
+    <div class="text text-accent anim" style="font-size:1.15rem; margin-top: 35px; font-style: italic;">
+      Le cercle est parfait. Pourquoi ?
+    </div>
+
+    <div class="gold-divider anim"></div>
+
+    <!-- Numbers -->
+    <div class="text text-narrative anim" style="margin-bottom: 25px;">
+      Puis viennent les nombres...
+    </div>
+    <div class="numbers-row">
+      <div class="number-item text anim">1</div>
+      <div class="number-item text anim">2</div>
+      <div class="number-item text anim">3</div>
+      <div class="number-item text anim text-dim" style="font-size:2rem;">⋯</div>
+      <div class="number-item text anim text-accent">∞</div>
+    </div>
+    <div class="text text-faint anim" style="font-size: 1.05rem; margin-top: 18px; font-weight: 300;">
+      Et ceux qui se cachent entre eux :
+    </div>
+    <div class="numbers-row" style="margin-top: 12px;">
+      <div class="number-item text anim text-accent" style="font-size:2.2rem;">π</div>
+      <div class="number-item text anim" style="font-size:2.2rem;">√2</div>
+      <div class="number-item text anim text-accent" style="font-size:2.2rem;">𝑒</div>
+      <div class="number-item text anim" style="font-size:2.2rem;">𝑖</div>
+      <div class="number-item text anim text-accent" style="font-size:2.2rem;">φ</div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim large" style="margin-top: 35px;">
+        𝑒<sup>𝑖π</sup> + 1 = 0
+      </div>
+      <div class="annotation anim">— Euler · la plus belle identité</div>
+    </div>
+  </div>
+
+  <!-- ============ ACTE II : LA CROISSANCE ============ -->
+  <div class="act-section">
+    <div class="act-label anim">Acte II — La Croissance</div>
+
+    <div class="stage-row">
+      <div class="character anim">
+        <svg class="silhouette" width="75" height="150" viewBox="0 0 75 150">
+          <!-- Adolescent silhouette — taller, more defined -->
+          <ellipse cx="38" cy="18" rx="11" ry="14" fill="rgba(201,168,76,0.06)" stroke="var(--gold)" stroke-width="1"/>
+          <path class="detail" d="M 27,13 Q 32,4 38,3 Q 44,4 49,13"/>
+          <!-- Neck -->
+          <line x1="38" y1="32" x2="38" y2="38" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Torso -->
+          <path d="M 38,38 L 38,88" stroke="var(--gold)" stroke-width="1.3" fill="none"/>
+          <!-- Shoulders wider -->
+          <path d="M 24,44 Q 31,40 38,41 Q 45,40 52,44" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Arm writing gesture -->
+          <path d="M 51,44 Q 60,42 65,34" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Other arm relaxed -->
+          <path d="M 25,44 Q 18,56 16,68" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Legs -->
+          <path d="M 38,88 Q 33,108 28,138" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <path d="M 38,88 Q 43,108 48,138" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <!-- Spark at writing hand -->
+          <circle cx="66" cy="33" r="2.5" fill="rgba(201,168,76,0.35)" stroke="var(--gold)" stroke-width="0.4"/>
+        </svg>
+      </div>
+      <div class="stage-content">
+        <div class="text text-narrative anim">
+          Il grandit. Les questions aussi.
+        </div>
+      </div>
+    </div>
+
+    <div class="text text-dim anim" style="font-size:1.2rem; margin: 35px 0; font-weight:300;">
+      Les fonctions se dessinent, les courbes ondulent...
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim large">𝑓(𝑥) = 𝑎₀ + Σ (𝑎ₙ cos 𝑛𝑥 + 𝑏ₙ sin 𝑛𝑥)</div>
+      <div class="annotation anim">— Fourier · tout est vibration</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim">𝑑𝑓 = ∂𝑓/∂𝑥 · 𝑑𝑥 + ∂𝑓/∂𝑦 · 𝑑𝑦</div>
+      <div class="annotation anim">— la différentielle totale</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim">∫∫<sub>𝑆</sub> (∇ × 𝐅) · 𝑑𝐒 = ∮<sub>∂𝑆</sub> 𝐅 · 𝑑𝐫</div>
+      <div class="annotation anim">— Stokes · le bord raconte l'intérieur</div>
+    </div>
+
+    <div class="gold-divider anim"></div>
+
+    <div class="text text-accent anim" style="font-size:1.25rem; font-style: italic; margin: 35px 0;">
+      Un premier doute philosophique s'éveille...
+    </div>
+
+    <div class="philo-block">
+      <div class="philo-author text anim">René Descartes · 1637</div>
+      <div class="philo-text text anim">
+        Cogito, ergo sum — Je pense, donc je suis.<br/>
+        Le doute méthodique : que reste-t-il quand on doute de tout ?<br/>
+        La certitude du sujet pensant. Les coordonnées cartésiennes<br/>
+        unissent l'algèbre et la géométrie.
+      </div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim">ℝ² : (𝑥, 𝑦) ↦ un point, une pensée géométrique</div>
+    </div>
+
+    <div class="philo-block">
+      <div class="philo-author text anim">Blaise Pascal · 1654</div>
+      <div class="philo-text text anim">
+        L'effroi de l'infini : le silence éternel de ces espaces<br/>
+        infinis m'effraie. Le pari, la probabilité,<br/>
+        le cœur qui a ses raisons que la raison ne connaît point.
+      </div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim">𝔼[gain] = 𝑝 · ∞ + (1−𝑝) · (−𝑐) = ∞</div>
+      <div class="annotation anim">— le pari de Pascal · l'infini l'emporte toujours</div>
+    </div>
+  </div>
+
+  <!-- ============ ACTE III : L'ESPACE ET LE TEMPS ============ -->
+  <div class="act-section">
+    <div class="act-label anim">Acte III — L'Espace et le Temps</div>
+
+    <div class="stage-row">
+      <div class="character anim">
+        <svg class="silhouette" width="80" height="175" viewBox="0 0 80 175">
+          <!-- Young adult — taller, contemplative pose -->
+          <ellipse cx="40" cy="18" rx="12" ry="14.5" fill="rgba(201,168,76,0.06)" stroke="var(--gold)" stroke-width="1"/>
+          <path class="detail" d="M 28,12 Q 34,3 40,2 Q 46,3 52,12"/>
+          <line x1="40" y1="33" x2="40" y2="40" stroke="var(--gold)" stroke-width="1"/>
+          <path d="M 40,40 L 40,100" stroke="var(--gold)" stroke-width="1.3" fill="none"/>
+          <path d="M 25,48 Q 33,43 40,44 Q 47,43 55,48" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Arm raised to chin — thinking -->
+          <path d="M 54,48 Q 58,40 55,30 Q 53,26 48,24" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Other arm behind back -->
+          <path d="M 26,48 Q 20,58 22,70 Q 24,76 30,78" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <path d="M 40,100 Q 35,122 30,155" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+          <path d="M 40,100 Q 45,122 50,155" stroke="var(--gold)" stroke-width="1.2" fill="none"/>
+        </svg>
+      </div>
+      <div class="stage-content">
+        <div class="text text-narrative anim">
+          Il lève les yeux. Qu'est-ce que l'espace ?
+        </div>
+        <div class="text text-dim anim" style="font-size:1.2rem; margin-top:12px; font-weight:300;">
+          Qu'est-ce que le temps ? La matière courbe-t-elle l'espace ?
+        </div>
+      </div>
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim large">𝑑𝑠² = 𝑔<sub>𝜇𝜈</sub> 𝑑𝑥<sup>𝜇</sup> 𝑑𝑥<sup>𝜈</sup></div>
+      <div class="annotation anim">— la métrique · la mesure de l'espace-temps</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim large">ℛ<sub>𝜇𝜈</sub> − ½𝑔<sub>𝜇𝜈</sub>ℛ + Λ𝑔<sub>𝜇𝜈</sub> = 8π𝐺 𝑇<sub>𝜇𝜈</sub></div>
+      <div class="annotation anim">— Einstein · la géométrie EST la gravitation</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim">Γ<sup>𝜆</sup><sub>𝜇𝜈</sub> = ½ 𝑔<sup>𝜆𝜎</sup>(∂<sub>𝜇</sub>𝑔<sub>𝜈𝜎</sub> + ∂<sub>𝜈</sub>𝑔<sub>𝜇𝜎</sub> − ∂<sub>𝜎</sub>𝑔<sub>𝜇𝜈</sub>)</div>
+      <div class="annotation anim">— les symboles de Christoffel · comment se connecter</div>
+    </div>
+
+    <div class="gold-divider anim"></div>
+
+    <div class="text text-accent anim" style="font-size:1.15rem; font-style: italic; margin: 25px 0;">
+      Et la géométrie se libère des coordonnées...
+    </div>
+
+    <div class="formula-block">
+      <div class="formula-line text anim">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="annotation anim">— la courbure intrinsèque</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim">∇<sub>𝑋</sub>𝑌 — le transport parallèle</div>
+    </div>
+    <div class="formula-block">
+      <div class="formula-line text anim">𝑅(𝑋,𝑌)𝑍 = ∇<sub>𝑋</sub>∇<sub>𝑌</sub>𝑍 − ∇<sub>𝑌</sub>∇<sub>𝑋</sub>𝑍 − ∇<sub>[𝑋,𝑌]</sub>𝑍</div>
+      <div class="annotation anim">— Riemann · la courbure mesure l'écart au plat</div>
+    </div>
+
+    <div class="gold-divider anim"></div>
+
+    <div class="philo-block">
+      <div class="philo-author text anim">Immanuel Kant · 1781</div>
+      <div class="philo-text text anim">
+        L'espace et le temps ne sont pas des choses en soi —<br/>
+        ce sont les formes a priori de notre sensibilité.<br/>
+        Nous ne voyons pas l'espace : nous le construisons.<br/>
+        Critique de la raison pure : les limites de la connaissance.
+      </div>
+    </div>
+
+    <div class="text text-faint anim" style="font-size: 1.05rem; font-style: italic; margin: 25px 0;">
+      L'espace de Kant, celui de Riemann — sont-ils le même ?
+    </div>
+  </div>
+
+  <!-- ============ ACTE IV : LES PROFONDEURS ============ -->
+  <div class="act-section">
+    <div class="act-label anim">Acte IV — Les Profondeurs</div>
+
+    <div class="stage-row">
+      <div class="character anim">
+        <svg class="silhouette" width="85" height="195" viewBox="0 0 85 195">
+          <!-- Adult figure — tall, confident, arms wide -->
+          <ellipse cx="42" cy="18" rx="12.5" ry="15" fill="rgba(201,168,76,0.06)" stroke="var(--gold)" stroke-width="1"/>
+          <path class="detail" d="M 30,11 Q 36,2 42,1 Q 48,2 54,11"/>
+          <line x1="42" y1="33" x2="42" y2="42" stroke="var(--gold)" stroke-width="1"/>
+          <path d="M 42,42 L 42,112" stroke="var(--gold)" stroke-width="1.4" fill="none"/>
+          <path d="M 26,50 Q 34,45 42,46 Q 50,45 58,50" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Arms open wide -->
+          <path d="M 57,50 Q 68,44 76,42" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <path d="M 27,50 Q 16,44 8,42" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Hands with golden glow -->
+          <circle cx="77" cy="42" r="2" fill="rgba(201,168,76,0.3)" stroke="var(--gold)" stroke-width="0.4"/>
+          <circle cx="7" cy="42" r="2" fill="rgba(201,168,76,0.3)" stroke="var(--gold)" stroke-width="0.4"/>
+          <!-- Legs -->
+          <path d="M 42,112 Q 36,140 30,175" stroke="var(--gold)" stroke-width="1.3" fill="none"/>
+          <path d="M 42,112 Q 48,140 54,175" stroke="var(--gold)" stroke-width="1.3" fill="none"/>
+        </svg>
+      </div>
+      <div class="stage-content">
+        <div class="text text-narrative anim">
+          Deux chemins s'ouvrent devant lui.
+        </div>
+      </div>
+    </div>
+
+    <div class="dual-path">
+      <div class="path-left">
+        <div class="path-label text anim">Physique</div>
+
+        <div class="text text-dim anim" style="font-size:1.05rem; margin-bottom: 20px; font-weight:300;">
+          De Maxwell à la théorie quantique des champs...
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">∇ · 𝐄 = 𝜌/𝜀₀</div>
+          <div class="formula-line text anim">∇ × 𝐁 = 𝜇₀𝐉 + 𝜇₀𝜀₀ ∂𝐄/∂𝑡</div>
+          <div class="annotation anim">— Maxwell · lumière = onde électromagnétique</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">𝐻̂ |𝜓⟩ = 𝐸 |𝜓⟩</div>
+          <div class="annotation anim">— Schrödinger · l'équation de la possibilité</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">(𝑖ℏ𝛾<sup>𝜇</sup>∂<sub>𝜇</sub> − 𝑚𝑐) 𝜓 = 0</div>
+          <div class="annotation anim">— Dirac · l'antimatière émerge</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim large">ℒ = 𝜓̄(𝑖𝛾<sup>𝜇</sup>𝐷<sub>𝜇</sub> − 𝑚)𝜓 − ¼𝐹<sub>𝜇𝜈</sub>𝐹<sup>𝜇𝜈</sup></div>
+          <div class="annotation anim">— QED · le lagrangien de la lumière et de la matière</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">𝒵 = ∫ 𝒟𝜓 𝒟𝜓̄ 𝒟𝐴 · 𝑒<sup>𝑖𝑆[𝜓,𝐴]</sup></div>
+          <div class="annotation anim">— intégrale de chemin · sommer sur tous les possibles</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+          <div class="annotation anim">— la courbure de jauge · la force est géométrie</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">𝒲(𝒞) = Tr 𝒫 exp∮<sub>𝒞</sub> 𝐴</div>
+          <div class="annotation anim">— Wilson · le chemin se souvient de la connexion</div>
+        </div>
+
+        <div class="formula-block">
+          <div class="formula-line text anim">𝛽(𝑔) = 𝜇 ∂𝑔/∂𝜇</div>
+          <div class="annotation anim">— renormalisation · la physique change avec l'échelle</div>
+        </div>
+      </div>
+
+      <div class="path-right">
+        <div class="path-label text anim">Philosophie</div>
+
+        <div class="text text-dim anim" style="font-size:1.05rem; margin-bottom: 20px; font-weight:300;">
+          De la raison pure à la philosophie de la nature...
+        </div>
+
+        <div class="philo-block">
+          <div class="philo-author text anim">Kant — Les antinomies</div>
+          <div class="philo-text text anim">
+            Le monde a-t-il un commencement dans le temps ?<br/>
+            L'espace est-il fini ou infini ?<br/>
+            La raison pure se heurte à ses propres limites —<br/>
+            elle prouve le pour ET le contre.
+          </div>
+        </div>
+
+        <div class="philo-block">
+          <div class="philo-author text anim">Schelling — Naturphilosophie · 1797</div>
+          <div class="philo-text text anim">
+            La Nature n'est pas un objet mort :<br/>
+            elle est Esprit inconscient, productivité pure.<br/>
+            Le magnétisme, l'électricité, la vie — polarités<br/>
+            d'une même force créatrice.<br/>
+            L'Absolu est l'identité du sujet et de l'objet.
+          </div>
+        </div>
+
+        <div class="philo-block">
+          <div class="philo-author text anim">Descartes — La mathesis universalis</div>
+          <div class="philo-text text anim">
+            Une science universelle de l'ordre et de la mesure.<br/>
+            Le monde est étendue (res extensa) :<br/>
+            la matière est géométrie.<br/>
+            L'esprit (res cogitans) lui est irréductible.
+          </div>
+        </div>
+
+        <div class="philo-block">
+          <div class="philo-author text anim">Pascal — Les deux infinis</div>
+          <div class="philo-text text anim">
+            L'homme entre deux abîmes :<br/>
+            l'infiniment grand et l'infiniment petit.<br/>
+            La dernière démarche de la raison<br/>
+            est de reconnaître qu'il y a une infinité<br/>
+            de choses qui la surpassent.
+          </div>
+        </div>
+
+        <div class="text text-accent anim" style="font-size: 1.05rem; font-style: italic; margin-top: 30px;">
+          La nature de Schelling, les limites de Kant,<br/>
+          le doute de Descartes, le vertige de Pascal —<br/>
+          autant de portes vers la même question.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ACTE V : LA SYNTHÈSE ============ -->
+  <div class="act-section">
+    <div class="act-label anim" style="text-align: center;">Acte V — La Synthèse</div>
+
+    <div style="display: flex; justify-content: center; margin: 50px 0;">
+      <div class="character anim">
+        <svg class="silhouette" width="95" height="220" viewBox="0 0 95 220">
+          <!-- Final figure — tall, serene, arms gently open, radiating -->
+          <ellipse cx="48" cy="19" rx="13" ry="16" fill="rgba(201,168,76,0.06)" stroke="var(--gold)" stroke-width="1"/>
+          <path class="detail" d="M 35,11 Q 42,1 48,0 Q 54,1 61,11"/>
+          <line x1="48" y1="35" x2="48" y2="44" stroke="var(--gold)" stroke-width="1"/>
+          <path d="M 48,44 L 48,125" stroke="var(--gold)" stroke-width="1.5" fill="none"/>
+          <path d="M 30,53 Q 39,48 48,49 Q 57,48 66,53" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Arms gently open — embracing knowledge -->
+          <path d="M 65,53 Q 74,50 82,54 Q 86,57 84,63" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <path d="M 31,53 Q 22,50 14,54 Q 10,57 12,63" stroke="var(--gold)" stroke-width="1" fill="none"/>
+          <!-- Subtle glow at hands -->
+          <circle cx="84" cy="64" r="4" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="0.5"/>
+          <circle cx="12" cy="64" r="4" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="0.5"/>
+          <!-- Legs grounded -->
+          <path d="M 48,125 Q 41,155 35,195" stroke="var(--gold)" stroke-width="1.4" fill="none"/>
+          <path d="M 48,125 Q 55,155 61,195" stroke="var(--gold)" stroke-width="1.4" fill="none"/>
+          <!-- Aura -->
+          <ellipse cx="48" cy="80" rx="40" ry="65" fill="none" stroke="rgba(201,168,76,0.06)" stroke-width="0.5"/>
+          <ellipse cx="48" cy="80" rx="55" ry="85" fill="none" stroke="rgba(201,168,76,0.03)" stroke-width="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="text text-narrative anim" style="text-align:center; margin: 35px 0;">
+      Les deux chemins convergent.
+    </div>
+
+    <div class="text text-dim anim" style="text-align:center; font-size:1.15rem; font-weight:300; margin-bottom: 50px; line-height: 1.9;">
+      La géométrie est force. La force est nature.<br/>
+      La nature est pensée. La pensée est géométrie.
+    </div>
+
+    <div class="final-glow">
+      <div class="convergence">
+        <div class="formula-line text anim large" style="text-align:center; font-size: 1.9rem;">
+          𝛿𝑆 = 0
+        </div>
+        <div class="annotation anim" style="text-align:center;">— le principe variationnel · toute la physique en trois symboles</div>
+
+        <div class="gold-divider center anim" style="margin: 50px auto;"></div>
+
+        <div class="formula-line text anim" style="text-align:center; font-size: 1.3rem;">
+          ℒ = ℒ<sub>gravité</sub> + ℒ<sub>jauge</sub> + ℒ<sub>matière</sub> + ℒ<sub>Higgs</sub>
+        </div>
+        <div class="annotation anim" style="text-align:center;">— le lagrangien du monde · quatre termes pour tout décrire</div>
+
+        <div class="gold-divider center anim" style="margin: 50px auto; width: 60px;"></div>
+
+        <div class="text text-accent anim" style="font-size: 1.25rem; text-align: center; font-style: italic; margin: 35px 0; line-height: 1.8;">
+          « Ce qui dans la nature est le plus haut,<br/>
+          c'est la conscience de soi. »
+        </div>
+        <div class="text text-faint anim" style="text-align: center; font-size: 0.95rem; letter-spacing: 2px;">
+          — Schelling
+        </div>
+
+        <div class="gold-divider center anim" style="margin: 50px auto; width: 40px;"></div>
+
+        <div class="text text-narrative anim" style="text-align: center; margin-top: 45px;">
+          L'enfant n'a jamais posé la craie.
+        </div>
+        <div class="text text-dim anim" style="text-align: center; font-size: 1.15rem; margin-top: 12px; font-weight: 300;">
+          Il écrit encore.
+        </div>
+
+        <div style="height: 120px;"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+// ===== Intersection Observer for scroll animations =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const parent = el.parentElement;
+      const siblings = parent ? Array.from(parent.children).filter(c => c.classList.contains('anim')) : [];
+      const idx = siblings.indexOf(el);
+      const delay = Math.min(idx * 100, 500);
+      setTimeout(() => el.classList.add('visible'), delay);
+      observer.unobserve(el);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+// ===== Floating gold particles =====
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speedY = -(Math.random() * 0.15 + 0.05);
+    this.speedX = (Math.random() - 0.5) * 0.1;
+    this.opacity = Math.random() * 0.25 + 0.05;
+    this.life = 0;
+    this.maxLife = Math.random() * 500 + 300;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.life++;
+    if (this.life > this.maxLife || this.y < 0) this.reset();
+  }
+  draw() {
+    const fade = Math.sin((this.life / this.maxLife) * Math.PI);
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(201, 168, 76, ${this.opacity * fade})`;
+    ctx.fill();
+    // glow
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(201, 168, 76, ${this.opacity * fade * 0.08})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 50; i++) {
+  const p = new Particle();
+  p.life = Math.random() * p.maxLife;
+  particles.push(p);
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ===== Progress bar =====
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  progressBar.style.width = progress + '%';
+});
+</script>
+
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

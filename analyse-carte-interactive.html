@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carte d'Analyse — Réseau Interactif</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #12121a;
+    --surface: #1a1a28;
+    --surface2: #222236;
+    --border: #2a2a44;
+    --text: #e8e6f0;
+    --text-dim: #8888aa;
+    --accent-blue: #4a7dff;
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-amber: #fbbf24;
+    --accent-red: #f87171;
+    --accent-purple: #a78bfa;
+    --accent-pink: #f472b6;
+    --accent-orange: #fb923c;
+    --glow-blue: rgba(74, 125, 255, 0.3);
+    --glow-red: rgba(248, 113, 113, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ─── SVG Canvas ─── */
+  #graph-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+  svg:active { cursor: grabbing; }
+
+  /* ─── Links ─── */
+  .link-true {
+    stroke: var(--accent-green);
+    stroke-opacity: 0.35;
+    stroke-width: 1.8;
+  }
+  .link-false {
+    stroke: var(--accent-red);
+    stroke-opacity: 0.22;
+    stroke-width: 1.4;
+    stroke-dasharray: 6 4;
+  }
+  .link-conditional {
+    stroke: var(--accent-amber);
+    stroke-opacity: 0.32;
+    stroke-width: 1.6;
+    stroke-dasharray: 8 3 2 3;
+  }
+  .link-highlight {
+    stroke-opacity: 1 !important;
+    stroke-width: 3 !important;
+  }
+  .link-fade {
+    stroke-opacity: 0.06 !important;
+  }
+
+  /* ─── Nodes ─── */
+  .node-circle {
+    cursor: pointer;
+    transition: r 0.2s ease;
+  }
+  .node-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    fill: var(--text);
+    pointer-events: none;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-weight: 600;
+  }
+  .node-fade .node-circle { opacity: 0.15; }
+  .node-fade .node-label { opacity: 0.15; }
+
+  /* ─── Arrowheads ─── */
+  marker path {
+    stroke: none;
+  }
+
+  /* ─── Side Panel ─── */
+  #panel {
+    width: 420px;
+    min-width: 420px;
+    background: var(--bg2);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  #panel.collapsed {
+    transform: translateX(420px);
+    min-width: 0;
+    width: 0;
+    padding: 0;
+    border: none;
+  }
+
+  #panel-header {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg2);
+    z-index: 2;
+  }
+
+  #panel-header h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+
+  #panel-header .subtitle {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  #panel-body {
+    padding: 24px 28px 40px;
+    flex: 1;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    margin-top: 24px;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  .def-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .impl-card {
+    background: var(--surface);
+    border-left: 3px solid var(--accent-green);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .impl-card:hover { background: var(--surface2); }
+  .impl-card.false-impl {
+    border-left-color: var(--accent-red);
+  }
+  .impl-card.cond-impl {
+    border-left-color: var(--accent-amber);
+  }
+
+  .impl-card .impl-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .impl-card .impl-label .arrow-true { color: var(--accent-green); }
+  .impl-card .impl-label .arrow-false { color: var(--accent-red); }
+  .impl-card .impl-label .arrow-cond { color: var(--accent-amber); }
+
+  .impl-card .impl-proof {
+    font-family: 'EB Garamond', serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--text);
+    display: none;
+  }
+  .impl-card.open .impl-proof { display: block; margin-top: 8px; }
+
+  .counter-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    border-radius: 4px;
+    padding: 2px 7px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .proof-toggle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent-blue);
+    cursor: pointer;
+    margin-top: 4px;
+    display: inline-block;
+  }
+
+  /* ─── Legend / Controls ─── */
+  #controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ctrl-box {
+    background: rgba(18, 18, 26, 0.92);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+
+  .ctrl-box h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 12px;
+  }
+  .legend-line {
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-right: 4px;
+    margin-bottom: 4px;
+  }
+  .filter-btn:hover { border-color: var(--accent-blue); color: var(--text); }
+  .filter-btn.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+
+  /* ─── Title bar ─── */
+  #title-bar {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+  }
+  #title-bar h1 {
+    font-family: 'EB Garamond', serif;
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 40px rgba(74, 125, 255, 0.3);
+  }
+  #title-bar p {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* ─── Tooltip ─── */
+  #tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: rgba(18, 18, 26, 0.95);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    max-width: 260px;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  #tooltip.visible { opacity: 1; }
+
+  /* ─── Scrollbar ─── */
+  #panel::-webkit-scrollbar { width: 6px; }
+  #panel::-webkit-scrollbar-track { background: transparent; }
+  #panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ─── Welcome state ─── */
+  .welcome {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-dim);
+  }
+  .welcome .icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+  }
+  .welcome h3 {
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .welcome p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: var(--accent-cyan);
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #c9a84c;
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute;
+  top: 50%; left: 16px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+  max-width: 220px;
+}
+.tm-left-logo img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: #e2c06a; letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex; align-items: center; gap: 0;
+  opacity: 0;
+  animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a,
+.tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.78rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 8px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover,
+.tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 220px;
+  background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0;
+  z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none;
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  z-index: 300;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block;
+  width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-menu > a,
+  .tm-dd > a { font-size: 0.72rem; padding: 8px 6px; letter-spacing: 1.5px; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+  }
+
+</style>
+
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="tm-left-logo">
+    <img src="logo.jpg" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+<div id="app">
+  <div id="graph-container">
+    <svg id="svg"></svg>
+    <div id="title-bar">
+      <h1>Atlas d'Analyse Réelle</h1>
+      <p>Cliquez sur un nœud pour explorer • Survolez un lien pour les détails</p>
+    </div>
+    <div id="controls">
+      <div class="ctrl-box">
+        <h3>Légende</h3>
+        <div class="legend-row">
+          <div class="legend-line" style="background: var(--accent-green);"></div>
+          <span>Implication vraie (⇒)</span>
+        </div>
+        <div class="legend-row">
+          <div class="legend-line" style="background: var(--accent-amber); background-image: repeating-linear-gradient(90deg, var(--accent-amber) 0 8px, transparent 8px 11px, var(--accent-amber) 11px 13px, transparent 13px 16px);"></div>
+          <span>Conditionnelle (A + hyp ⇒ B)</span>
+        </div>
+        <div class="legend-row">
+          <div class="legend-line" style="background: var(--accent-red); background-image: repeating-linear-gradient(90deg, var(--accent-red) 0 6px, transparent 6px 10px);"></div>
+          <span>Fausse implication (⇏)</span>
+        </div>
+        <div style="margin-top:10px;">
+          <div class="legend-row"><div class="legend-dot" style="background: var(--accent-blue);"></div><span>Régularité</span></div>
+          <div class="legend-row"><div class="legend-dot" style="background: var(--accent-amber);"></div><span>Ordre / Topologie</span></div>
+          <div class="legend-row"><div class="legend-dot" style="background: var(--accent-purple);"></div><span>Mesure / Intégration</span></div>
+          <div class="legend-row"><div class="legend-dot" style="background: var(--accent-pink);"></div><span>Zoo (contre-exemples)</span></div>
+        </div>
+      </div>
+      <div class="ctrl-box">
+        <h3>Filtres</h3>
+        <div id="filter-buttons">
+          <button class="filter-btn active" data-filter="all">Tout</button>
+          <button class="filter-btn" data-filter="regularity">Régularité</button>
+          <button class="filter-btn" data-filter="order">Ordre</button>
+          <button class="filter-btn" data-filter="measure">Mesure</button>
+          <button class="filter-btn" data-filter="zoo">Zoo</button>
+        </div>
+      </div>
+    </div>
+    <div id="tooltip"></div>
+  </div>
+  <div id="panel">
+    <div id="panel-header">
+      <h2 id="panel-title">Atlas d'Analyse</h2>
+      <div class="subtitle" id="panel-subtitle">Réseau interactif</div>
+    </div>
+    <div id="panel-body">
+      <div class="welcome">
+        <div class="icon">⊛</div>
+        <h3>Explorez le réseau</h3>
+        <p>Cliquez sur un nœud (concept ou contre-exemple) pour afficher ses propriétés, implications et idées de preuves.</p>
+        <p style="margin-top:12px;">Survolez un lien pour voir l'implication associée.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA: Nodes
+// ═══════════════════════════════════════════════════════════════
+const nodes = [
+  // Regularity
+  { id: "Lip", label: "Lip", group: "regularity", fullName: "Lipschitz", def: "∃ K>0, |f(x)−f(y)| ≤ K|x−y| pour tout x, y.", radius: 22 },
+  { id: "UC", label: "UC", group: "regularity", fullName: "Uniformément continue", def: "∀ε>0, ∃δ>0 tel que |x−y|<δ ⇒ |f(x)−f(y)|<ε, δ indépendant du point.", radius: 22 },
+  { id: "C0", label: "C⁰", group: "regularity", fullName: "Continue", def: "Pour tout a, lim_{x→a} f(x) = f(a).", radius: 26 },
+  { id: "Diff", label: "Diff", group: "regularity", fullName: "Dérivable", def: "La limite lim_{h→0} [f(x+h)−f(x)]/h existe pour tout x de I.", radius: 24 },
+  { id: "C1", label: "C¹", group: "regularity", fullName: "Dérivée continue", def: "f est dérivable et f′ est continue.", radius: 22 },
+  { id: "AC", label: "AC", group: "regularity", fullName: "Absolument continue", def: "∀ε>0, ∃δ>0 : pour toute collection finie d'intervalles disjoints (aₖ,bₖ) avec Σ(bₖ−aₖ)<δ, on a Σ|f(bₖ)−f(aₖ)|<ε.", radius: 20 },
+  { id: "BV", label: "BV", group: "regularity", fullName: "Variation bornée", def: "sup sur toutes les subdivisions de Σ|f(xₖ₊₁)−f(xₖ)| < ∞.", radius: 20 },
+  { id: "Diffpp", label: "Diff p.p.", group: "regularity", fullName: "Dérivable presque partout", def: "f est dérivable sauf sur un ensemble de mesure nulle.", radius: 18 },
+  { id: "IVP", label: "IVP", group: "order", fullName: "Valeurs intermédiaires (Darboux)", def: "Si f(a)<v<f(b), il existe c∈(a,b) tel que f(c)=v. Toute dérivée possède cette propriété.", radius: 20 },
+
+  // Order / topology
+  { id: "Mono", label: "Mono", group: "order", fullName: "Monotone", def: "f est croissante (ou décroissante) sur tout I.", radius: 20 },
+  { id: "SM", label: "SM", group: "order", fullName: "Strictement monotone", def: "x < y ⇒ f(x) < f(y) (ou > strict).", radius: 20 },
+  { id: "Inj", label: "Inj", group: "order", fullName: "Injective", def: "f(x)=f(y) ⇒ x=y.", radius: 20 },
+  { id: "Surj", label: "Surj", group: "order", fullName: "Surjective", def: "Pour tout y dans l'ensemble d'arrivée, ∃x tel que f(x)=y.", radius: 18 },
+  { id: "Bij", label: "Bij", group: "order", fullName: "Bijective", def: "Injective et surjective.", radius: 18 },
+  { id: "Homeo", label: "Homéo", group: "order", fullName: "Homéomorphisme", def: "Bijection continue dont l'inverse est aussi continue.", radius: 20 },
+  { id: "Diffeo", label: "Difféo", group: "order", fullName: "Difféomorphisme", def: "Bijection C¹ dont l'inverse est aussi C¹ (f′≠0 partout).", radius: 20 },
+
+  // Higher regularity
+  { id: "Cinf", label: "C∞", group: "regularity", fullName: "Infiniment dérivable", def: "f admet des dérivées de tout ordre, toutes continues. Inclut les polynômes, exp, sin, cos, etc.", radius: 20 },
+
+  // Measure / integration
+  { id: "Rint", label: "R-int", group: "measure", fullName: "Riemann-intégrable", def: "Sur [a,b] : f bornée et l'ensemble des discontinuités est de mesure nulle (critère de Lebesgue).", radius: 22 },
+  { id: "Baire1", label: "Baire 1", group: "measure", fullName: "Fonction de Baire classe 1", def: "Limite ponctuelle de fonctions continues. Toute dérivée est Baire 1.", radius: 16 },
+  { id: "Bornee", label: "Bornée", group: "measure", fullName: "Bornée", def: "∃M>0, |f(x)| ≤ M pour tout x dans le domaine. Condition nécessaire pour la R-intégrabilité sur [a,b].", radius: 18 },
+
+  // Zoo (counter-examples)
+  { id: "Z1", label: "Z1", group: "zoo", fullName: "Z1 · Weierstrass", def: "W(x) = Σ aⁿcos(bⁿπx), 0<a<1, b impair, ab>1+3π/2. Continue partout, dérivable nulle part.", radius: 18 },
+  { id: "Z2", label: "Z2", group: "zoo", fullName: "Z2 · Dirichlet", def: "𝟙_ℚ(x) : vaut 1 si x∈ℚ, 0 sinon. Discontinue partout.", radius: 16 },
+  { id: "Z3", label: "Z3", group: "zoo", fullName: "Z3 · Thomae (popcorn)", def: "t(p/q)=1/q (irréductible), t(irrationnel)=0. Continue sur ℝ\\ℚ, discontinue sur ℚ.", radius: 18 },
+  { id: "Z4", label: "Z4", group: "zoo", fullName: "Z4 · Cantor (devil's staircase)", def: "Fonction croissante, continue, f′=0 p.p., mais f(0)=0 et f(1)=1 : non constante. Pas absolument continue.", radius: 20 },
+  { id: "Z5", label: "Z5", group: "zoo", fullName: "Z5 · Volterra", def: "Dérivable partout, mais f′ est bornée et non Riemann-intégrable (discontinuités de f′ sur un ensemble de mesure positive).", radius: 18 },
+  { id: "Z6", label: "Z6", group: "zoo", fullName: "Z6 · x³", def: "f(x)=x³ : C∞, bijective, mais f⁻¹(y)=y^{1/3} n'est pas C¹ en 0 car (f⁻¹)′(0)=+∞.", radius: 18 },
+  { id: "Z7", label: "Z7", group: "zoo", fullName: "Z7 · x + sin(x²)", def: "f(x)=x+sin(x²) : C∞, surjective ℝ→ℝ (car →±∞), mais pas monotone (f′ change de signe infiniment).", radius: 18 },
+  { id: "Z8", label: "Z8", group: "zoo", fullName: "Z8 · x²", def: "f(x)=x² sur ℝ : continue mais pas uniformément continue (|f(x)−f(y)| peut être grand pour |x−y| petit si x est grand).", radius: 16 },
+  { id: "Z9", label: "Z9", group: "zoo", fullName: "Z9 · sin(1/x)", def: "f(x)=sin(1/x) pour x≠0, f(0)=0 : possède la propriété des valeurs intermédiaires mais n'est pas continue en 0.", radius: 18 },
+  { id: "Z10", label: "Z10", group: "zoo", fullName: "Z10 · Permutation d'intervalles", def: "Bijection ℝ→ℝ obtenue par permutation non monotone de [n,n+1) : injective mais pas monotone.", radius: 16 },
+  { id: "Z11", label: "Z11", group: "zoo", fullName: "Z11 · Cauchy additive", def: "f(x+y)=f(x)+f(y) non continue : graphe dense dans ℝ², non mesurable. Existe par axiome du choix.", radius: 16 },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// DATA: Links
+// ═══════════════════════════════════════════════════════════════
+const links = [
+  // === TRUE IMPLICATIONS ===
+  // Regularity ladder
+  { source: "Lip", target: "UC", type: "true", label: "Lip ⇒ UC",
+    proof: "Si |f(x)−f(y)| ≤ K|x−y|, alors pour ε>0 on pose δ=ε/K. Ce δ convient uniformément (ne dépend pas du point)." },
+  { source: "Lip", target: "AC", type: "true", label: "Lip ⇒ AC",
+    proof: "Pour des intervalles disjoints (aₖ,bₖ) : Σ|f(bₖ)−f(aₖ)| ≤ KΣ(bₖ−aₖ). On choisit δ=ε/K." },
+  { source: "UC", target: "C0", type: "true", label: "UC ⇒ C⁰",
+    proof: "Uniformément continue ⇒ continue en chaque point (le δ uniforme marche a fortiori point par point)." },
+  { source: "AC", target: "BV", type: "true", label: "AC ⇒ BV",
+    proof: "On découpe [a,b] en sous-intervalles de longueur < δ. Sur chacun la variation est < ε. Total fini." },
+  { source: "BV", target: "Diffpp", type: "true", label: "BV ⇒ Diff p.p.",
+    proof: "Théorème de Lebesgue : toute fonction BV = différence de deux croissantes. Chaque croissante est dérivable p.p. (argument de comptage des rapports de Dini)." },
+  { source: "Mono", target: "BV", type: "true", label: "Mono ⇒ BV",
+    proof: "Si f est croissante sur [a,b], toute somme télescopique donne Σ|f(xₖ₊₁)−f(xₖ)| = f(b)−f(a) <∞." },
+  { source: "Diff", target: "C0", type: "true", label: "Diff ⇒ C⁰",
+    proof: "f(x+h)−f(x) = h·[f(x+h)−f(x)]/h → 0·f′(x) = 0 quand h→0. Donc f est continue." },
+  { source: "C1", target: "Diff", type: "true", label: "C¹ ⇒ Diff",
+    proof: "Par définition, C¹ signifie que f′ existe et est continue. Donc f est dérivable." },
+  { source: "Cinf", target: "C1", type: "true", label: "C∞ ⇒ C¹",
+    proof: "C∞ signifie que toutes les dérivées existent et sont continues. En particulier f′ existe et est continue, donc f ∈ C¹." },
+  { source: "Diff", target: "IVP", type: "true", label: "f dérivable ⇒ f′ a Darboux",
+    proof: "Théorème de Darboux : si f′(a)<v<f′(b), on pose g(x)=f(x)−vx. Alors g′(a)<0 et g′(b)>0, g atteint son min en c∈(a,b), donc g′(c)=0 i.e. f′(c)=v." },
+  { source: "Diff", target: "Baire1", type: "true", label: "f′ est Baire 1",
+    proof: "f′(x) = lim_n n[f(x+1/n)−f(x)]. Chaque fₙ(x) = n[f(x+1/n)−f(x)] est continue (car f l'est), donc f′ est limite ponctuelle de continues = Baire 1." },
+
+  // Order / topology
+  { source: "SM", target: "Inj", type: "true", label: "SM ⇒ Inj",
+    proof: "Si x≠y, disons x<y, alors f(x)<f(y) (ou >), donc f(x)≠f(y)." },
+  { source: "C0", target: "SM", type: "conditional", label: "C⁰ + Inj ⇒ SM (intervalle)",
+    proof: "Sur un intervalle, f continue injective. Si f n'est pas monotone, ∃ a<b<c avec f(b) pas entre f(a) et f(c). Le TVI donne un point où f reprend une valeur, contradiction avec l'injectivité." },
+  { source: "SM", target: "Homeo", type: "conditional", label: "C⁰ + SM ⇒ Homéo (I→f(I))",
+    proof: "f continue strictement monotone sur I a une image qui est un intervalle (TVI). L'inverse est monotone de même sens, donc continue (car monotone sur un intervalle avec image intervalle ⇒ continue)." },
+  { source: "C1", target: "Diffeo", type: "conditional", label: "C¹ + f′≠0 ⇒ Difféo local",
+    proof: "Par le théorème d'inversion locale. Si f′≠0 partout sur I, f est SM (car f′ de signe constant par Darboux), bijective sur f(I), et (f⁻¹)′ = 1/f′ est continue." },
+  { source: "Mono", target: "Rint", type: "true", label: "Mono ⇒ R-int",
+    proof: "f monotone sur [a,b] : ses discontinuités sont au plus dénombrables (associer à chaque saut un rationnel dans l'ouvert du saut). Dénombrable = mesure nulle, donc R-intégrable par critère de Lebesgue." },
+  { source: "C0", target: "Rint", type: "true", label: "C⁰ ⇒ R-int (sur [a,b])",
+    proof: "f continue sur [a,b] compact ⇒ uniformément continue. Pour ε>0, on prend une subdivision assez fine : sur chaque morceau, sup−inf < ε. Donc sommes de Darboux sup − inf < ε(b−a)." },
+
+  // Derivative => monotonicity
+  { source: "Diff", target: "Mono", type: "conditional", label: "f′≥0 partout ⇒ f croissante",
+    proof: "Par le théorème des accroissements finis : f(b)−f(a) = f′(c)(b−a) ≥ 0 pour a<b." },
+
+  // IVP + Inj => SM (remarkable: no continuity needed!)
+  { source: "IVP", target: "SM", type: "conditional", label: "IVP + Inj ⇒ SM",
+    proof: "Si f a la propriété des valeurs intermédiaires et est injective, supposons f non monotone. Alors ∃ a<b<c avec (par ex.) f(a)<f(b) et f(b)>f(c). Par IVP entre a et b, puis entre b et c, on trouve deux antécédents distincts d'une même valeur : contradiction avec l'injectivité." },
+
+  // C0 + Bij(ℝ→ℝ) => SM
+  { source: "Bij", target: "SM", type: "conditional", label: "C⁰ + Bij(ℝ→ℝ) ⇒ SM",
+    proof: "Sur ℝ, une bijection continue est en particulier injective et continue. Comme ℝ est un intervalle, C⁰+Inj ⇒ SM s'applique directement." },
+
+  // AC correctifs (conditional implications)
+  { source: "AC", target: "Mono", type: "conditional", label: "AC + f′≥0 p.p. ⇒ croissante",
+    proof: "f absolument continue ⇒ f(b)−f(a) = ∫ₐᵇ f′(t)dt (théorème fondamental pour AC). Si f′≥0 p.p., l'intégrale est ≥0, donc f(b)≥f(a)." },
+  { source: "AC", target: "Diffpp", type: "conditional", label: "AC + f′=0 p.p. ⇒ constante",
+    proof: "Par le même théorème fondamental : f(b)−f(a) = ∫ₐᵇ f′(t)dt = ∫ₐᵇ 0 dt = 0. Donc f est constante. C'est le 'correctif' qui manque à l'escalier du diable (Z4 n'est pas AC)." },
+
+  // C1 rigidity
+  { source: "C1", target: "Mono", type: "conditional", label: "C¹ + f′=0 sur dense ⇒ f cste",
+    proof: "Si f∈C¹ et f′=0 sur un ensemble dense D, alors par continuité de f′ : pour tout x, il existe une suite (dₙ)⊂D avec dₙ→x, et f′(dₙ)=0→f′(x). Donc f′≡0, et f est constante." },
+
+  // Bornée + disc. mesure nulle
+  { source: "Bornee", target: "Rint", type: "true", label: "Bornée + disc. mes. 0 ⇒ R-int",
+    proof: "C'est exactement le critère de Lebesgue-Riemann : f est R-intégrable sur [a,b] si et seulement si f est bornée et son ensemble de discontinuités est de mesure de Lebesgue nulle." },
+
+  // === FALSE IMPLICATIONS (counter-examples) ===
+  { source: "C0", target: "Diff", type: "false", label: "C⁰ ⇏ Diff", counter: "Z1",
+    proof: "Weierstrass : la série Σaⁿcos(bⁿπx) converge uniformément (M-test) donc est continue. Mais les différences divisées divergent partout (le terme bⁿ domine aⁿ car ab>1)." },
+  { source: "IVP", target: "C0", type: "false", label: "IVP ⇏ C⁰", counter: "Z9",
+    proof: "sin(1/x) oscille entre −1 et 1 infiniment près de 0 : elle prend toutes les valeurs intermédiaires, mais n'a pas de limite en 0." },
+  { source: "Inj", target: "Mono", type: "false", label: "Inj ⇏ Mono (sans C⁰)", counter: "Z10",
+    proof: "On permute les intervalles [n,n+1) par une permutation σ non monotone de ℤ. Sur chaque morceau f est affine (donc injective), mais globalement non monotone." },
+  { source: "C1", target: "Diffeo", type: "false", label: "C¹+Bij ⇏ Difféo", counter: "Z6",
+    proof: "f(x)=x³ : f′(0)=0. L'inverse y^{1/3} a une dérivée (1/3)y^{-2/3} → ∞ en 0. Le problème : f′ s'annule, donc 1/f′ explose." },
+  { source: "Surj", target: "SM", type: "false", label: "Surj C∞ ⇏ SM", counter: "Z7",
+    proof: "f(x)=x+sin(x²) : f′(x)=1+2x·cos(x²). Pour x grand, 2x·cos(x²) oscille avec amplitude →∞, donc f′ change de signe infiniment souvent." },
+  { source: "Diffpp", target: "Mono", type: "false", label: "f′=0 p.p. ⇏ constante", counter: "Z4",
+    proof: "Cantor-Lebesgue : f est construite sur l'ensemble triadique C (mesure 0). f est constante sur chaque intervalle du complémentaire de C (donc f′=0 là). Mais f monte de 0 à 1 'sur' C. Non AC car C a mesure 0 mais f y varie de 1." },
+  { source: "C0", target: "UC", type: "false", label: "C⁰(ℝ) ⇏ UC", counter: "Z8",
+    proof: "f(x)=x² : |f(x)−f(y)| = |x+y|·|x−y|. Pour x=n, y=n+1/n : |x−y|=1/n→0 mais |f(x)−f(y)|=|2n+1/n|/n ≈ 2 → pas de δ uniforme." },
+  { source: "Diff", target: "Rint", type: "false", label: "Diff ⇏ f′ R-int", counter: "Z5",
+    proof: "Volterra : on construit f dérivable partout avec f′ discontinue sur un Cantor 'gras' (mesure >0). Le critère de Lebesgue pour f′ échoue : l'ensemble des discontinuités n'est pas de mesure nulle." },
+  { source: "Rint", target: "C0", type: "false", label: "R-int ⇏ 'peu de discontinuités'", counter: "Z3",
+    proof: "Thomae : discontinue en tout rationnel (car t(p/q)=1/q>0 et des irrationnels proches donnent t=0). Mais continue en tout irrationnel (1/q→0 quand le dénominateur croît). ℚ est de mesure 0, donc R-intégrable." },
+
+  // Zoo connections (which myths they bust)
+  { source: "Z2", target: "Rint", type: "false", label: "bornée+mesurable ⇏ R-int", counter: "Z2",
+    proof: "𝟙_ℚ est bornée, mesurable Lebesgue, mais les sommes de Darboux sup sont toutes 1 et les inf sont toutes 0 sur tout intervalle. Pas R-intégrable." },
+  { source: "Z11", target: "Lip", type: "false", label: "additive ⇏ linéaire", counter: "Z11",
+    proof: "Par l'axiome du choix, on construit une base de Hamel de ℝ sur ℚ, et on définit f de façon ℚ-linéaire avec des valeurs 'folles'. Le résultat est non mesurable, à graphe dense dans ℝ². Mais additive + mesurable ⇒ f(x)=ax." },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// BUILD GRAPH
+// ═══════════════════════════════════════════════════════════════
+const width = window.innerWidth - 420;
+const height = window.innerHeight;
+
+const svg = d3.select("#svg");
+const tooltip = d3.select("#tooltip");
+
+// Defs: arrowheads
+const defs = svg.append("defs");
+defs.append("marker").attr("id", "arrow-true").attr("viewBox", "0 0 10 6").attr("refX", 10).attr("refY", 3)
+  .attr("markerWidth", 8).attr("markerHeight", 6).attr("orient", "auto")
+  .append("path").attr("d", "M0,0 L10,3 L0,6 Z").attr("fill", "#34d399");
+defs.append("marker").attr("id", "arrow-false").attr("viewBox", "0 0 10 6").attr("refX", 10).attr("refY", 3)
+  .attr("markerWidth", 8).attr("markerHeight", 6).attr("orient", "auto")
+  .append("path").attr("d", "M0,0 L10,3 L0,6 Z").attr("fill", "#f87171");
+defs.append("marker").attr("id", "arrow-conditional").attr("viewBox", "0 0 10 6").attr("refX", 10).attr("refY", 3)
+  .attr("markerWidth", 8).attr("markerHeight", 6).attr("orient", "auto")
+  .append("path").attr("d", "M0,0 L10,3 L0,6 Z").attr("fill", "#fbbf24");
+
+// Radial gradient for node glow
+const groupColors = {
+  regularity: { main: "#4a7dff", glow: "rgba(74,125,255,0.4)" },
+  order:      { main: "#fbbf24", glow: "rgba(251,191,36,0.4)" },
+  measure:    { main: "#a78bfa", glow: "rgba(167,139,250,0.4)" },
+  zoo:        { main: "#f472b6", glow: "rgba(244,114,182,0.4)" },
+};
+
+nodes.forEach(n => {
+  const c = groupColors[n.group];
+  const grad = defs.append("radialGradient").attr("id", `grad-${n.id}`);
+  grad.append("stop").attr("offset", "0%").attr("stop-color", c.main).attr("stop-opacity", 0.9);
+  grad.append("stop").attr("offset", "70%").attr("stop-color", c.main).attr("stop-opacity", 0.6);
+  grad.append("stop").attr("offset", "100%").attr("stop-color", c.main).attr("stop-opacity", 0.2);
+});
+
+// Container for zoom
+const g = svg.append("g");
+
+// Zoom behavior
+const zoom = d3.zoom()
+  .scaleExtent([0.3, 4])
+  .on("zoom", (event) => g.attr("transform", event.transform));
+svg.call(zoom);
+
+// Draw links
+const linkG = g.append("g").attr("class", "links");
+const linkElements = linkG.selectAll("line")
+  .data(links).enter().append("line")
+  .attr("class", d => d.type === "true" ? "link-true" : d.type === "conditional" ? "link-conditional" : "link-false")
+  .attr("marker-end", d => d.type === "true" ? "url(#arrow-true)" : d.type === "conditional" ? "url(#arrow-conditional)" : "url(#arrow-false)")
+  .on("mouseenter", function(event, d) {
+    d3.select(this).classed("link-highlight", true);
+    const sym = d.type === "true" ? "⇒" : "⇏";
+    let html = `<strong>${d.label}</strong>`;
+    if (d.counter) html += ` <span style="color:var(--accent-red)">[${d.counter}]</span>`;
+    html += `<br><span style="color:var(--text-dim);font-size:11px;">Cliquez sur un nœud pour les détails</span>`;
+    tooltip.html(html).classed("visible", true);
+  })
+  .on("mousemove", function(event) {
+    tooltip.style("left", (event.pageX + 14) + "px").style("top", (event.pageY - 14) + "px");
+  })
+  .on("mouseleave", function() {
+    d3.select(this).classed("link-highlight", false);
+    tooltip.classed("visible", false);
+  });
+
+// Draw nodes
+const nodeG = g.append("g").attr("class", "nodes");
+const nodeGroups = nodeG.selectAll("g")
+  .data(nodes).enter().append("g")
+  .attr("class", "node-group")
+  .call(d3.drag()
+    .on("start", dragStart)
+    .on("drag", dragged)
+    .on("end", dragEnd));
+
+nodeGroups.append("circle")
+  .attr("class", "node-circle")
+  .attr("r", d => d.radius)
+  .attr("fill", d => `url(#grad-${d.id})`)
+  .attr("stroke", d => groupColors[d.group].main)
+  .attr("stroke-width", 1.5)
+  .attr("stroke-opacity", 0.6);
+
+nodeGroups.append("text")
+  .attr("class", "node-label")
+  .text(d => d.label);
+
+// Click handler
+nodeGroups.on("click", (event, d) => {
+  event.stopPropagation();
+  selectNode(d);
+});
+
+svg.on("click", () => clearSelection());
+
+// Force simulation
+const simulation = d3.forceSimulation(nodes)
+  .force("link", d3.forceLink(links).id(d => d.id).distance(d => {
+    // Zoo links shorter to cluster
+    if (d.source.group === "zoo" || d.target.group === "zoo") return 120;
+    return 160;
+  }).strength(0.4))
+  .force("charge", d3.forceManyBody().strength(-420))
+  .force("center", d3.forceCenter(width / 2, height / 2))
+  .force("collision", d3.forceCollide().radius(d => d.radius + 12))
+  .force("x", d3.forceX(width / 2).strength(0.04))
+  .force("y", d3.forceY(height / 2).strength(0.04))
+  .on("tick", ticked);
+
+function ticked() {
+  linkElements
+    .attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+    .attr("x2", d => {
+      const dx = d.target.x - d.source.x;
+      const dy = d.target.y - d.source.y;
+      const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      return d.target.x - (dx / dist) * (d.target.radius || 20);
+    })
+    .attr("y2", d => {
+      const dx = d.target.x - d.source.x;
+      const dy = d.target.y - d.source.y;
+      const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      return d.target.y - (dy / dist) * (d.target.radius || 20);
+    });
+
+  nodeGroups.attr("transform", d => `translate(${d.x},${d.y})`);
+}
+
+// Drag functions
+function dragStart(event, d) {
+  if (!event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x; d.fy = d.y;
+}
+function dragged(event, d) {
+  d.fx = event.x; d.fy = event.y;
+}
+function dragEnd(event, d) {
+  if (!event.active) simulation.alphaTarget(0);
+  d.fx = null; d.fy = null;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SELECTION & PANEL
+// ═══════════════════════════════════════════════════════════════
+let selectedNode = null;
+
+function selectNode(d) {
+  selectedNode = d;
+
+  // Highlight connected
+  const connectedIds = new Set([d.id]);
+  links.forEach(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    if (sid === d.id) connectedIds.add(tid);
+    if (tid === d.id) connectedIds.add(sid);
+  });
+
+  nodeGroups.classed("node-fade", n => !connectedIds.has(n.id));
+  nodeGroups.select(".node-circle").attr("stroke-width", n => n.id === d.id ? 3.5 : 1.5);
+
+  linkElements
+    .classed("link-highlight", l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      return sid === d.id || tid === d.id;
+    })
+    .classed("link-fade", l => {
+      const sid = typeof l.source === "object" ? l.source.id : l.source;
+      const tid = typeof l.target === "object" ? l.target.id : l.target;
+      return sid !== d.id && tid !== d.id;
+    });
+
+  updatePanel(d);
+}
+
+function clearSelection() {
+  selectedNode = null;
+  nodeGroups.classed("node-fade", false);
+  nodeGroups.select(".node-circle").attr("stroke-width", 1.5);
+  linkElements.classed("link-highlight", false).classed("link-fade", false);
+
+  document.getElementById("panel-title").textContent = "Atlas d'Analyse";
+  document.getElementById("panel-subtitle").textContent = "Réseau interactif";
+  document.getElementById("panel-body").innerHTML = `
+    <div class="welcome">
+      <div class="icon">⊛</div>
+      <h3>Explorez le réseau</h3>
+      <p>Cliquez sur un nœud (concept ou contre-exemple) pour afficher ses propriétés, implications et idées de preuves.</p>
+      <p style="margin-top:12px;">Survolez un lien pour voir l'implication associée.</p>
+    </div>`;
+}
+
+function updatePanel(d) {
+  document.getElementById("panel-title").textContent = d.fullName;
+  document.getElementById("panel-subtitle").textContent = d.group === "zoo" ? "Contre-exemple" : d.group.charAt(0).toUpperCase() + d.group.slice(1);
+
+  let html = '';
+
+  // Definition
+  html += `<div class="section-title">Définition</div>`;
+  html += `<div class="def-block">${d.def}</div>`;
+
+  // Outgoing true implications
+  const outTrue = links.filter(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    return sid === d.id && l.type === "true";
+  });
+  // Incoming true implications
+  const inTrue = links.filter(l => {
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    return tid === d.id && l.type === "true";
+  });
+  // Outgoing conditional
+  const outCond = links.filter(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    return sid === d.id && l.type === "conditional";
+  });
+  // Incoming conditional
+  const inCond = links.filter(l => {
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    return tid === d.id && l.type === "conditional";
+  });
+  // Outgoing false
+  const outFalse = links.filter(l => {
+    const sid = typeof l.source === "object" ? l.source.id : l.source;
+    return sid === d.id && l.type === "false";
+  });
+  // Incoming false
+  const inFalse = links.filter(l => {
+    const tid = typeof l.target === "object" ? l.target.id : l.target;
+    return tid === d.id && l.type === "false";
+  });
+
+  if (outTrue.length > 0) {
+    html += `<div class="section-title">Implique (⇒)</div>`;
+    outTrue.forEach(l => {
+      html += makeCard(l, "true");
+    });
+  }
+
+  if (inTrue.length > 0) {
+    html += `<div class="section-title">Impliqué par (⇐)</div>`;
+    inTrue.forEach(l => {
+      html += makeCard(l, "true", true);
+    });
+  }
+
+  if (outCond.length > 0 || inCond.length > 0) {
+    html += `<div class="section-title">Conditionnelles (+ hypothèse ⇒)</div>`;
+    outCond.forEach(l => html += makeCard(l, "conditional"));
+    inCond.forEach(l => html += makeCard(l, "conditional", true));
+  }
+
+  if (outFalse.length > 0 || inFalse.length > 0) {
+    html += `<div class="section-title">Fausses implications (⇏)</div>`;
+    outFalse.forEach(l => html += makeCard(l, "false"));
+    inFalse.forEach(l => html += makeCard(l, "false", true));
+  }
+
+  document.getElementById("panel-body").innerHTML = html;
+
+  // Toggle proof visibility
+  document.querySelectorAll(".impl-card").forEach(card => {
+    card.addEventListener("click", () => card.classList.toggle("open"));
+  });
+}
+
+function makeCard(link, type, isReverse = false) {
+  const arrowClass = type === "false" ? "arrow-false" : type === "conditional" ? "arrow-cond" : "arrow-true";
+  const cardClass = type === "false" ? " false-impl" : type === "conditional" ? " cond-impl" : "";
+  const counterHtml = link.counter ? `<span class="counter-tag">${link.counter}</span>` : "";
+
+  return `<div class="impl-card${cardClass}">
+    <div class="impl-label">
+      <span class="${arrowClass}">${link.label}</span>${counterHtml}
+      <span class="proof-toggle" style="float:right;">▸ idée de preuve</span>
+    </div>
+    <div class="impl-proof">${link.proof}</div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FILTERS
+// ═══════════════════════════════════════════════════════════════
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const filter = btn.dataset.filter;
+
+    if (filter === "all") {
+      nodeGroups.style("display", "block");
+      linkElements.style("display", "block");
+      simulation.alpha(0.3).restart();
+      return;
+    }
+
+    nodeGroups.style("display", d => d.group === filter ? "block" : "none");
+    linkElements.style("display", l => {
+      const s = typeof l.source === "object" ? l.source : nodes.find(n => n.id === l.source);
+      const t = typeof l.target === "object" ? l.target : nodes.find(n => n.id === l.target);
+      return (s.group === filter || t.group === filter) ? "block" : "none";
+    });
+    simulation.alpha(0.3).restart();
+  });
+});
+
+// Initial zoom fit
+setTimeout(() => {
+  svg.call(zoom.transform, d3.zoomIdentity.translate(width*0.05, height*0.05).scale(0.9));
+}, 500);
+</script>
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

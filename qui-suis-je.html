@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui suis-je ? — Terre Mathématiques</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D48B;
+    --gold-dark: #9E7B2F;
+    --navy: #0A1628;
+    --navy-light: #132240;
+    --navy-mid: #1A2D4A;
+    --cream: #F5F0E8;
+    --cream-dark: #E8DFD0;
+    --white: #FFFFFF;
+    --text-light: #B8C4D6;
+    --text-muted: #7A8BA3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 12s ease-in-out infinite;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -100px;
+    left: -150px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 15s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(30px, -40px); }
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 70px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .photo-wrapper {
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease-out 0.2s forwards;
+    padding: 6px;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.04);
+  }
+
+  .photo-wrapper img {
+    width: 100%;
+    display: block;
+    filter: contrast(1.02);
+    transition: filter 0.6s ease;
+  }
+
+  .photo-wrapper:hover {
+    border-color: rgba(201,168,76,0.45);
+  }
+
+  .photo-wrapper:hover img {
+    filter: contrast(1.05) brightness(1.02);
+  }
+
+  .intro {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUp 0.8s ease-out 0.4s forwards;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .page-title .gold {
+    color: var(--gold);
+    position: relative;
+  }
+
+  .page-title .gold::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0.5;
+  }
+
+  .title-line {
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin: 20px 0 28px;
+  }
+
+  .intro-text {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  .intro-text em {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .intro-text .highlight {
+    display: block;
+    margin-top: 18px;
+    font-weight: 500;
+    color: var(--cream);
+  }
+
+  .intro-text .sub-lines {
+    display: block;
+    margin-top: 8px;
+    padding-left: 20px;
+    border-left: 2px solid rgba(201,168,76,0.3);
+    color: var(--text-light);
+    line-height: 2;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.98rem;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 0 40px 100px;
+  }
+
+  .audience {
+    padding: 40px 44px;
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 12px;
+    background: rgba(201,168,76,0.03);
+    margin-top: 20px;
+    margin-bottom: 70px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .audience::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    opacity: 0.6;
+  }
+
+  .audience p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  .audience .emphasis {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+    margin-top: 10px;
+  }
+
+  .section {
+    margin-bottom: 70px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-line {
+    display: block;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-bottom: 24px;
+  }
+
+  .section p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  .section p + p { margin-top: 14px; }
+
+  .section p strong {
+    font-weight: 600;
+    color: var(--cream);
+  }
+
+  .section .indented {
+    padding-left: 20px;
+    border-left: 2px solid rgba(201,168,76,0.3);
+    margin: 14px 0;
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.98rem;
+  }
+
+  .sep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 60px auto;
+    max-width: 200px;
+  }
+
+  .sep::before, .sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(201,168,76,0.15);
+  }
+
+  .sep-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .cta-wrapper {
+    text-align: center;
+    padding: 40px 0 20px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 44px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 8px;
+    letter-spacing: 0.03em;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(201,168,76,0.25);
+  }
+
+  .cta-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 40px rgba(201,168,76,0.35);
+  }
+
+  .cta-link svg { transition: transform 0.3s ease; }
+  .cta-link:hover svg { transform: translateX(4px); }
+
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid rgba(201,168,76,0.06);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 50px;
+      max-width: 550px;
+    }
+    .photo-wrapper { max-width: 340px; margin: 0 auto; }
+    .hero { padding: 80px 30px 60px; }
+    .content { padding: 0 30px 80px; }
+  }
+
+  @media (max-width: 500px) {
+    .hero { padding: 60px 20px 40px; }
+    .content { padding: 0 20px 60px; }
+    .audience { padding: 28px 24px; }
+  }
+</style>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute; inset: 0;
+  overflow: hidden; pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic; font-weight: 500;
+  color: #c9a84c; white-space: nowrap; opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10; display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px; border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute; top: 50%; left: 20px;
+  transform: translateY(-50%); z-index: 15;
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+}
+.tm-left-logo img {
+  width: 70px; height: 70px; border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.08rem;
+  color: #e2c06a; letter-spacing: 5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute; top: 50%; right: 24px;
+  transform: translateY(-50%); z-index: 200;
+  display: flex; align-items: center; gap: 2px;
+  opacity: 0; animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a, .tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.9rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 8px 13px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover, .tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-menu > a.tm-active {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none; position: absolute; top: 100%; left: 0;
+  min-width: 220px; background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0; z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block; font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none; position: absolute;
+  top: 50%; right: 18px; transform: translateY(-50%);
+  z-index: 300; cursor: pointer; padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block; width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute; top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block; font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle span { font-size: 0.82rem; letter-spacing: 3px; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="https://d1yei2z3i6k35z.cloudfront.net/15295891/6924af6122b3d_1000000054.webp" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="https://www.terremathematiques.com/" class="tm-left-logo">
+    <img src="https://d1yei2z3i6k35z.cloudfront.net/15295891/6924af6122b3d_1000000054.webp" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO — QUI SUIS-JE ═══════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="photo-wrapper">
+      <img src="suis-je.JPG" alt="Portrait">
+    </div>
+    <div class="intro">
+      <h1 class="page-title">Qui suis-je<span class="gold">&thinsp;?</span></h1>
+      <span class="title-line"></span>
+      <div class="intro-text">
+        <p>Je suis enseignant, chercheur, et comme fut mon prof de philosophie en terminale pour moi&nbsp;: <em>un passeur.</em></p>
+        <span class="highlight">Mais avant tout, je crois que les mathématiques ne sont pas une accumulation de formules.</span>
+        <span class="sub-lines">
+          Elles constituent un langage interne, cohérent, qui se comprend par lui-même&nbsp;:<br>
+          un langage dont les mécanismes sont décryptables,<br>
+          et dont les raisonnements fondamentaux sont simples, minimaux et logiques.
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTENU ═══════════════ -->
+<div class="content">
+
+  <div class="audience" data-animate>
+    <p>J'accompagne des élèves, des étudiants et des adultes, du collège jusqu'à l'université&nbsp;—</p>
+    <span class="emphasis">qu'ils soient en difficulté, ambitieux, curieux, ou simplement frustrés de ne pas voir ce que les mathématiques racontent vraiment.</span>
+  </div>
+
+  <div class="sep"><span class="sep-dot"></span></div>
+
+  <div class="section" data-animate>
+    <h2 class="section-title">Ma conviction</h2>
+    <span class="section-line"></span>
+    <p><strong>On n'échoue pas en mathématiques par manque d'intelligence.</strong><br>
+    On échoue parce qu'on n'a jamais appris leur langage.</p>
+    <p class="indented">On apprend trop souvent à appliquer des formules, des techniques, des recettes, sans comprendre le pourquoi.</p>
+  </div>
+
+  <div class="section" data-animate>
+    <h2 class="section-title">Mon rôle</h2>
+    <span class="section-line"></span>
+    <p><strong>Former l'esprit,</strong> pas seulement préparer un contrôle.</p>
+    <p class="indented">Apprendre à raisonner,<br>
+    à structurer une pensée,<br>
+    à comprendre pourquoi une idée fonctionne et comment elle s'inscrit dans un tout.</p>
+  </div>
+
+  <div class="sep"><span class="sep-dot"></span></div>
+
+  <div class="cta-wrapper" data-animate>
+    <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="cta-link" target="_blank" rel="noopener">
+      Accéder à mes articles
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('[data-animate]').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>

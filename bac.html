@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TerreMaths — Formation Bac Premium</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --soil: #1a1612;
+    --bark: #2c241d;
+    --clay: #3d322a;
+    --sand: #c4a97d;
+    --wheat: #e8d5b0;
+    --cream: #f5efe6;
+    --moss: #5a7247;
+    --moss-light: #7a9a5e;
+    --ember: #c45d3e;
+    --ember-light: #e07a5a;
+    --gold: #d4a843;
+    --gold-light: #f0c95e;
+    --text: #f5efe6;
+    --text-muted: #a89880;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--soil);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── GRAIN OVERLAY ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 45%, rgba(90, 114, 71, 0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 35% at 30% 70%, rgba(196, 93, 62, 0.06) 0%, transparent 60%),
+      var(--soil);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--sand), transparent);
+    opacity: 0.3;
+  }
+
+  .hero-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--moss-light);
+    border: 1px solid rgba(90, 114, 71, 0.3);
+    padding: 0.5rem 1.5rem;
+    border-radius: 100px;
+    margin-bottom: 3rem;
+    animation: fadeDown 1s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.3em;
+    animation: fadeDown 1s 0.15s ease both;
+  }
+
+  .hero-title span {
+    display: block;
+    background: linear-gradient(135deg, var(--wheat) 0%, var(--gold) 40%, var(--ember-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    animation: fadeDown 1s 0.3s ease both;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--sand);
+    max-width: 550px;
+    margin: 1.5rem auto 3rem;
+    font-weight: 300;
+    animation: fadeDown 1s 0.45s ease both;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, var(--moss), var(--moss-light));
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 1rem 2.5rem;
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 0 0 rgba(90, 114, 71, 0.3);
+    animation: fadeDown 1s 0.6s ease both;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(90, 114, 71, 0.35);
+  }
+
+  .hero-cta svg { transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(4px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeDown 1s 0.9s ease both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--sand), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── PROMISE SECTION ── */
+  .promise {
+    padding: 8rem 2rem;
+    text-align: center;
+    position: relative;
+    background:
+      radial-gradient(ellipse 50% 40% at 50% 0%, rgba(44, 36, 29, 0.8), transparent),
+      var(--soil);
+  }
+
+  .promise-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--wheat);
+  }
+
+  .promise-quote em {
+    color: var(--ember-light);
+    font-style: italic;
+  }
+
+  .promise-sub {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    max-width: 200px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, var(--clay), transparent);
+  }
+
+  /* ── SECTION STYLES ── */
+  section {
+    padding: 6rem 2rem;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    color: var(--moss-light);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-desc {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+
+  /* ── PARTIE CARDS ── */
+  .partie {
+    position: relative;
+    padding: 6rem 2rem;
+    border-top: 1px solid rgba(196, 169, 125, 0.08);
+  }
+
+  .partie:nth-child(odd) {
+    background: linear-gradient(135deg, rgba(44, 36, 29, 0.3), transparent);
+  }
+
+  .partie-percent {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 900;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    opacity: 0.04;
+    line-height: 1;
+    color: var(--sand);
+    pointer-events: none;
+  }
+
+  .partie-insight {
+    background: rgba(90, 114, 71, 0.08);
+    border-left: 3px solid var(--moss);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    font-size: 1.05rem;
+    color: var(--wheat);
+    border-radius: 0 8px 8px 0;
+    max-width: 700px;
+  }
+
+  .partie-insight em { color: var(--gold-light); font-style: normal; font-weight: 600; }
+
+  /* ── VIDEO LIST ── */
+  .video-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 2rem 0;
+    max-width: 700px;
+  }
+
+  .video-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: rgba(61, 50, 42, 0.3);
+    border: 1px solid rgba(196, 169, 125, 0.06);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .video-item:hover {
+    background: rgba(61, 50, 42, 0.5);
+    border-color: rgba(196, 169, 125, 0.12);
+    transform: translateX(6px);
+  }
+
+  .video-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--moss), var(--moss-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .video-icon svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--cream);
+    margin-left: 2px;
+  }
+
+  .video-item span {
+    font-size: 0.95rem;
+    color: var(--wheat);
+  }
+
+  /* ── EXERCISE TYPES ── */
+  .exercise-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .exercise-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    background: rgba(196, 93, 62, 0.1);
+    border: 1px solid rgba(196, 93, 62, 0.2);
+    border-radius: 100px;
+    color: var(--ember-light);
+    transition: all 0.3s ease;
+  }
+
+  .exercise-tag:hover {
+    background: rgba(196, 93, 62, 0.2);
+    transform: scale(1.05);
+  }
+
+  /* ── MASTERCLASS CARD ── */
+  .masterclass {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background:
+      linear-gradient(135deg, rgba(212, 168, 67, 0.08), rgba(196, 93, 62, 0.05));
+    border: 1px solid rgba(212, 168, 67, 0.15);
+    border-radius: 14px;
+    max-width: 700px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .masterclass::before {
+    content: '✦';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-size: 3rem;
+    opacity: 0.08;
+    color: var(--gold);
+  }
+
+  .masterclass-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .masterclass-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--wheat);
+  }
+
+  /* ── STRUCTURES SECTION ── */
+  .structures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .structure-card {
+    padding: 2rem;
+    background: rgba(61, 50, 42, 0.25);
+    border: 1px solid rgba(196, 169, 125, 0.06);
+    border-radius: 14px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .structure-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(90, 114, 71, 0.06));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .structure-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(196, 169, 125, 0.15);
+  }
+
+  .structure-card:hover::after { opacity: 1; }
+
+  .structure-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--moss-light);
+    opacity: 0.5;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .structure-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--wheat);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── BONUS ── */
+  .bonus-section {
+    background:
+      radial-gradient(ellipse 50% 50% at 50% 50%, rgba(212, 168, 67, 0.04), transparent),
+      var(--soil);
+  }
+
+  .bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .bonus-card {
+    padding: 2rem;
+    border-radius: 14px;
+    border: 1px solid rgba(196, 169, 125, 0.08);
+    background: rgba(44, 36, 29, 0.4);
+    transition: all 0.4s ease;
+  }
+
+  .bonus-card:hover {
+    border-color: rgba(196, 169, 125, 0.18);
+    transform: translateY(-3px);
+  }
+
+  .bonus-emoji {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .bonus-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    color: var(--wheat);
+  }
+
+  .bonus-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── CTA FINAL ── */
+  .final-cta {
+    text-align: center;
+    padding: 8rem 2rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(90, 114, 71, 0.1), transparent),
+      radial-gradient(ellipse 40% 30% at 70% 40%, rgba(212, 168, 67, 0.05), transparent),
+      var(--soil);
+  }
+
+  .final-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.4;
+    max-width: 750px;
+    margin: 0 auto 1rem;
+    color: var(--wheat);
+  }
+
+  .final-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--ember-light);
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .final-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, var(--ember), var(--ember-light));
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.15rem;
+    padding: 1.15rem 3rem;
+    border-radius: 100px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 0 0 0 rgba(196, 93, 62, 0.3);
+  }
+
+  .final-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 50px rgba(196, 93, 62, 0.3);
+  }
+
+    /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+  }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.2); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .partie { padding: 4rem 1.5rem; }
+    .partie-percent { font-size: 5rem; top: 1rem; right: 1rem; }
+    section { padding: 4rem 1.5rem; }
+    .structures-grid { grid-template-columns: repeat(2, 1fr); }
+    .bonus-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .structures-grid { grid-template-columns: 1fr; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #c9a84c;
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute;
+  top: 50%; left: 16px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+  max-width: 220px;
+}
+.tm-left-logo img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: #e2c06a; letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex; align-items: center; gap: 0;
+  opacity: 0;
+  animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a,
+.tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.78rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 8px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover,
+.tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 220px;
+  background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0;
+  z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none;
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  z-index: 300;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block;
+  width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-menu > a,
+  .tm-dd > a { font-size: 0.72rem; padding: 8px 6px; letter-spacing: 1.5px; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+</style>
+
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="tm-left-logo">
+    <img src="logo.jpg" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-badge">Formation Bac Premium 2025</div>
+  <h1 class="hero-title"><span>TerreMaths</span></h1>
+  <p class="hero-subtitle">Toujours les mêmes maths</p>
+  <p class="hero-tagline">Semer des méthodes — Récolter 18+</p>
+  <a href="#programme" class="hero-cta">
+    Découvrir le programme
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+  <div class="scroll-hint">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</header>
+
+<!-- ═══════════ PROMISE ═══════════ -->
+<section class="promise">
+  <p class="promise-quote reveal">
+    « Je te montre la <em>structure cachée</em> du bac —<br>
+    et quand tu la vois, tout devient <em>prévisible</em>. »
+  </p>
+  <p class="promise-sub reveal">Le bac n'est pas difficile. Il est répétitif — mais on ne vous a jamais montré la répétition.</p>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ PROGRAMME ═══════════ -->
+<div id="programme">
+
+  <!-- PARTIE 0 -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">00</div>
+      <div class="section-number">Partie 0 — Reset mental</div>
+      <h2 class="section-title">Comprendre ce qu'est<br>vraiment un exercice</h2>
+      <p class="section-desc">95% des élèves calculent trop tôt. Apprends à voir avant de résoudre.</p>
+
+      <div class="partie-insight">
+        <em>Clé :</em> Un exercice de maths commence toujours AVANT les calculs.
+      </div>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Pourquoi les bons élèves vont lentement mais réussissent toujours</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Le bac est un examen à reconnaissance de formes</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Les 5 réflexes universels</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE I -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">40%</div>
+      <div class="section-number">Partie I — Variations</div>
+      <h2 class="section-title">Le cœur du bac</h2>
+      <p class="section-desc">Toute question = montrer qu'une chose devient plus grande qu'une autre.</p>
+
+      <div class="partie-insight">
+        <em>Dérivée</em> = vitesse de comparaison · <em>Tableau</em> = carte du problème · <em>Tangente</em> = approximation locale
+      </div>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Lire une fonction sans calculer</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Trouver le signe avant de dériver</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>La dérivée n'est qu'un outil</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Quand ne PAS dériver</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Le piège classique du bac</span>
+        </div>
+      </div>
+
+      <div class="exercise-grid">
+        <span class="exercise-tag">minimum</span>
+        <span class="exercise-tag">f(x) = k</span>
+        <span class="exercise-tag">position relative</span>
+        <span class="exercise-tag">inéquation</span>
+        <span class="exercise-tag">optimisation</span>
+      </div>
+
+      <div class="masterclass">
+        <div class="masterclass-label">✦ Masterclass</div>
+        <div class="masterclass-title">Un exercice impossible → devient trivial en 30 secondes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE II -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">∫</div>
+      <div class="section-number">Partie II — Accumulation</div>
+      <h2 class="section-title">Intégrales & Suites</h2>
+      <p class="section-desc">Une intégrale est une somme déguisée. Une suite est une évolution déguisée.</p>
+
+      <div class="partie-insight">
+        Comprendre : <em>additionner de l'infiniment petit</em>
+      </div>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>L'intégrale = aire mentale, pas calcul</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Lire une primitive sans la trouver</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Encadrement → résultat sans calcul</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Suites = fonctions dans le temps</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Le raisonnement par monotonie — clé du bac</span>
+        </div>
+      </div>
+
+      <div class="exercise-grid">
+        <span class="exercise-tag">aire</span>
+        <span class="exercise-tag">limite</span>
+        <span class="exercise-tag">convergence</span>
+        <span class="exercise-tag">somme</span>
+        <span class="exercise-tag">encadrement</span>
+      </div>
+
+      <div class="masterclass">
+        <div class="masterclass-label">✦ Moment Révélation</div>
+        <div class="masterclass-title">Transformer un exercice de suites en exercice de fonction → 2 lignes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE III -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">P()</div>
+      <div class="section-number">Partie III — Hasard</div>
+      <h2 class="section-title">Probabilités</h2>
+      <p class="section-desc">100% logique, 0% intuition. Les probabilités du bac sont de la logique déguisée.</p>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>L'arbre n'est pas une méthode mais une traduction</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Conditionnel = information</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Bayes sans formule</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Loi binomiale = répétition d'une même question</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Espérance = moyenne stratégique</span>
+        </div>
+      </div>
+
+      <div class="exercise-grid">
+        <span class="exercise-tag">arbre</span>
+        <span class="exercise-tag">répétition</span>
+        <span class="exercise-tag">décision</span>
+        <span class="exercise-tag">comparaison de stratégies</span>
+      </div>
+
+      <div class="masterclass">
+        <div class="masterclass-label">✦ Grand Final</div>
+        <div class="masterclass-title">Tu bats une intuition humaine avec un calcul simple</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE IV -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">→</div>
+      <div class="section-number">Partie IV — Géométrie & Vecteurs</div>
+      <h2 class="section-title">Voir au lieu de calculer</h2>
+      <p class="section-desc">80% des coordonnées sont inutiles.</p>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Voir un parallélisme instantanément</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Produit scalaire = angle caché</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Plan = équation logique</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Distance minimale = projection</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>La géométrie sans repère</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE V -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">∴</div>
+      <div class="section-number">Partie V — Logique & Rédaction</div>
+      <h2 class="section-title">Là où les points<br>se gagnent</h2>
+      <p class="section-desc">Rédiger comme un correcteur pense.</p>
+
+      <div class="video-list">
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Rédiger comme un correcteur pense</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Les mots qui donnent 2 points</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Justifier sans écrire trop</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Le raisonnement standard du bac</span>
+        </div>
+        <div class="video-item">
+          <div class="video-icon"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+          <span>Transformer une question en théorème</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE VI — LES 7 STRUCTURES -->
+  <section class="reveal" style="padding: 6rem 2rem;">
+    <div class="container" style="text-align: center;">
+      <div class="section-number">Partie VI — Le Grand Secret</div>
+      <h2 class="section-title" style="margin: 0 auto 0.5rem;">Le bac entier tient<br>en 7 structures</h2>
+      <p class="section-desc" style="margin: 0 auto 1rem; text-align: center;">10 sujets complets. Résolus sans calcul lourd.</p>
+
+      <div class="structures-grid">
+        <div class="structure-card">
+          <div class="structure-num">1</div>
+          <div class="structure-name">Comparer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">2</div>
+          <div class="structure-name">Encadrer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">3</div>
+          <div class="structure-name">Faire tendre</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">4</div>
+          <div class="structure-name">Répéter</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">5</div>
+          <div class="structure-name">Approximer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">6</div>
+          <div class="structure-name">Transformer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">7</div>
+          <div class="structure-name">Conserver</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══════════ BONUS ═══════════ -->
+<section class="bonus-section reveal">
+  <div class="container">
+    <div class="section-number" style="text-align: center;">Inclus dans la formation</div>
+    <h2 class="section-title" style="text-align: center; margin-bottom: 0.5rem;">Bonus Premium</h2>
+    <p class="section-desc" style="text-align: center; margin: 0 auto;">Ce qui justifie le haut de gamme.</p>
+
+    <div class="bonus-grid">
+      <div class="bonus-card">
+        <span class="bonus-emoji">🎬</span>
+        <h3>Lecture d'énoncé en direct</h3>
+        <p>Je lis, je pense, je prédis la solution — tu vois exactement comment raisonne un expert face à un sujet.</p>
+      </div>
+      <div class="bonus-card">
+        <span class="bonus-emoji">⚠️</span>
+        <h3>Anti-pièges</h3>
+        <p>Pourquoi les bons élèves perdent 4 points — et comment éviter chaque piège récurrent du bac.</p>
+      </div>
+      <div class="bonus-card">
+        <span class="bonus-emoji">⏱️</span>
+        <h3>Méthode 48h avant bac</h3>
+        <p>Stratégie mentale et révision optimale pour les deux derniers jours avant l'épreuve.</p>
+      </div>
+      <div class="bonus-card">
+        <span class="bonus-emoji">🏆</span>
+        <h3>Mode Concours</h3>
+        <p>Stratégies avancées pour viser 18 à 20 — quand le programme est maîtrisé et qu'il faut aller plus loin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ═══════════ CTA FINAL ═══════════ -->
+<section class="final-cta reveal">
+  <p class="final-quote">Le bac n'est pas difficile.<br>Il est répétitif.</p>
+  <p class="final-sub">On ne vous a jamais montré la répétition.</p>
+  <a href="#" class="final-btn">
+    Rejoindre TerreMaths
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════ SCROLL REVEAL ═══════════ -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

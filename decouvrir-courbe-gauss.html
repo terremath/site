@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔔 La Magie de la Courbe en Cloche</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --surface: #1a1932;
+    --primary: #ff8906;
+    --secondary: #e53170;
+    --accent: #7f5af0;
+    --text: #fffffe;
+    --muted: #94a1b2;
+    --success: #2cb67d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(ellipse at 20% 50%, rgba(127,90,240,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(229,49,112,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(255,137,6,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
+
+  h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2.4em;
+    text-align: center;
+    margin: 20px 0 5px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titlePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.05em;
+    margin-bottom: 25px;
+  }
+
+  /* Tab navigation */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+  }
+
+  .tab-btn {
+    background: var(--surface);
+    border: 2px solid transparent;
+    color: var(--muted);
+    padding: 10px 18px;
+    border-radius: 50px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    color: white;
+    border-color: transparent;
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(127,90,240,0.3);
+  }
+
+  .tab-btn .emoji { font-size: 1.2em; }
+
+  /* Panels */
+  .panel {
+    display: none;
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.05);
+    animation: fadeIn 0.4s ease;
+  }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5em;
+    margin-bottom: 8px;
+    color: var(--primary);
+  }
+
+  .panel-desc {
+    color: var(--muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* Canvas */
+  canvas {
+    width: 100%;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+
+  /* Buttons */
+  .btn {
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.05em;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(127,90,240,0.4); }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .btn-secondary:hover { background: rgba(255,255,255,0.14); box-shadow: none; }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    gap: 15px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .stat-card .label { color: var(--muted); font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card .value { font-family: 'Baloo 2', cursive; font-size: 1.6em; color: var(--primary); }
+
+  /* Slider */
+  .slider-group { margin: 15px 0; }
+  .slider-group label { color: var(--muted); font-size: 0.9em; display: block; margin-bottom: 5px; }
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--secondary));
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(127,90,240,0.4);
+  }
+
+  /* Insight box */
+  .insight {
+    background: linear-gradient(135deg, rgba(127,90,240,0.15), rgba(229,49,112,0.1));
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 15px 20px;
+    margin: 15px 0;
+    line-height: 1.7;
+  }
+  .insight .icon { font-size: 1.3em; margin-right: 6px; }
+
+  /* Dice display */
+  .dice-display {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 15px 0;
+    flex-wrap: wrap;
+  }
+  .die {
+    width: 56px; height: 56px;
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6em;
+    font-weight: 800;
+    color: var(--bg);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+    font-family: 'Baloo 2', cursive;
+  }
+  .die.rolling { animation: diceRoll 0.4s ease; }
+  @keyframes diceRoll {
+    0% { transform: rotate(0deg) scale(0.5); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  /* Progress */
+  .progress-text {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.9em;
+    margin-top: 10px;
+  }
+
+  /* Quiz */
+  .quiz-option {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: all 0.25s;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1em;
+    color: var(--text);
+    text-align: left;
+    width: 100%;
+    display: block;
+  }
+  .quiz-option:hover { border-color: var(--accent); background: rgba(127,90,240,0.1); }
+  .quiz-option.correct { border-color: var(--success); background: rgba(44,182,125,0.15); }
+  .quiz-option.wrong { border-color: var(--secondary); background: rgba(229,49,112,0.1); }
+
+  .quiz-feedback {
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 12px;
+    display: none;
+    line-height: 1.6;
+  }
+  .quiz-feedback.show { display: block; animation: fadeIn 0.3s; }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.7em; }
+    .panel { padding: 20px; }
+    .tab-btn { padding: 8px 14px; font-size: 0.9em; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+</head>
+<body>
+<style>
+.tm-nav {
+  --nav-h: 180px;
+  position: relative;
+  width: 100%;
+  height: var(--nav-h);
+  background: #0a0805;
+  box-sizing: border-box;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  overflow: visible;
+  z-index: 100;
+}
+.tm-nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%, rgba(201,168,76,0.4) 20%,
+    rgba(201,168,76,0.85) 50%, rgba(201,168,76,0.4) 80%, transparent 100%);
+  z-index: 20; pointer-events: none;
+}
+.tm-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.tm-f {
+  position: absolute;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: #c9a84c;
+  white-space: nowrap;
+  opacity: 0;
+  text-shadow: 0 0 16px rgba(201,168,76,0.9), 0 0 32px rgba(201,168,76,0.35);
+  animation: tm-formula-life 4.2s ease forwards;
+}
+.tm-f:nth-child(1)  { animation-delay: 0.00s; }
+.tm-f:nth-child(2)  { animation-delay: 0.11s; }
+.tm-f:nth-child(3)  { animation-delay: 0.22s; }
+.tm-f:nth-child(4)  { animation-delay: 0.33s; }
+.tm-f:nth-child(5)  { animation-delay: 0.44s; }
+.tm-f:nth-child(6)  { animation-delay: 0.55s; }
+.tm-f:nth-child(7)  { animation-delay: 0.66s; }
+.tm-f:nth-child(8)  { animation-delay: 0.77s; }
+.tm-f:nth-child(9)  { animation-delay: 0.88s; }
+.tm-f:nth-child(10) { animation-delay: 0.99s; }
+.tm-f:nth-child(11) { animation-delay: 1.10s; }
+.tm-f:nth-child(12) { animation-delay: 1.21s; }
+.tm-f:nth-child(13) { animation-delay: 1.32s; }
+.tm-f:nth-child(14) { animation-delay: 1.43s; }
+.tm-f:nth-child(15) { animation-delay: 1.54s; }
+.tm-f:nth-child(16) { animation-delay: 1.65s; }
+.tm-f:nth-child(17) { animation-delay: 1.76s; }
+.tm-f:nth-child(18) { animation-delay: 1.87s; }
+.tm-f:nth-child(19) { animation-delay: 1.98s; }
+.tm-f:nth-child(20) { animation-delay: 2.09s; }
+.tm-f:nth-child(21) { animation-delay: 2.20s; }
+.tm-f:nth-child(22) { animation-delay: 2.31s; }
+.tm-f:nth-child(23) { animation-delay: 2.42s; }
+.tm-f:nth-child(24) { animation-delay: 2.53s; }
+@keyframes tm-formula-life {
+  0%   { opacity: 0; }
+  8%   { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.tm-center-logo {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 10;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+  opacity: 0; pointer-events: none;
+  animation: tm-center-appear 1.4s cubic-bezier(.4,0,.2,1) 4.3s forwards;
+}
+.tm-center-logo img {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.65);
+  box-shadow: 0 0 28px rgba(201,168,76,0.4), 0 0 55px rgba(201,168,76,0.14);
+  object-fit: cover; display: block;
+}
+.tm-center-logo .tm-ctitle {
+  display: flex; flex-direction: column;
+  align-items: center; line-height: 1.1;
+}
+.tm-center-logo .tm-ctitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1.45rem;
+  color: #e2c06a; letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 28px rgba(201,168,76,0.55), 0 2px 4px rgba(0,0,0,0.7);
+}
+@keyframes tm-center-appear {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.35); filter: blur(14px); }
+  35%  { opacity: 1; filter: blur(0);  transform: translate(-50%,-50%) scale(1.05); }
+  60%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  85%  { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 0; transform: translate(-130%,-50%) scale(0.65); }
+}
+.tm-left-logo {
+  position: absolute;
+  top: 50%; left: 16px;
+  transform: translateY(-50%);
+  z-index: 15;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; text-decoration: none;
+  animation: tm-fadein 0.7s ease 5.7s forwards;
+  max-width: 220px;
+}
+.tm-left-logo img {
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  border: 2px solid rgba(201,168,76,0.55);
+  box-shadow: 0 0 18px rgba(201,168,76,0.28);
+  object-fit: cover; flex-shrink: 0;
+}
+.tm-left-logo .tm-ltitle {
+  display: flex; flex-direction: column; line-height: 1.15;
+}
+.tm-left-logo .tm-ltitle span {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.85rem;
+  color: #e2c06a; letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(201,168,76,0.45), 0 1px 3px rgba(0,0,0,0.8);
+}
+@keyframes tm-fadein { from { opacity:0; } to { opacity:1; } }
+.tm-menu {
+  position: absolute;
+  top: 50%; right: 16px;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex; align-items: center; gap: 0;
+  opacity: 0;
+  animation: tm-fadein 0.7s ease 6.2s forwards;
+}
+.tm-menu > a,
+.tm-dd > a {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.78rem;
+  color: rgba(201,168,76,0.88);
+  text-decoration: none; letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 8px 8px;
+  border: 1px solid transparent; border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, text-shadow 0.25s;
+  white-space: nowrap; display: inline-block;
+}
+.tm-menu > a:hover,
+.tm-dd > a:hover {
+  color: #e2c06a;
+  border-color: rgba(201,168,76,0.32);
+  text-shadow: 0 0 12px rgba(201,168,76,0.5);
+}
+.tm-dd { position: relative; }
+.tm-dd-panel {
+  display: none;
+  position: absolute;
+  top: 100%; left: 0;
+  min-width: 220px;
+  background: rgba(7,5,2,0.97);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-top: 2px solid rgba(201,168,76,0.55);
+  padding: 6px 0;
+  z-index: 9999;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.7);
+}
+.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd-panel a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 0.8rem;
+  letter-spacing: 2px; text-transform: uppercase;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(201,168,76,0.7);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.06); }
+#tm-toggle { display: none; }
+.tm-hamburger {
+  display: none;
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  z-index: 300;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column; gap: 6px;
+}
+.tm-hamburger span {
+  display: block;
+  width: 26px; height: 2px;
+  background: #e2c06a; border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+  transform-origin: center;
+}
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(2) { opacity: 0; }
+#tm-toggle:checked ~ .tm-nav .tm-hamburger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.tm-drawer {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: rgba(7,5,2,0.98);
+  border-bottom: 1px solid rgba(201,168,76,0.2);
+  z-index: 25; max-height: 0; overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+#tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
+.tm-drawer-inner { padding: 10px 0 24px; }
+.tm-drawer a {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600; font-size: 1.05rem;
+  color: rgba(201,168,76,0.8); text-decoration: none;
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 13px 28px;
+  border-bottom: 1px solid rgba(201,168,76,0.06);
+  transition: color 0.2s, background 0.2s;
+}
+.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); }
+.tm-drawer-section {
+  font-family: 'EB Garamond', serif; font-style: italic;
+  font-size: 0.72rem; color: rgba(201,168,76,0.38);
+  letter-spacing: 3px; text-transform: uppercase;
+  padding: 16px 28px 4px;
+}
+.tm-drawer .tm-sub {
+  padding-left: 44px; font-size: 0.88rem;
+  letter-spacing: 2px; color: rgba(201,168,76,0.62);
+}
+@media (max-width: 768px) {
+  .tm-nav { --nav-h: 100px; }
+  .tm-menu  { display: none !important; }
+  .tm-hamburger { display: flex; }
+  .tm-center-logo img { width: 52px !important; height: 52px !important; }
+  .tm-center-logo .tm-ctitle span { font-size: 1rem !important; letter-spacing: 5px !important; }
+  .tm-left-logo img { width: 46px; height: 46px; }
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-f { font-size: 0.68rem !important; }
+}
+@media (min-width: 769px) and (max-width: 1100px) {
+  .tm-left-logo .tm-ltitle { display: none; }
+  .tm-menu > a,
+  .tm-dd > a { font-size: 0.72rem; padding: 8px 6px; letter-spacing: 1.5px; }
+}
+@media (min-width: 769px) {
+  .tm-hamburger { display: none !important; }
+  .tm-drawer    { display: none !important; }
+  #tm-toggle    { display: none !important; }
+}
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+  }
+
+</style>
+
+<input type="checkbox" id="tm-toggle">
+
+<nav class="tm-nav" id="tmNav">
+  <div class="tm-inner">
+    <div class="tm-formulas" style="position:absolute;inset:0;pointer-events:none;">
+      <div class="tm-f" style="top:10%; left:1%;  font-size:0.95rem">𝐹 = 𝑑𝐴 + 𝐴 ∧ 𝐴</div>
+      <div class="tm-f" style="top:62%; left:2%;  font-size:0.78rem">κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:28%; left:7%;  font-size:0.88rem">∀𝑥 ¬Bew(⌜𝜑⌝)</div>
+      <div class="tm-f" style="top:76%; left:5%;  font-size:0.82rem">𝒲 = Tr𝒫 exp∮𝐴</div>
+      <div class="tm-f" style="top:12%; left:18%; font-size:0.85rem">𝐷ₕ = 𝑑 + [𝐴,·]</div>
+      <div class="tm-f" style="top:68%; left:16%; font-size:0.9rem" >𝔭 ⊩ ∃𝑓: ℵ₀ → 2ℵ₀</div>
+      <div class="tm-f" style="top:38%; left:24%; font-size:0.92rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:5%;  left:30%; font-size:0.8rem" >∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:80%; left:28%; font-size:0.85rem">𝔼[𝐹(𝑥+𝜀ℎ)] = ∫𝛿𝐹/𝛿𝑥</div>
+      <div class="tm-f" style="top:8%;  left:38%; font-size:0.9rem" >𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:72%; left:40%; font-size:0.82rem">ℛμν − ½𝑔μν ℛ = 𝑇μν</div>
+      <div class="tm-f" style="top:30%; left:45%; font-size:0.78rem">Con(ZFC) → Con(ZFC+¬CH)</div>
+      <div class="tm-f" style="top:62%; left:50%; font-size:0.88rem">∫𝛿𝐹·𝐷𝑥 = 𝔼[∇𝐹]</div>
+      <div class="tm-f" style="top:10%; left:55%; font-size:0.85rem">𝒟ₘ = 𝛿 + 𝛿* + 𝒯</div>
+      <div class="tm-f" style="top:78%; left:58%; font-size:0.8rem" >𝔼[∇𝐹] = 0</div>
+      <div class="tm-f" style="top:15%; left:63%; font-size:0.9rem" >𝒲(𝒞) = Tr𝒫 exp∮꜀𝐴</div>
+      <div class="tm-f" style="top:68%; left:64%; font-size:0.82rem">𝔼[𝐹(𝑥+𝜀ℎ)]</div>
+      <div class="tm-f" style="top:5%;  left:72%; font-size:0.85rem">𝐷ₕ = 𝑑+[𝐴,·]</div>
+      <div class="tm-f" style="top:80%; left:74%; font-size:0.78rem">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
+      <div class="tm-f" style="top:35%; left:79%; font-size:0.88rem">Hol(∇) ⊆ 𝐺</div>
+      <div class="tm-f" style="top:10%; left:85%; font-size:0.92rem">𝒵 = ∫𝑒⁻ˢ𝒟𝐴</div>
+      <div class="tm-f" style="top:65%; left:83%; font-size:0.8rem" >κ = ‖𝛾″(𝑠)‖</div>
+      <div class="tm-f" style="top:25%; left:91%; font-size:0.85rem">∇ₐ𝐹 = 0</div>
+      <div class="tm-f" style="top:72%; left:91%; font-size:0.78rem">𝐹 = 𝑑𝐴+𝐴∧𝐴</div>
+    </div>
+    <div class="tm-center-logo" id="tmCenterLogo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ctitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+      </div>
+    </div>
+  </div>
+  <a href="index.html" class="tm-left-logo">
+    <img src="logo.jpg" alt="Terre Mathématiques">
+    <div class="tm-ltitle">
+      <span>Terre</span>
+      <span>Mathématiques</span>
+    </div>
+  </a>
+  <div class="tm-menu">
+    <a href="https://www.terremathematiques.com/">Accueil</a>
+    <div class="tm-dd">
+      <a href="#">Terre Mathématiques ▾</a>
+      <div class="tm-dd-panel">
+        <a href="philosophie.html">Ma philosophie</a>
+        <a href="methode.html">Ma méthode</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Formations ▾</a>
+      <div class="tm-dd-panel">
+        <a href="bac.html">BAC</a>
+        <a href="https://www.terremathematiques.com/encours">Trading</a>
+        <a href="https://www.terremathematiques.com/encours">IA</a>
+        <a href="#">Voir toutes les formations →</a>
+      </div>
+    </div>
+    <div class="tm-dd">
+      <a href="#">Fiches Interactives ▾</a>
+      <div class="tm-dd-panel">
+        <a href="frenet-animation.html">Repère de Frenet</a>
+        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
+        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      </div>
+    </div>
+    <a href="qui-suis-je.html">Qui suis-je ?</a>
+    <a href="#">Contact</a>
+  </div>
+  <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </label>
+  <div class="tm-drawer">
+    <div class="tm-drawer-inner">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-drawer-section">Terre Mathématiques</div>
+      <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
+      <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <div class="tm-drawer-section">Formations</div>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">BAC</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
+      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
+      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <a href="qui-suis-je.html">Qui suis-je</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+</nav>
+
+
+
+<div class="app">
+  <h1>🔔 La Magie de la Courbe en Cloche</h1>
+  <p class="subtitle">Découvre un des plus beaux secrets des mathématiques !</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab(0)"><span class="emoji">🎲</span> Lancer de dés</button>
+    <button class="tab-btn" onclick="showTab(1)"><span class="emoji">📏</span> Tailles humaines</button>
+    <button class="tab-btn" onclick="showTab(2)"><span class="emoji">🎯</span> Planche de Galton</button>
+    <button class="tab-btn" onclick="showTab(3)"><span class="emoji">🧪</span> Labo de courbes</button>
+    <button class="tab-btn" onclick="showTab(4)"><span class="emoji">🧠</span> Quiz</button>
+  </div>
+
+  <!-- TAB 0: DICE -->
+  <div class="panel active" id="panel0">
+    <div class="panel-title">🎲 L'expérience des dés</div>
+    <div class="panel-desc">Lance plusieurs dés et additionne-les. Que se passe-t-il quand on répète plein de fois ?</div>
+    
+    <div class="slider-group">
+      <label>Nombre de dés : <strong id="diceCountLabel">3</strong></label>
+      <input type="range" min="1" max="8" value="3" id="diceCount" oninput="diceCountLabel.textContent=this.value">
+    </div>
+
+    <div class="dice-display" id="diceDisplay"></div>
+
+    <canvas id="diceCanvas" height="300"></canvas>
+
+    <div class="stats" id="diceStats">
+      <div class="stat-card"><div class="label">Lancers</div><div class="value" id="diceRolls">0</div></div>
+      <div class="stat-card"><div class="label">Moyenne</div><div class="value" id="diceMean">-</div></div>
+      <div class="stat-card"><div class="label">Somme la + fréquente</div><div class="value" id="diceMode">-</div></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="rollDice()">🎲 Lancer !</button>
+      <button class="btn" onclick="rollMany(50)">⚡ 50 lancers</button>
+      <button class="btn" onclick="rollMany(500)">🚀 500 lancers</button>
+      <button class="btn btn-secondary" onclick="resetDice()">🔄 Recommencer</button>
+    </div>
+
+    <div class="insight" id="diceInsight" style="display:none">
+      <span class="icon">💡</span>
+      <span id="diceInsightText"></span>
+    </div>
+  </div>
+
+  <!-- TAB 1: HEIGHTS -->
+  <div class="panel" id="panel1">
+    <div class="panel-title">📏 Les tailles dans une classe</div>
+    <div class="panel-desc">Imagine qu'on mesure la taille de tous les élèves de ton école. Clique pour ajouter des élèves et regarde ce qui se forme !</div>
+
+    <canvas id="heightCanvas" height="350"></canvas>
+
+    <div class="stats">
+      <div class="stat-card"><div class="label">Élèves</div><div class="value" id="heightCount">0</div></div>
+      <div class="stat-card"><div class="label">Taille moyenne</div><div class="value" id="heightMean">-</div></div>
+      <div class="stat-card"><div class="label">Plus petite</div><div class="value" id="heightMin">-</div></div>
+      <div class="stat-card"><div class="label">Plus grande</div><div class="value" id="heightMax">-</div></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="addStudents(1)">🧒 +1 élève</button>
+      <button class="btn" onclick="addStudents(30)">🏫 +1 classe (30)</button>
+      <button class="btn" onclick="addStudents(300)">🏙️ +1 école (300)</button>
+      <button class="btn btn-secondary" onclick="resetHeights()">🔄 Recommencer</button>
+    </div>
+
+    <div class="insight" id="heightInsight" style="display:none">
+      <span class="icon">💡</span>
+      <span id="heightInsightText"></span>
+    </div>
+  </div>
+
+  <!-- TAB 2: GALTON BOARD -->
+  <div class="panel" id="panel2">
+    <div class="panel-title">🎯 La Planche de Galton</div>
+    <div class="panel-desc">
+      Une bille tombe et rebondit à gauche ou à droite à chaque clou. Où va-t-elle atterrir ? C'est comme ça qu'on a découvert cette courbe magique !
+    </div>
+
+    <canvas id="galtonCanvas" height="450"></canvas>
+
+    <div class="stats">
+      <div class="stat-card"><div class="label">Billes</div><div class="value" id="galtonCount">0</div></div>
+      <div class="stat-card"><div class="label">Colonne favorite</div><div class="value" id="galtonMode">-</div></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="dropBall()">🔵 1 bille</button>
+      <button class="btn" onclick="dropMany(30)">⚡ 30 billes</button>
+      <button class="btn" onclick="dropMany(200)">🚀 200 billes</button>
+      <button class="btn btn-secondary" onclick="resetGalton()">🔄 Recommencer</button>
+    </div>
+
+    <div class="insight" id="galtonInsight" style="display:none">
+      <span class="icon">💡</span>
+      <span id="galtonInsightText"></span>
+    </div>
+  </div>
+
+  <!-- TAB 3: CURVE LAB -->
+  <div class="panel" id="panel3">
+    <div class="panel-title">🧪 Le Laboratoire de Courbes</div>
+    <div class="panel-desc">Joue avec les paramètres pour déformer la courbe de Gauss et comprendre ce qui la change !</div>
+
+    <canvas id="labCanvas" height="320"></canvas>
+
+    <div class="slider-group">
+      <label>📍 Centre (moyenne) : <strong id="muLabel">0</strong></label>
+      <input type="range" min="-4" max="4" value="0" step="0.1" id="muSlider" oninput="updateLab()">
+    </div>
+    <div class="slider-group">
+      <label>📐 Largeur (écart-type) : <strong id="sigmaLabel">1</strong></label>
+      <input type="range" min="0.3" max="3" value="1" step="0.1" id="sigmaSlider" oninput="updateLab()">
+    </div>
+
+    <div class="insight">
+      <span class="icon">🔑</span>
+      <strong>La formule secrète :</strong> La courbe de Gauss dépend de seulement 2 choses :<br>
+      • <strong style="color:var(--primary)">La moyenne (μ)</strong> = le centre, là où se concentre la majorité<br>
+      • <strong style="color:var(--secondary)">L'écart-type (σ)</strong> = la largeur, à quel point les valeurs s'étalent<br>
+      Une σ petite → courbe haute et serrée 🏔️ | Une σ grande → courbe basse et étalée 🏜️
+    </div>
+  </div>
+
+  <!-- TAB 4: QUIZ -->
+  <div class="panel" id="panel4">
+    <div class="panel-title">🧠 Quiz : As-tu bien compris ?</div>
+    <div class="panel-desc">Teste tes connaissances sur la courbe de Gauss !</div>
+
+    <div id="quizContainer"></div>
+    <div class="btn-row" style="margin-top:20px">
+      <button class="btn btn-secondary" onclick="resetQuiz()">🔄 Recommencer le quiz</button>
+    </div>
+    <div class="stats" id="quizStats" style="display:none">
+      <div class="stat-card"><div class="label">Score</div><div class="value" id="quizScore">0/5</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========================
+// TABS
+// ========================
+const panels = document.querySelectorAll('.panel');
+const tabBtns = document.querySelectorAll('.tab-btn');
+
+function showTab(i) {
+  panels.forEach((p, idx) => p.classList.toggle('active', idx === i));
+  tabBtns.forEach((b, idx) => b.classList.toggle('active', idx === i));
+  if (i === 3) updateLab();
+}
+
+// ========================
+// UTILS
+// ========================
+function gaussRandom(mean, std) {
+  let u = 0, v = 0;
+  while(u === 0) u = Math.random();
+  while(v === 0) v = Math.random();
+  return mean + std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+function gaussian(x, mu, sigma) {
+  return (1 / (sigma * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mu) / sigma) ** 2);
+}
+
+function getCanvasCtx(id) {
+  const c = document.getElementById(id);
+  c.width = c.offsetWidth * 2;
+  c.height = c.offsetHeight * 2;
+  const ctx = c.getContext('2d');
+  ctx.scale(2, 2);
+  return { c, ctx, w: c.offsetWidth, h: c.offsetHeight };
+}
+
+// ========================
+// DICE SIMULATION
+// ========================
+let diceHistogram = {};
+let diceTotal = 0;
+let diceSum = 0;
+
+function rollOnce(n) {
+  let sum = 0;
+  const values = [];
+  for (let i = 0; i < n; i++) {
+    const v = Math.floor(Math.random() * 6) + 1;
+    values.push(v);
+    sum += v;
+  }
+  return { sum, values };
+}
+
+function rollDice() {
+  const n = parseInt(document.getElementById('diceCount').value);
+  const { sum, values } = rollOnce(n);
+  diceHistogram[sum] = (diceHistogram[sum] || 0) + 1;
+  diceTotal++;
+  diceSum += sum;
+
+  // Show dice
+  const dd = document.getElementById('diceDisplay');
+  dd.innerHTML = values.map(v => `<div class="die rolling">${v}</div>`).join('');
+
+  updateDiceChart();
+  updateDiceInsight(n);
+}
+
+function rollMany(count) {
+  const n = parseInt(document.getElementById('diceCount').value);
+  for (let i = 0; i < count; i++) {
+    const { sum } = rollOnce(n);
+    diceHistogram[sum] = (diceHistogram[sum] || 0) + 1;
+    diceTotal++;
+    diceSum += sum;
+  }
+  document.getElementById('diceDisplay').innerHTML = '';
+  updateDiceChart();
+  updateDiceInsight(n);
+}
+
+function resetDice() {
+  diceHistogram = {};
+  diceTotal = 0;
+  diceSum = 0;
+  document.getElementById('diceDisplay').innerHTML = '';
+  document.getElementById('diceInsight').style.display = 'none';
+  updateDiceChart();
+}
+
+function updateDiceChart() {
+  const { ctx, w, h } = getCanvasCtx('diceCanvas');
+  const n = parseInt(document.getElementById('diceCount').value);
+  const minVal = n, maxVal = n * 6;
+
+  ctx.clearRect(0, 0, w, h);
+
+  // Find max
+  let maxCount = 0;
+  for (let v = minVal; v <= maxVal; v++) maxCount = Math.max(maxCount, diceHistogram[v] || 0);
+
+  const pad = { l: 40, r: 20, t: 20, b: 35 };
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+  const bins = maxVal - minVal + 1;
+  const barW = chartW / bins - 2;
+
+  // Bars
+  for (let v = minVal; v <= maxVal; v++) {
+    const count = diceHistogram[v] || 0;
+    const barH = maxCount > 0 ? (count / maxCount) * chartH : 0;
+    const x = pad.l + ((v - minVal) / bins) * chartW;
+    const y = pad.t + chartH - barH;
+
+    const gradient = ctx.createLinearGradient(x, y, x, pad.t + chartH);
+    gradient.addColorStop(0, '#7f5af0');
+    gradient.addColorStop(1, '#e53170');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.roundRect(x, y, Math.max(barW, 3), barH, [4, 4, 0, 0]);
+    ctx.fill();
+
+    // Label
+    if (bins <= 25 || v % 2 === 0) {
+      ctx.fillStyle = '#94a1b2';
+      ctx.font = `${Math.min(11, chartW / bins - 1)}px Nunito`;
+      ctx.textAlign = 'center';
+      ctx.fillText(v, x + barW / 2, h - 12);
+    }
+  }
+
+  // Gauss overlay if enough data
+  if (diceTotal >= 20) {
+    const mean = diceSum / diceTotal;
+    let variance = 0;
+    for (const [v, c] of Object.entries(diceHistogram)) {
+      variance += c * (v - mean) ** 2;
+    }
+    variance /= diceTotal;
+    const std = Math.sqrt(variance);
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,137,6,0.8)';
+    ctx.lineWidth = 2.5;
+    for (let px = 0; px <= chartW; px++) {
+      const v = minVal + (px / chartW) * bins;
+      const gVal = gaussian(v, mean, std);
+      const scaledH = (gVal * diceTotal * (bins / chartW) * chartW / bins) / maxCount * chartH;
+      const y = pad.t + chartH - Math.min(scaledH, chartH);
+      px === 0 ? ctx.moveTo(pad.l + px, y) : ctx.lineTo(pad.l + px, y);
+    }
+    ctx.stroke();
+  }
+
+  // Stats
+  document.getElementById('diceRolls').textContent = diceTotal;
+  document.getElementById('diceMean').textContent = diceTotal > 0 ? (diceSum / diceTotal).toFixed(1) : '-';
+  let modeVal = '-', modeCount = 0;
+  for (const [v, c] of Object.entries(diceHistogram)) {
+    if (c > modeCount) { modeCount = c; modeVal = v; }
+  }
+  document.getElementById('diceMode').textContent = modeVal;
+}
+
+function updateDiceInsight(n) {
+  const el = document.getElementById('diceInsight');
+  const txt = document.getElementById('diceInsightText');
+  el.style.display = 'block';
+  if (diceTotal < 10) {
+    txt.innerHTML = "Continue de lancer ! Il faut beaucoup d'essais pour voir le motif apparaître... 🎲";
+  } else if (diceTotal < 100) {
+    txt.innerHTML = `Tu vois ? Les sommes au milieu (autour de <strong>${(n * 3.5).toFixed(0)}</strong>) arrivent plus souvent ! C'est normal : il y a PLUS de façons de faire une somme moyenne qu'une somme extrême.`;
+  } else {
+    txt.innerHTML = `<strong>Bravo !</strong> 🎉 La forme en cloche apparaît ! C'est la <strong>courbe de Gauss</strong>. La ligne orange montre la courbe théorique. Plus tu lances, plus les barres épousent cette courbe magique !`;
+  }
+}
+
+// ========================
+// HEIGHTS SIMULATION
+// ========================
+let heights = [];
+
+function addStudents(n) {
+  for (let i = 0; i < n; i++) {
+    heights.push(gaussRandom(140, 8)); // 10-year-olds ~140cm
+  }
+  updateHeightChart();
+  updateHeightInsight();
+}
+
+function resetHeights() {
+  heights = [];
+  document.getElementById('heightInsight').style.display = 'none';
+  updateHeightChart();
+}
+
+function updateHeightChart() {
+  const { ctx, w, h } = getCanvasCtx('heightCanvas');
+  ctx.clearRect(0, 0, w, h);
+
+  const pad = { l: 45, r: 20, t: 20, b: 40 };
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+
+  if (heights.length === 0) {
+    ctx.fillStyle = '#94a1b2';
+    ctx.font = '16px Nunito';
+    ctx.textAlign = 'center';
+    ctx.fillText('Clique sur un bouton pour ajouter des élèves !', w / 2, h / 2);
+    document.getElementById('heightCount').textContent = '0';
+    document.getElementById('heightMean').textContent = '-';
+    document.getElementById('heightMin').textContent = '-';
+    document.getElementById('heightMax').textContent = '-';
+    return;
+  }
+
+  // Histogram bins
+  const binMin = 110, binMax = 170, binSize = 2;
+  const bins = [];
+  for (let b = binMin; b < binMax; b += binSize) bins.push({ min: b, max: b + binSize, count: 0 });
+  heights.forEach(h => {
+    const idx = Math.floor((h - binMin) / binSize);
+    if (idx >= 0 && idx < bins.length) bins[idx].count++;
+  });
+
+  const maxCount = Math.max(...bins.map(b => b.count), 1);
+  const barW = chartW / bins.length - 1;
+
+  bins.forEach((bin, i) => {
+    const barH = (bin.count / maxCount) * chartH;
+    const x = pad.l + (i / bins.length) * chartW;
+    const y = pad.t + chartH - barH;
+
+    const gradient = ctx.createLinearGradient(x, y, x, pad.t + chartH);
+    gradient.addColorStop(0, '#2cb67d');
+    gradient.addColorStop(1, '#7f5af0');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.roundRect(x, y, barW, barH, [3, 3, 0, 0]);
+    ctx.fill();
+  });
+
+  // Labels
+  ctx.fillStyle = '#94a1b2';
+  ctx.font = '11px Nunito';
+  ctx.textAlign = 'center';
+  for (let v = binMin; v <= binMax; v += 10) {
+    const x = pad.l + ((v - binMin) / (binMax - binMin)) * chartW;
+    ctx.fillText(v + ' cm', x, h - 12);
+  }
+
+  // Gauss overlay
+  if (heights.length >= 10) {
+    const mean = heights.reduce((a, b) => a + b, 0) / heights.length;
+    const variance = heights.reduce((a, b) => a + (b - mean) ** 2, 0) / heights.length;
+    const std = Math.sqrt(variance);
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,137,6,0.85)';
+    ctx.lineWidth = 2.5;
+    for (let px = 0; px <= chartW; px++) {
+      const v = binMin + (px / chartW) * (binMax - binMin);
+      const gVal = gaussian(v, mean, std) * heights.length * binSize;
+      const scaledH = (gVal / maxCount) * chartH;
+      const y = pad.t + chartH - Math.min(scaledH, chartH);
+      px === 0 ? ctx.moveTo(pad.l + px, y) : ctx.lineTo(pad.l + px, y);
+    }
+    ctx.stroke();
+  }
+
+  // Stats
+  const mean = heights.reduce((a, b) => a + b, 0) / heights.length;
+  document.getElementById('heightCount').textContent = heights.length;
+  document.getElementById('heightMean').textContent = mean.toFixed(1) + ' cm';
+  document.getElementById('heightMin').textContent = Math.min(...heights).toFixed(1) + ' cm';
+  document.getElementById('heightMax').textContent = Math.max(...heights).toFixed(1) + ' cm';
+}
+
+function updateHeightInsight() {
+  const el = document.getElementById('heightInsight');
+  const txt = document.getElementById('heightInsightText');
+  el.style.display = 'block';
+  if (heights.length < 30) {
+    txt.innerHTML = "Ajoute encore des élèves ! Avec peu de mesures, c'est difficile de voir un motif.";
+  } else if (heights.length < 200) {
+    txt.innerHTML = "La forme en cloche commence à apparaître ! La plupart des élèves ont une taille <strong>proche de la moyenne</strong>. Très peu sont très grands ou très petits.";
+  } else {
+    txt.innerHTML = "🔔 <strong>Magnifique !</strong> La courbe de Gauss est là ! Dans la nature, beaucoup de choses suivent cette forme : la taille, le poids, les notes à un examen, la vitesse du vent... C'est pour ça qu'on l'appelle la <strong>loi normale</strong> !";
+  }
+}
+
+// ========================
+// GALTON BOARD
+// ========================
+let galtonBins = new Array(13).fill(0);
+let galtonTotal = 0;
+const GALTON_ROWS = 12;
+
+function dropBall() {
+  let pos = 6; // Start center
+  for (let r = 0; r < GALTON_ROWS; r++) {
+    pos += Math.random() < 0.5 ? -0.5 : 0.5;
+  }
+  const bin = Math.round(pos);
+  const clampedBin = Math.max(0, Math.min(12, bin));
+  galtonBins[clampedBin]++;
+  galtonTotal++;
+  updateGaltonChart();
+  updateGaltonInsight();
+}
+
+function dropMany(n) {
+  for (let i = 0; i < n; i++) {
+    let pos = 6;
+    for (let r = 0; r < GALTON_ROWS; r++) {
+      pos += Math.random() < 0.5 ? -0.5 : 0.5;
+    }
+    const bin = Math.round(pos);
+    const clampedBin = Math.max(0, Math.min(12, bin));
+    galtonBins[clampedBin]++;
+  }
+  galtonTotal += n;
+  updateGaltonChart();
+  updateGaltonInsight();
+}
+
+function resetGalton() {
+  galtonBins = new Array(13).fill(0);
+  galtonTotal = 0;
+  document.getElementById('galtonInsight').style.display = 'none';
+  updateGaltonChart();
+}
+
+function updateGaltonChart() {
+  const { ctx, w, h } = getCanvasCtx('galtonCanvas');
+  ctx.clearRect(0, 0, w, h);
+
+  const pegsSection = h * 0.45;
+  const binsSection = h - pegsSection - 20;
+  const pad = { l: 30, r: 30 };
+  const chartW = w - pad.l - pad.r;
+
+  // Draw pegs
+  for (let row = 0; row < GALTON_ROWS; row++) {
+    const pegsInRow = row + 1;
+    const y = 20 + (row / GALTON_ROWS) * (pegsSection - 20);
+    for (let p = 0; p < pegsInRow; p++) {
+      const x = w / 2 + (p - row / 2) * (chartW / 14);
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fill();
+    }
+  }
+
+  // Draw bins
+  const maxCount = Math.max(...galtonBins, 1);
+  const binW = chartW / 13 - 2;
+
+  galtonBins.forEach((count, i) => {
+    const barH = (count / maxCount) * binsSection;
+    const x = pad.l + (i / 13) * chartW;
+    const y = h - 15 - barH;
+
+    const gradient = ctx.createLinearGradient(x, y, x, h - 15);
+    gradient.addColorStop(0, '#ff8906');
+    gradient.addColorStop(1, '#e53170');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.roundRect(x, y, binW, barH, [4, 4, 0, 0]);
+    ctx.fill();
+
+    // Count label
+    if (count > 0) {
+      ctx.fillStyle = 'white';
+      ctx.font = '10px Nunito';
+      ctx.textAlign = 'center';
+      ctx.fillText(count, x + binW / 2, y - 5);
+    }
+  });
+
+  // Divider lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 13; i++) {
+    const x = pad.l + (i / 13) * chartW - 1;
+    ctx.beginPath();
+    ctx.moveTo(x, pegsSection);
+    ctx.lineTo(x, h - 15);
+    ctx.stroke();
+  }
+
+  document.getElementById('galtonCount').textContent = galtonTotal;
+  let modeIdx = 0;
+  galtonBins.forEach((c, i) => { if (c > galtonBins[modeIdx]) modeIdx = i; });
+  document.getElementById('galtonMode').textContent = galtonTotal > 0 ? `Colonne ${modeIdx + 1}` : '-';
+}
+
+function updateGaltonInsight() {
+  const el = document.getElementById('galtonInsight');
+  const txt = document.getElementById('galtonInsightText');
+  el.style.display = 'block';
+  if (galtonTotal < 20) {
+    txt.innerHTML = "Chaque bille choisit au hasard gauche ou droite à chaque clou. Continue !";
+  } else if (galtonTotal < 100) {
+    txt.innerHTML = "Le milieu se remplit plus vite ! C'est parce qu'il y a <strong>plus de chemins</strong> qui mènent au centre qu'aux bords. 🤔";
+  } else {
+    txt.innerHTML = "🔔 <strong>Encore la courbe en cloche !</strong> Sir Francis Galton a inventé cette planche pour montrer que le hasard crée de l'ordre. Même si chaque bille est imprévisible, le résultat global suit toujours la même forme !";
+  }
+}
+
+// ========================
+// CURVE LAB
+// ========================
+function updateLab() {
+  const mu = parseFloat(document.getElementById('muSlider').value);
+  const sigma = parseFloat(document.getElementById('sigmaSlider').value);
+  document.getElementById('muLabel').textContent = mu.toFixed(1);
+  document.getElementById('sigmaLabel').textContent = sigma.toFixed(1);
+
+  const { ctx, w, h } = getCanvasCtx('labCanvas');
+  ctx.clearRect(0, 0, w, h);
+
+  const pad = { l: 30, r: 30, t: 20, b: 35 };
+  const chartW = w - pad.l - pad.r;
+  const chartH = h - pad.t - pad.b;
+
+  // Axes
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t + chartH);
+  ctx.lineTo(pad.l + chartW, pad.t + chartH);
+  ctx.stroke();
+
+  // X labels
+  ctx.fillStyle = '#94a1b2';
+  ctx.font = '11px Nunito';
+  ctx.textAlign = 'center';
+  for (let v = -5; v <= 5; v++) {
+    const x = pad.l + ((v + 5) / 10) * chartW;
+    ctx.fillText(v, x, h - 12);
+  }
+
+  // Reference curve (mu=0, sigma=1)
+  const maxG = gaussian(0, 0, 0.3); // for scaling
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 5]);
+  for (let px = 0; px <= chartW; px++) {
+    const x = -5 + (px / chartW) * 10;
+    const y = gaussian(x, 0, 1);
+    const screenY = pad.t + chartH - (y / maxG) * chartH;
+    px === 0 ? ctx.moveTo(pad.l + px, screenY) : ctx.lineTo(pad.l + px, screenY);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Active curve
+  const gradient = ctx.createLinearGradient(0, pad.t, 0, pad.t + chartH);
+  gradient.addColorStop(0, 'rgba(127,90,240,0.4)');
+  gradient.addColorStop(1, 'rgba(229,49,112,0.05)');
+
+  // Fill
+  ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t + chartH);
+  for (let px = 0; px <= chartW; px++) {
+    const x = -5 + (px / chartW) * 10;
+    const y = gaussian(x, mu, sigma);
+    const screenY = pad.t + chartH - (y / maxG) * chartH;
+    ctx.lineTo(pad.l + px, screenY);
+  }
+  ctx.lineTo(pad.l + chartW, pad.t + chartH);
+  ctx.fillStyle = gradient;
+  ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  ctx.strokeStyle = '#7f5af0';
+  ctx.lineWidth = 3;
+  for (let px = 0; px <= chartW; px++) {
+    const x = -5 + (px / chartW) * 10;
+    const y = gaussian(x, mu, sigma);
+    const screenY = pad.t + chartH - (y / maxG) * chartH;
+    px === 0 ? ctx.moveTo(pad.l + px, screenY) : ctx.lineTo(pad.l + px, screenY);
+  }
+  ctx.stroke();
+
+  // Mean line
+  const meanX = pad.l + ((mu + 5) / 10) * chartW;
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(255,137,6,0.6)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([4, 4]);
+  ctx.moveTo(meanX, pad.t);
+  ctx.lineTo(meanX, pad.t + chartH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.fillStyle = '#ff8906';
+  ctx.font = 'bold 12px Nunito';
+  ctx.textAlign = 'center';
+  ctx.fillText('μ = ' + mu.toFixed(1), meanX, pad.t - 5);
+}
+
+// ========================
+// QUIZ
+// ========================
+const quizData = [
+  {
+    q: "Pourquoi la courbe de Gauss s'appelle aussi « courbe en cloche » ?",
+    options: ["Parce qu'elle sonne quand on la touche 🔔", "Parce que sa forme ressemble à une cloche 🔔", "Parce que Gauss aimait les cloches", "Parce qu'elle est ronde comme un ballon"],
+    correct: 1,
+    explain: "Exactement ! Sa forme symétrique et arrondie ressemble à une cloche retournée. C'est une métaphore visuelle !"
+  },
+  {
+    q: "Si tu lances 3 dés, quelle somme a le PLUS de chances de sortir ?",
+    options: ["3 (le minimum)", "18 (le maximum)", "Environ 10-11 (le milieu)", "Toutes les sommes sont pareilles"],
+    correct: 2,
+    explain: "Bravo ! Il y a beaucoup plus de combinaisons pour faire 10 ou 11 que pour faire 3 (une seule façon : 1+1+1) ou 18 (une seule façon : 6+6+6)."
+  },
+  {
+    q: "Qu'arrive-t-il à la courbe si l'écart-type (σ) augmente ?",
+    options: ["Elle monte et se rétrécit", "Elle s'aplatit et s'élargit", "Elle se déplace vers la droite", "Elle disparaît"],
+    correct: 1,
+    explain: "Oui ! Un grand écart-type signifie que les valeurs sont plus dispersées. La courbe s'étale et perd en hauteur (mais garde la même aire totale)."
+  },
+  {
+    q: "Laquelle de ces choses suit une courbe de Gauss dans la vraie vie ?",
+    options: ["Le prix des maisons", "La taille des gens du même âge", "Le nombre de followers sur les réseaux", "La note d'un seul élève"],
+    correct: 1,
+    explain: "La taille des humains d'un même groupe d'âge suit très bien une courbe de Gauss ! La plupart sont proches de la moyenne, et très peu sont extrêmement grands ou petits."
+  },
+  {
+    q: "Sur la planche de Galton, pourquoi la colonne du milieu reçoit le plus de billes ?",
+    options: ["Parce que la gravité tire vers le centre", "Parce qu'il y a plus de chemins possibles pour arriver au centre", "Parce que les clous du milieu sont plus gros", "Par pure coïncidence"],
+    correct: 1,
+    explain: "C'est la clé ! Pour arriver tout à gauche, la bille doit aller à gauche à CHAQUE clou (très rare). Pour arriver au milieu, il y a des milliers de combinaisons gauche/droite possibles !"
+  }
+];
+
+let quizAnswered = [];
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  quizData.forEach((q, qi) => {
+    const div = document.createElement('div');
+    div.style.marginBottom = '25px';
+    div.innerHTML = `
+      <div style="font-family:'Baloo 2',cursive; font-size:1.15em; margin-bottom:10px; color:${quizAnswered[qi] !== undefined ? (quizAnswered[qi] === q.correct ? 'var(--success)' : 'var(--secondary)') : 'var(--text)'}">
+        ${qi + 1}. ${q.q}
+      </div>
+      ${q.options.map((opt, oi) => `
+        <button class="quiz-option ${quizAnswered[qi] !== undefined ? (oi === q.correct ? 'correct' : (oi === quizAnswered[qi] ? 'wrong' : '')) : ''}" 
+          onclick="answerQuiz(${qi}, ${oi})" ${quizAnswered[qi] !== undefined ? 'disabled' : ''}>
+          ${opt}
+        </button>
+      `).join('')}
+      <div class="quiz-feedback ${quizAnswered[qi] !== undefined ? 'show' : ''}" 
+        style="background:${quizAnswered[qi] === q.correct ? 'rgba(44,182,125,0.15)' : 'rgba(229,49,112,0.1)'}">
+        ${quizAnswered[qi] !== undefined ? (quizAnswered[qi] === q.correct ? '✅ ' : '❌ ') + q.explain : ''}
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  const answered = quizAnswered.filter(a => a !== undefined).length;
+  if (answered > 0) {
+    document.getElementById('quizStats').style.display = 'flex';
+    const score = quizAnswered.filter((a, i) => a === quizData[i].correct).length;
+    document.getElementById('quizScore').textContent = `${score}/${answered}`;
+  }
+}
+
+function answerQuiz(qi, oi) {
+  if (quizAnswered[qi] !== undefined) return;
+  quizAnswered[qi] = oi;
+  renderQuiz();
+}
+
+function resetQuiz() {
+  quizAnswered = [];
+  document.getElementById('quizStats').style.display = 'none';
+  renderQuiz();
+}
+
+// Init
+renderQuiz();
+updateDiceChart();
+updateGaltonChart();
+
+// Handle resize
+window.addEventListener('resize', () => {
+  updateDiceChart();
+  updateHeightChart();
+  updateGaltonChart();
+  const panel3 = document.getElementById('panel3');
+  if (panel3.classList.contains('active')) updateLab();
+});
+</script>
+<footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">© 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+      </a>
+      <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
