@@ -45,11 +45,13 @@ const COOKIE_CONFIG = {
       -webkit-backdrop-filter: blur(4px);
       z-index: 99998;
       opacity: 0;
+      pointer-events: none;
       transition: opacity 0.4s ease;
     }
 
     .tm-cookie-overlay.visible {
       opacity: 1;
+      pointer-events: auto;
     }
 
     .tm-cookie-banner {
