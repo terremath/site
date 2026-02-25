@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de Cookies — Terre Mathématiques</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Playfair+Display:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-card: #16161f;
+      --text-primary: #e8e6e3;
+      --text-secondary: #9a9a9a;
+      --text-muted: #6a6a6a;
+      --accent: #c9a227;
+      --accent-glow: rgba(201, 162, 39, 0.15);
+      --border: rgba(255, 255, 255, 0.06);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', -apple-system, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 16px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ═══════ NAVBAR ═══════ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .navbar-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    .navbar-logo-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), #8a6d14);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--bg-primary);
+    }
+
+    .navbar-logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.2;
+    }
+
+    .navbar-logo-text span {
+      display: block;
+      font-size: 0.7rem;
+      font-family: var(--font-body);
+      font-weight: 400;
+      color: var(--text-secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .navbar-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .navbar-links a:hover,
+    .navbar-links a.active {
+      color: var(--accent);
+    }
+
+    .navbar-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+    }
+
+    .navbar-cta {
+      background: var(--accent);
+      color: var(--bg-primary);
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+
+    .navbar-cta:hover {
+      background: #d4ad2e;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    /* Mobile menu */
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* ═══════ MAIN CONTENT ═══════ */
+    main {
+      flex: 1;
+      margin-top: 70px;
+      padding: 3rem 1.5rem 4rem;
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header h1 {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-header .update-date {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .legal-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-top: 2.5rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .legal-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .legal-content p {
+      color: var(--text-secondary);
+      margin-bottom: 0.8rem;
+      line-height: 1.8;
+    }
+
+    .legal-content ul {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 1rem;
+    }
+
+    .legal-content ul li {
+      color: var(--text-secondary);
+      padding: 0.3rem 0 0.3rem 1.5rem;
+      position: relative;
+    }
+
+    .legal-content ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .legal-content .placeholder {
+      background: var(--accent-glow);
+      color: var(--accent);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px dashed rgba(201, 162, 39, 0.3);
+    }
+
+    .legal-content .info-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.5rem 0;
+    }
+
+    .legal-content .info-box p {
+      margin-bottom: 0.4rem;
+    }
+
+    .legal-content a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(201, 162, 39, 0.3);
+      transition: border-color 0.3s;
+    }
+
+    .legal-content a:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    
+  /* ═══════ FOOTER ═══════ */
+  footer {
+    padding: 40px 40px 32px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    background: var(--bg-primary, #0a0a0f);
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+  }
+
+  .footer-left img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(201,168,76,0.4);
+    object-fit: cover;
+  }
+
+  .footer-left .footer-brand {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .footer-left .footer-brand span {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: rgba(201,168,76,0.7);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--text-muted, #7A8BA3);
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 400;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .footer-legal {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-legal a {
+    color: rgba(201,168,76,0.5);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.3s ease;
+    letter-spacing: 0.3px;
+  }
+
+  .footer-legal a:hover {
+    color: #e2c06a;
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .footer-socials a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.15);
+    background: rgba(201,168,76,0.04);
+    transition: all 0.3s ease;
+  }
+
+  .footer-socials a:hover {
+    border-color: rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .footer-socials a svg {
+    width: 18px;
+    height: 18px;
+    fill: rgba(201,168,76,0.65);
+    transition: fill 0.3s ease;
+  }
+
+  .footer-socials a:hover svg {
+    fill: #e2c06a;
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .footer-left .footer-brand {
+      align-items: center;
+    }
+    .footer-right {
+      align-items: center;
+    }
+    .footer-legal {
+      justify-content: center;
+      gap: 14px;
+    }
+  }
+
+/* ═══════ RESPONSIVE ═══════ */
+    @media (max-width: 768px) {
+      .navbar-links { display: none; }
+      .mobile-toggle { display: block; }
+      
+      .page-header h1 { font-size: 1.8rem; }
+      main { padding: 2rem 1rem 3rem; }
+      
+      .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════ NAVBAR ═══════ -->
+  <nav class="navbar">
+    <a href="https://www.terremathematiques.com/" class="navbar-logo">
+      <div class="navbar-logo-placeholder">T</div>
+      <div class="navbar-logo-text">
+        Terre Mathématiques
+        <span>Excellence & Grandes Écoles</span>
+      </div>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="https://www.terremathematiques.com/">Accueil</a></li>
+      <li><a href="https://www.terremathematiques.com/philosophie">Ma philosophie</a></li>
+      <li><a href="https://www.terremathematiques.com/methode">Ma méthode</a></li>
+      <li><a href="https://www.terremathematiques.com/bac">Formations</a></li>
+      <li><a href="https://www.terremathematiques.com/qui-suis-je">Qui suis-je ?</a></li>
+    </ul>
+    <a href="https://www.terremathematiques.com/#pricing" class="navbar-cta">Réserver un appel</a>
+    <button class="mobile-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('show')" aria-label="Menu">☰</button>
+  </nav>
+
+  <!-- ═══════ CONTENU ═══════ -->
+  <main>
+    <div class="page-header">
+      <h1>Politique de Cookies</h1>
+      <p class="update-date">Dernière mise à jour : février 2026</p>
+    </div>
+    <div class="legal-content">
+      
+<p>La présente politique de cookies explique comment le site terremathematiques.com utilise des cookies et technologies similaires, conformément à la directive européenne 2002/58/CE (dite « ePrivacy »), au RGPD et aux lignes directrices de la CNIL.</p>
+
+<h2>1. Qu'est-ce qu'un cookie ?</h2>
+<p>Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette, smartphone) lors de la visite d'un site web. Il permet au site de mémoriser des informations sur votre visite, comme votre langue préférée ou d'autres paramètres, facilitant ainsi votre prochaine visite et rendant le site plus utile.</p>
+
+<h2>2. Les cookies que nous utilisons</h2>
+
+<h3>a) Cookies strictement nécessaires</h3>
+<p>Ces cookies sont indispensables au fonctionnement du site. Ils permettent d'utiliser les fonctionnalités essentielles telles que la navigation, l'accès aux zones sécurisées, le panier d'achat et le processus de commande. Ces cookies ne nécessitent pas votre consentement.</p>
+
+<h3>b) Cookies analytiques (Google Analytics)</h3>
+<p>Ces cookies nous permettent de mesurer l'audience du site, de comprendre comment les visiteurs l'utilisent et d'améliorer son fonctionnement. Nous utilisons Google Analytics avec anonymisation de l'adresse IP. Ces cookies ne sont déposés qu'après obtention de votre consentement.</p>
+
+<h3>c) Cookies fonctionnels</h3>
+<p>Ces cookies permettent de mémoriser vos préférences (langue, région, connexion à votre compte) afin de personnaliser votre expérience. Ces cookies ne sont déposés qu'après obtention de votre consentement.</p>
+
+<h2>3. Durée de conservation des cookies</h2>
+<p>Les cookies de session sont supprimés lorsque vous fermez votre navigateur. Les cookies persistants ont une durée de vie maximale de 13 mois conformément aux recommandations de la CNIL.</p>
+
+<h2>4. Votre consentement</h2>
+<p>Lors de votre première visite sur le site, un bandeau d'information vous permet d'accepter ou de refuser le dépôt de cookies non essentiels. Vous pouvez à tout moment modifier vos préférences en matière de cookies.</p>
+<p>Votre consentement est conservé pour une durée maximale de 6 mois, après quoi il vous sera demandé à nouveau.</p>
+<p>Le refus des cookies non essentiels n'empêche pas l'utilisation du site, mais certaines fonctionnalités peuvent être limitées.</p>
+
+<h2>5. Comment gérer les cookies ?</h2>
+<p>Vous pouvez gérer vos préférences de cookies de plusieurs façons :</p>
+<ul>
+  <li>Via le bandeau de consentement affiché sur le site</li>
+  <li>Via les paramètres de votre navigateur (chaque navigateur propose des options de gestion des cookies dans ses paramètres de confidentialité)</li>
+  <li>Via des outils de désinscription spécifiques, par exemple pour Google Analytics : <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">https://tools.google.com/dlpage/gaoptout</a></li>
+</ul>
+
+<h2>6. Cookies tiers</h2>
+<p>Certains cookies sont déposés par des services tiers (Google Analytics) pour les finalités décrites ci-dessus. Ces tiers ont leurs propres politiques de confidentialité que nous vous invitons à consulter.</p>
+
+<h2>7. Modification de la politique de cookies</h2>
+<p>Nous nous réservons le droit de modifier la présente politique de cookies à tout moment. Toute modification sera publiée sur cette page avec une date de mise à jour actualisée.</p>
+
+<h2>8. Contact</h2>
+<p>Pour toute question relative à notre utilisation des cookies, contactez-nous à : <span class="placeholder">[À COMPLÉTER]</span></p>
+
+    </div>
+  </main>
+
+  <!-- ═══════ FOOTER ═══════ -->
+  <footer>
+  <div class="footer-inner">
+    <a href="https://www.terremathematiques.com/" class="footer-left">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="footer-brand">
+        <span>Terre</span>
+        <span>Mathématiques</span>
+        <p class="footer-copy">&copy; 2025 — Tous droits réservés.</p>
+      </div>
+    </a>
+    <div class="footer-right">
+      <div class="footer-legal">
+        <a href="/mentions-legales.html">Mentions légales</a>
+        <a href="/politique-confidentialite.html">Confidentialité</a>
+        <a href="/politique-cookies.html">Cookies</a>
+        <a href="/conditions-generales-vente.html">CGV</a>
+      </div>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/terremathematiques?igsh=bWlreDlha3J5ZzY1" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/share/1AfXwdGbxo/?mibextid=wwXIfr" target="_blank" rel="noopener" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@terremathematiques?_r=1" target="_blank" rel="noopener" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@TerreMathematiques" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="/cookie-consent.js"></script>
+</body>
+</html>
