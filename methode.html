@@ -4,21 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ma méthode — Terre Mathématiques</title>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="colors.js"></script>
 <style>
-  :root {
-    --green: #2B4A3A;
-    --green-light: #5A8A6E;
-    --green-soft: rgba(43,74,58,0.08);
-    --sand: #FAF6F1;
-    --sand-dark: #F0E8DD;
-    --ink: #1A2E22;
-    --ink-light: #3A5C48;
-    --text: #3A4A40;
-    --text-muted: #6E8578;
-    --white: #FFFFFF;
-  }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
@@ -54,8 +41,8 @@
     transform: translateY(30px);
     animation: fadeUp 0.8s ease-out 0.2s forwards;
     padding: 6px;
-    border: 1px solid rgba(43,74,58,0.2);
-    background: rgba(43,74,58,0.04);
+    border: 1px solid rgba(var(--green-rgb),0.2);
+    background: rgba(var(--green-rgb),0.04);
     border-radius: 4px;
   }
 
@@ -66,7 +53,7 @@
   }
 
   .photo-wrapper:hover {
-    border-color: rgba(43,74,58,0.35);
+    border-color: rgba(var(--green-rgb),0.35);
   }
 
   /* ─── TITLE ─── */
@@ -145,7 +132,7 @@
 
   .section .indented {
     padding-left: 20px;
-    border-left: 3px solid rgba(43,74,58,0.3);
+    border-left: 3px solid rgba(var(--green-rgb),0.3);
     margin: 14px 0;
     font-style: italic;
     font-family: 'Fraunces', serif;

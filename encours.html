@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation à venir — TerreMathématiques</title>
+<script src="colors.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--sand);
+    color: var(--text);
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── MAIN ─── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 65% 55% at 50% 52%, rgba(var(--green-rgb), 0.09) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Grain texture subtile */
+  .main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ─── BADGE ─── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 22px;
+    border: 1px solid rgba(var(--green-rgb), 0.3);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 52px;
+    background: rgba(var(--green-rgb), 0.07);
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease-out both;
+  }
+
+  .badge-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: pulse 2.2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(var(--green-rgb), 0.5); }
+    50%       { opacity: 0.7; box-shadow: 0 0 0 7px rgba(var(--green-rgb), 0); }
+  }
+
+  /* ─── HOURGLASS ─── */
+  .icon-wrap {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--green-rgb), 0.2);
+    background: rgba(var(--green-rgb), 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 44px;
+    font-size: 2.1rem;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.1s both;
+  }
+
+  /* ─── TITRE ─── */
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 6vw, 4.8rem);
+    font-weight: 800;
+    line-height: 1.08;
+    color: var(--ink);
+    max-width: 680px;
+    margin-bottom: 26px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.2s both;
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--green);
+  }
+
+  /* ─── SOUS-TITRE ─── */
+  .subtitle {
+    font-size: clamp(0.97rem, 2vw, 1.18rem);
+    color: var(--text-muted);
+    max-width: 500px;
+    line-height: 1.75;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.3s both;
+  }
+
+  /* ─── SÉPARATEUR ─── */
+  .divider {
+    width: 52px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--green-rgb), 0.5), transparent);
+    margin: 0 auto 40px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.35s both;
+  }
+
+  /* ─── CITATION ─── */
+  .quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+    font-weight: 300;
+    color: var(--ink-light);
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.4s both;
+  }
+
+  /* ─── TAGS FORMATIONS ─── */
+  .formations {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 64px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.45s both;
+  }
+
+  .formation-tag {
+    padding: 13px 30px;
+    border: 1px solid rgba(var(--green-rgb), 0.22);
+    border-radius: 6px;
+    background: rgba(var(--green-rgb), 0.05);
+    font-family: 'Fraunces', serif;
+    font-size: 0.82rem;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ink-light);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: border-color 0.3s, background 0.3s;
+  }
+
+  .formation-tag:hover {
+    border-color: rgba(var(--green-rgb), 0.45);
+    background: rgba(var(--green-rgb), 0.09);
+  }
+
+  .formation-tag .tag-icon {
+    font-size: 1.1rem;
+  }
+
+  /* ─── RETOUR ACCUEIL ─── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--green);
+    font-size: 0.8rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(var(--green-rgb), 0.3);
+    padding-bottom: 3px;
+    transition: color 0.3s, border-color 0.3s, gap 0.3s;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.8s ease-out 0.5s both;
+  }
+
+  .back-link:hover {
+    color: var(--green-light);
+    border-color: rgba(var(--green-rgb), 0.6);
+    gap: 12px;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 600px) {
+    .formations { flex-direction: column; align-items: center; }
+    .formation-tag { width: 100%; justify-content: center; max-width: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<tm-header></tm-header>
+
+<main class="main">
+
+  <div class="badge">
+    <span class="badge-dot"></span>
+    En cours de création
+  </div>
+
+  <div class="icon-wrap">⏳</div>
+
+  <h1>La formation arrive<br><em>bientôt.</em></h1>
+
+  <p class="subtitle">
+    Nous travaillons à vous proposer quelque chose d'exceptionnel.<br>
+    Une formation pensée avec soin, pour aller plus loin.
+  </p>
+
+  <div class="divider"></div>
+
+  <p class="quote">« Les bonnes choses prennent du temps. »</p>
+
+  <div class="formations">
+    <div class="formation-tag">
+      <span class="tag-icon">📈</span>
+      Trading
+    </div>
+    <div class="formation-tag">
+      <span class="tag-icon">🤖</span>
+      Intelligence Artificielle
+    </div>
+  </div>
+
+  <a href="https://www.terremathematiques.com/" class="back-link">← Retour à l'accueil</a>
+
+</main>
+
+<tm-footer></tm-footer>
+
+<script src="components.js"></script>
+<script src="cookie-consent.js"></script>
+</body>
+</html>

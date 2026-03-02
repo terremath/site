@@ -63,8 +63,8 @@ customElements.define('tm-footer', TmFooter);
   style.textContent = `
 footer {
   padding: 40px 40px 32px;
-  border-top: 1px solid rgba(43,74,58,0.12);
-  background: var(--sand-dark, #F0E8DD);
+  border-top: 1px solid rgba(var(--sand-rgb),0.12);
+  background: var(--ink);
 }
 .footer-inner {
   max-width: 1100px;
@@ -84,7 +84,7 @@ footer {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 1.5px solid rgba(43,74,58,0.4);
+  border: 1.5px solid rgba(var(--green-rgb),0.4);
   object-fit: cover;
 }
 .footer-left .footer-brand {
@@ -96,13 +96,13 @@ footer {
   font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 700;
   font-size: 0.85rem;
-  color: rgba(43,74,58,0.8);
+  color: rgba(var(--sand-rgb),0.8);
   letter-spacing: 4px;
   text-transform: uppercase;
 }
 .footer-copy {
   font-size: 0.72rem;
-  color: var(--text-muted, #6E8578);
+  color: rgba(var(--sand-rgb),0.45);
   margin-top: 8px;
   font-family: 'Outfit', 'DM Sans', sans-serif;
   letter-spacing: 0;
@@ -121,24 +121,24 @@ footer {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(43,74,58,0.15);
-  background: rgba(43,74,58,0.05);
+  border: 1px solid rgba(var(--green-rgb),0.15);
+  background: rgba(var(--green-rgb),0.05);
   transition: all 0.3s ease;
 }
 .footer-socials a:hover {
-  border-color: rgba(43,74,58,0.4);
-  background: rgba(43,74,58,0.1);
+  border-color: rgba(var(--green-rgb),0.4);
+  background: rgba(var(--green-rgb),0.1);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(43,74,58,0.15);
+  box-shadow: 0 4px 16px rgba(var(--green-rgb),0.15);
 }
 .footer-socials a svg {
   width: 18px;
   height: 18px;
-  fill: rgba(43,74,58,0.6);
+  fill: rgba(var(--green-rgb),0.6);
   transition: fill 0.3s ease;
 }
 .footer-socials a:hover svg {
-  fill: #2B4A3A;
+  fill: var(--green);
 }
 .footer-right {
   display: flex;
@@ -152,7 +152,7 @@ footer {
   flex-wrap: wrap;
 }
 .footer-legal a {
-  color: rgba(43,74,58,0.55);
+  color: rgba(var(--sand-rgb),0.55);
   text-decoration: none;
   font-size: 0.78rem;
   font-family: 'Outfit', 'DM Sans', sans-serif;
@@ -160,7 +160,7 @@ footer {
   letter-spacing: 0.3px;
 }
 .footer-legal a:hover {
-  color: #2B4A3A;
+  color: var(--sand);
 }
 @media (max-width: 600px) {
   .footer-inner { flex-direction: column; text-align: center; gap: 20px; }
@@ -187,7 +187,7 @@ footer {
   position: relative;
   width: 100%;
   height: var(--nav-h);
-  background: var(--ink, #1A2E22);
+  background: var(--ink);
   box-sizing: border-box;
   font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
   overflow: visible;
@@ -198,8 +198,8 @@ footer {
   position: absolute;
   bottom: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(90,138,110,0.3) 20%,
-    rgba(90,138,110,0.6) 50%, rgba(90,138,110,0.3) 80%, transparent 100%);
+    transparent 0%, rgba(var(--sand-rgb),0.15) 20%,
+    rgba(var(--sand-rgb),0.3) 50%, rgba(var(--sand-rgb),0.15) 80%, transparent 100%);
   z-index: 20; pointer-events: none;
 }
 
@@ -212,9 +212,9 @@ footer {
   position: absolute;
   font-family: 'Fraunces', 'EB Garamond', Georgia, serif;
   font-style: italic; font-weight: 500;
-  color: rgba(90,138,110,0.65);
+  color: rgba(var(--sand-rgb),0.25);
   white-space: nowrap;
-  text-shadow: 0 0 20px rgba(90,138,110,0.4), 0 0 44px rgba(43,74,58,0.15);
+  text-shadow: none;
   animation:
     tm-breathe var(--dur) ease-in-out var(--delay) infinite,
     tm-drift var(--drift) ease-in-out var(--delay) infinite;
@@ -251,8 +251,8 @@ footer {
 }
 .tm-left-logo img {
   width: 48px; height: 48px; border-radius: 50%;
-  border: 1.5px solid rgba(90,138,110,0.5);
-  box-shadow: 0 0 16px rgba(43,74,58,0.35);
+  border: 1.5px solid rgba(var(--green-rgb),0.5);
+  box-shadow: 0 0 16px rgba(var(--green-rgb),0.35);
   object-fit: cover; flex-shrink: 0;
 }
 .tm-left-logo .tm-ltitle {
@@ -261,9 +261,9 @@ footer {
 .tm-left-logo .tm-ltitle span {
   font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 700; font-size: 0.74rem;
-  color: rgba(250,246,241,0.88); letter-spacing: 2px;
+  color: rgba(var(--sand-rgb),0.88); letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(43,74,58,0.4);
+  text-shadow: none;
 }
 @keyframes tm-fadein { from { opacity:0; transform: translateX(-6px); } to { opacity:1; transform: translateX(0); } }
 
@@ -278,7 +278,7 @@ footer {
 .tm-menu > a, .tm-dd > a {
   font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.84rem;
-  color: rgba(250,246,241,0.75);
+  color: rgba(var(--sand-rgb),0.75);
   text-decoration: none; letter-spacing: 2.5px;
   text-transform: uppercase;
   padding: 6px 11px;
@@ -292,22 +292,22 @@ footer {
   position: absolute;
   bottom: 2px; left: 11px; right: 11px;
   height: 1px;
-  background: rgba(90,138,110,0);
+  background: rgba(var(--green-rgb),0);
   transition: background 0.3s ease;
 }
 .tm-menu > a:hover, .tm-dd:hover > a {
-  color: #FAF6F1;
-  text-shadow: 0 0 10px rgba(90,138,110,0.5);
+  color: var(--sand);
+  text-shadow: none;
 }
 .tm-menu > a:hover::after, .tm-dd:hover > a::after {
-  background: rgba(90,138,110,0.5);
+  background: rgba(var(--green-rgb),0.5);
 }
 .tm-menu > a.tm-active {
-  color: #FAF6F1;
-  text-shadow: 0 0 10px rgba(90,138,110,0.5);
+  color: var(--sand);
+  text-shadow: none;
 }
 .tm-menu > a.tm-active::after {
-  background: rgba(90,138,110,0.5);
+  background: rgba(var(--green-rgb),0.5);
 }
 
 /* ── Dropdowns ── */
@@ -315,10 +315,10 @@ footer {
 .tm-dd-panel {
   display: none; position: absolute; top: calc(100% + 6px); left: 50%;
   transform: translateX(-50%);
-  min-width: 210px; background: rgba(26,46,34,0.97);
+  min-width: 210px; background: rgba(var(--sand-rgb),0.97);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(90,138,110,0.15);
-  border-top: 1.5px solid rgba(90,138,110,0.45);
+  border: 1px solid rgba(var(--green-rgb),0.15);
+  border-top: 1.5px solid rgba(var(--green-rgb),0.45);
   padding: 6px 0; z-index: 9999;
   box-shadow: 0 10px 32px rgba(0,0,0,0.45);
   border-radius: 4px;
@@ -329,10 +329,10 @@ footer {
   font-weight: 600; font-size: 0.78rem;
   letter-spacing: 2px; text-transform: uppercase;
   text-decoration: none; padding: 10px 18px;
-  color: rgba(250,246,241,0.6);
+  color: rgba(var(--ink-rgb),0.6);
   transition: color 0.2s, background 0.2s, padding-left 0.2s;
 }
-.tm-dd-panel a:hover { color: #FAF6F1; background: rgba(90,138,110,0.08); padding-left: 22px; }
+.tm-dd-panel a:hover { color: var(--ink); background: rgba(var(--green-rgb),0.08); padding-left: 22px; }
 
 /* ── Hamburger (mobile) ── */
 #tm-toggle { display: none; }
@@ -344,7 +344,7 @@ footer {
 }
 .tm-hamburger span {
   display: block; width: 24px; height: 1.5px;
-  background: rgba(250,246,241,0.8); border-radius: 2px;
+  background: rgba(var(--sand-rgb),0.8); border-radius: 2px;
   transition: transform 0.3s, opacity 0.3s;
   transform-origin: center;
 }
@@ -365,9 +365,9 @@ footer {
 /* ── Mobile drawer ── */
 .tm-drawer {
   position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(26,46,34,0.98);
+  background: rgba(var(--sand-rgb),0.98);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(90,138,110,0.15);
+  border-bottom: 1px solid rgba(var(--green-rgb),0.15);
   z-index: 25; max-height: 0; overflow: hidden;
   transition: max-height 0.4s ease;
 }
@@ -378,22 +378,22 @@ footer {
 .tm-drawer a {
   display: block; font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.95rem;
-  color: rgba(250,246,241,0.75); text-decoration: none;
+  color: rgba(var(--ink-rgb),0.75); text-decoration: none;
   letter-spacing: 2.5px; text-transform: uppercase;
   padding: 11px 24px;
-  border-bottom: 1px solid rgba(90,138,110,0.08);
+  border-bottom: 1px solid rgba(var(--green-rgb),0.08);
   transition: color 0.2s, background 0.2s;
 }
-.tm-drawer a:hover { color: #FAF6F1; background: rgba(90,138,110,0.06); }
+.tm-drawer a:hover { color: var(--ink); background: rgba(var(--green-rgb),0.06); }
 .tm-drawer-section {
   font-family: 'Fraunces', 'EB Garamond', serif; font-style: italic;
-  font-size: 0.68rem; color: rgba(250,246,241,0.35);
+  font-size: 0.68rem; color: rgba(var(--ink-rgb),0.35);
   letter-spacing: 3px; text-transform: uppercase;
   padding: 14px 24px 3px;
 }
 .tm-drawer .tm-sub {
   padding-left: 40px; font-size: 0.82rem;
-  letter-spacing: 2px; color: rgba(250,246,241,0.55);
+  letter-spacing: 2px; color: rgba(var(--ink-rgb),0.55);
 }
 @media (max-width: 768px) {
   .tm-nav { --nav-h: 64px; }
@@ -475,9 +475,9 @@ class TmHeader extends HTMLElement {
         <a href="#">Formations ▾</a>
         <div class="tm-dd-panel">
           <a href="bac.html">BAC</a>
-          <a href="https://www.terremathematiques.com/encours">Trading</a>
-          <a href="https://www.terremathematiques.com/encours">IA</a>
-          <a href="#">Voir toutes les formations →</a>
+          <a href="encours.html">Trading</a>
+          <a href="encours.html">IA</a>
+          <a href="formations.html">Voir toutes les formations →</a>
         </div>
       </div>
       <div class="tm-dd">
@@ -487,7 +487,7 @@ class TmHeader extends HTMLElement {
         </div>
       </div>
       <a href="qui-suis-je.html">Qui suis-je ?</a>
-      <a href="#">Contact</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
   <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
@@ -501,12 +501,13 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="methode.html">Ma méthode</a>
       <div class="tm-drawer-section">Formations</div>
       <a class="tm-sub" href="bac.html">BAC</a>
-      <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
-      <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
+      <a class="tm-sub" href="encours.html">Trading</a>
+      <a class="tm-sub" href="encours.html">IA</a>
+      <a class="tm-sub" href="formations.html">Voir toutes les formations →</a>
       <div class="tm-drawer-section">Fiches Interactives</div>
       <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
       <a href="qui-suis-je.html">Qui suis-je</a>
-      <a href="#">Contact</a>
+      <a href="contact.html">Contact</a>
     </div>
   </div>
 </nav>`;

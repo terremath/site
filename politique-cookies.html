@@ -4,22 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Politique de Cookies — Terre Mathématiques</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,800;1,9..144,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="colors.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --green: #2B4A3A;
-      --green-light: #5A8A6E;
-      --green-soft: rgba(43,74,58,0.08);
-      --sand: #FAF6F1;
-      --sand-dark: #F0E8DD;
-      --ink: #1A2E22;
-      --ink-light: #3A5C48;
-      --text: #3A4A40;
-      --text-muted: #6E8578;
-      --white: #FFFFFF;
-    }
 
     html { scroll-behavior: smooth; }
 
@@ -118,7 +105,7 @@
       border-radius: 4px;
       font-size: 0.85rem;
       font-weight: 500;
-      border: 1px dashed rgba(43,74,58,0.25);
+      border: 1px dashed rgba(var(--green-rgb),0.25);
     }
 
     .legal-content .info-box {
@@ -128,7 +115,7 @@
       padding: 1.2rem 1.5rem;
       border-radius: 0 8px 8px 0;
       margin: 1.5rem 0;
-      box-shadow: 0 2px 10px rgba(26,46,34,0.05);
+      box-shadow: 0 2px 10px rgba(var(--ink-rgb),0.05);
     }
 
     .legal-content .info-box p {
@@ -138,7 +125,7 @@
     .legal-content a {
       color: var(--green);
       text-decoration: none;
-      border-bottom: 1px solid rgba(43,74,58,0.25);
+      border-bottom: 1px solid rgba(var(--green-rgb),0.25);
       transition: border-color 0.3s;
     }
 

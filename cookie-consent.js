@@ -289,7 +289,8 @@ const COOKIE_CONFIG = {
     .tm-cookie-reopen {
       position: fixed;
       bottom: 1rem;
-      left: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 99990;
       background: #111118;
       border: 1px solid rgba(255, 255, 255, 0.08);
