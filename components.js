@@ -54,6 +54,127 @@ customElements.define('tm-footer', TmFooter);
 
 
 /* ─────────────────────────────────────────────
+   FOOTER CSS — injecté une seule fois dans <head>
+───────────────────────────────────────────── */
+(function injectFooterCSS() {
+  if (document.getElementById('tm-footer-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'tm-footer-styles';
+  style.textContent = `
+footer {
+  padding: 40px 40px 32px;
+  border-top: 1px solid rgba(43,74,58,0.12);
+  background: var(--sand-dark, #F0E8DD);
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+.footer-left img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(43,74,58,0.4);
+  object-fit: cover;
+}
+.footer-left .footer-brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.footer-left .footer-brand span {
+  font-family: 'Fraunces', 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: rgba(43,74,58,0.8);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--text-muted, #6E8578);
+  margin-top: 8px;
+  font-family: 'Outfit', 'DM Sans', sans-serif;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+}
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.footer-socials a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(43,74,58,0.15);
+  background: rgba(43,74,58,0.05);
+  transition: all 0.3s ease;
+}
+.footer-socials a:hover {
+  border-color: rgba(43,74,58,0.4);
+  background: rgba(43,74,58,0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(43,74,58,0.15);
+}
+.footer-socials a svg {
+  width: 18px;
+  height: 18px;
+  fill: rgba(43,74,58,0.6);
+  transition: fill 0.3s ease;
+}
+.footer-socials a:hover svg {
+  fill: #2B4A3A;
+}
+.footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+}
+.footer-legal {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-legal a {
+  color: rgba(43,74,58,0.55);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-family: 'Outfit', 'DM Sans', sans-serif;
+  transition: color 0.3s ease;
+  letter-spacing: 0.3px;
+}
+.footer-legal a:hover {
+  color: #2B4A3A;
+}
+@media (max-width: 600px) {
+  .footer-inner { flex-direction: column; text-align: center; gap: 20px; }
+  .footer-left { flex-direction: column; gap: 10px; }
+  .footer-left .footer-brand { align-items: center; }
+  .footer-right { align-items: center; }
+  .footer-legal { justify-content: center; gap: 14px; }
+}
+`;
+  document.head.appendChild(style);
+})();
+
+
+/* ─────────────────────────────────────────────
    NAVBAR CSS — injecté une seule fois dans <head>
 ───────────────────────────────────────────── */
 (function injectNavCSS() {
@@ -66,9 +187,9 @@ customElements.define('tm-footer', TmFooter);
   position: relative;
   width: 100%;
   height: var(--nav-h);
-  background: #0a0805;
+  background: var(--ink, #1A2E22);
   box-sizing: border-box;
-  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-family: 'Fraunces', 'Cormorant Garamond', Georgia, serif;
   overflow: visible;
   z-index: 100;
 }
@@ -77,8 +198,8 @@ customElements.define('tm-footer', TmFooter);
   position: absolute;
   bottom: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(201,168,76,0.3) 20%,
-    rgba(201,168,76,0.6) 50%, rgba(201,168,76,0.3) 80%, transparent 100%);
+    transparent 0%, rgba(90,138,110,0.3) 20%,
+    rgba(90,138,110,0.6) 50%, rgba(90,138,110,0.3) 80%, transparent 100%);
   z-index: 20; pointer-events: none;
 }
 
@@ -89,11 +210,11 @@ customElements.define('tm-footer', TmFooter);
 }
 .tm-f {
   position: absolute;
-  font-family: 'EB Garamond', Georgia, serif;
+  font-family: 'Fraunces', 'EB Garamond', Georgia, serif;
   font-style: italic; font-weight: 500;
-  color: rgba(201,168,76,0.7);
+  color: rgba(90,138,110,0.65);
   white-space: nowrap;
-  text-shadow: 0 0 20px rgba(201,168,76,0.5), 0 0 44px rgba(201,168,76,0.15);
+  text-shadow: 0 0 20px rgba(90,138,110,0.4), 0 0 44px rgba(43,74,58,0.15);
   animation:
     tm-breathe var(--dur) ease-in-out var(--delay) infinite,
     tm-drift var(--drift) ease-in-out var(--delay) infinite;
@@ -112,37 +233,42 @@ customElements.define('tm-footer', TmFooter);
   75%      { transform: translate(calc(var(--dx) * 0.8), calc(var(--dy) * -0.7)); }
 }
 
-/* ── Logo — visible immediately, bottom-left ── */
+/* ── Barre du bas : logo + menu en flex ── */
+.tm-bottom-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 22px 14px;
+  z-index: 200;
+}
+
+/* ── Logo ── */
 .tm-left-logo {
-  position: absolute; bottom: 12px; left: 22px;
-  z-index: 15;
   display: flex; align-items: center; gap: 12px;
   text-decoration: none;
   opacity: 0;
   animation: tm-fadein 0.6s ease 0.1s forwards;
+  flex-shrink: 0;
 }
 .tm-left-logo img {
   width: 48px; height: 48px; border-radius: 50%;
-  border: 1.5px solid rgba(201,168,76,0.5);
-  box-shadow: 0 0 16px rgba(201,168,76,0.25);
+  border: 1.5px solid rgba(90,138,110,0.5);
+  box-shadow: 0 0 16px rgba(43,74,58,0.35);
   object-fit: cover; flex-shrink: 0;
 }
 .tm-left-logo .tm-ltitle {
   display: flex; flex-direction: column; line-height: 1.15;
 }
 .tm-left-logo .tm-ltitle span {
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 700; font-size: 0.88rem;
-  color: rgba(201,168,76,0.88); letter-spacing: 4.5px;
+  font-family: 'Fraunces', 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 0.74rem;
+  color: rgba(250,246,241,0.88); letter-spacing: 2px;
   text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(201,168,76,0.3);
+  text-shadow: 0 0 12px rgba(43,74,58,0.4);
 }
 @keyframes tm-fadein { from { opacity:0; transform: translateX(-6px); } to { opacity:1; transform: translateX(0); } }
 
-/* ── Menu — visible immediately, bottom-right ── */
+/* ── Menu ── */
 .tm-menu {
-  position: absolute; bottom: 18px; right: 22px;
-  z-index: 200;
   display: flex; align-items: center; gap: 0;
   opacity: 0;
   animation: tm-fadein-menu 0.6s ease 0.15s forwards;
@@ -150,9 +276,9 @@ customElements.define('tm-footer', TmFooter);
 @keyframes tm-fadein-menu { from { opacity:0; } to { opacity:1; } }
 
 .tm-menu > a, .tm-dd > a {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.84rem;
-  color: rgba(201,168,76,0.75);
+  color: rgba(250,246,241,0.75);
   text-decoration: none; letter-spacing: 2.5px;
   text-transform: uppercase;
   padding: 6px 11px;
@@ -166,22 +292,22 @@ customElements.define('tm-footer', TmFooter);
   position: absolute;
   bottom: 2px; left: 11px; right: 11px;
   height: 1px;
-  background: rgba(201,168,76,0);
+  background: rgba(90,138,110,0);
   transition: background 0.3s ease;
 }
 .tm-menu > a:hover, .tm-dd:hover > a {
-  color: #e2c06a;
-  text-shadow: 0 0 10px rgba(201,168,76,0.4);
+  color: #FAF6F1;
+  text-shadow: 0 0 10px rgba(90,138,110,0.5);
 }
 .tm-menu > a:hover::after, .tm-dd:hover > a::after {
-  background: rgba(201,168,76,0.4);
+  background: rgba(90,138,110,0.5);
 }
 .tm-menu > a.tm-active {
-  color: #e2c06a;
-  text-shadow: 0 0 10px rgba(201,168,76,0.4);
+  color: #FAF6F1;
+  text-shadow: 0 0 10px rgba(90,138,110,0.5);
 }
 .tm-menu > a.tm-active::after {
-  background: rgba(201,168,76,0.4);
+  background: rgba(90,138,110,0.5);
 }
 
 /* ── Dropdowns ── */
@@ -189,24 +315,24 @@ customElements.define('tm-footer', TmFooter);
 .tm-dd-panel {
   display: none; position: absolute; top: calc(100% + 6px); left: 50%;
   transform: translateX(-50%);
-  min-width: 210px; background: rgba(10,8,5,0.97);
+  min-width: 210px; background: rgba(26,46,34,0.97);
   backdrop-filter: blur(14px);
-  border: 1px solid rgba(201,168,76,0.15);
-  border-top: 1.5px solid rgba(201,168,76,0.45);
+  border: 1px solid rgba(90,138,110,0.15);
+  border-top: 1.5px solid rgba(90,138,110,0.45);
   padding: 6px 0; z-index: 9999;
-  box-shadow: 0 10px 32px rgba(0,0,0,0.6);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.45);
   border-radius: 4px;
 }
 .tm-dd:hover .tm-dd-panel { display: block; }
 .tm-dd-panel a {
-  display: block; font-family: 'Cormorant Garamond', serif;
+  display: block; font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.78rem;
   letter-spacing: 2px; text-transform: uppercase;
   text-decoration: none; padding: 10px 18px;
-  color: rgba(201,168,76,0.6);
+  color: rgba(250,246,241,0.6);
   transition: color 0.2s, background 0.2s, padding-left 0.2s;
 }
-.tm-dd-panel a:hover { color: #e2c06a; background: rgba(201,168,76,0.05); padding-left: 22px; }
+.tm-dd-panel a:hover { color: #FAF6F1; background: rgba(90,138,110,0.08); padding-left: 22px; }
 
 /* ── Hamburger (mobile) ── */
 #tm-toggle { display: none; }
@@ -218,7 +344,7 @@ customElements.define('tm-footer', TmFooter);
 }
 .tm-hamburger span {
   display: block; width: 24px; height: 1.5px;
-  background: rgba(201,168,76,0.8); border-radius: 2px;
+  background: rgba(250,246,241,0.8); border-radius: 2px;
   transition: transform 0.3s, opacity 0.3s;
   transform-origin: center;
 }
@@ -239,9 +365,9 @@ customElements.define('tm-footer', TmFooter);
 /* ── Mobile drawer ── */
 .tm-drawer {
   position: absolute; top: 100%; left: 0; right: 0;
-  background: rgba(10,8,5,0.98);
+  background: rgba(26,46,34,0.98);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(201,168,76,0.15);
+  border-bottom: 1px solid rgba(90,138,110,0.15);
   z-index: 25; max-height: 0; overflow: hidden;
   transition: max-height 0.4s ease;
 }
@@ -250,32 +376,32 @@ customElements.define('tm-footer', TmFooter);
 #tm-toggle:checked ~ .tm-nav .tm-drawer { max-height: 600px; }
 .tm-drawer-inner { padding: 8px 0 20px; }
 .tm-drawer a {
-  display: block; font-family: 'Cormorant Garamond', serif;
+  display: block; font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.95rem;
-  color: rgba(201,168,76,0.75); text-decoration: none;
+  color: rgba(250,246,241,0.75); text-decoration: none;
   letter-spacing: 2.5px; text-transform: uppercase;
   padding: 11px 24px;
-  border-bottom: 1px solid rgba(201,168,76,0.05);
+  border-bottom: 1px solid rgba(90,138,110,0.08);
   transition: color 0.2s, background 0.2s;
 }
-.tm-drawer a:hover { color: #e2c06a; background: rgba(201,168,76,0.04); }
+.tm-drawer a:hover { color: #FAF6F1; background: rgba(90,138,110,0.06); }
 .tm-drawer-section {
-  font-family: 'EB Garamond', serif; font-style: italic;
-  font-size: 0.68rem; color: rgba(201,168,76,0.3);
+  font-family: 'Fraunces', 'EB Garamond', serif; font-style: italic;
+  font-size: 0.68rem; color: rgba(250,246,241,0.35);
   letter-spacing: 3px; text-transform: uppercase;
   padding: 14px 24px 3px;
 }
 .tm-drawer .tm-sub {
   padding-left: 40px; font-size: 0.82rem;
-  letter-spacing: 2px; color: rgba(201,168,76,0.55);
+  letter-spacing: 2px; color: rgba(250,246,241,0.55);
 }
 @media (max-width: 768px) {
   .tm-nav { --nav-h: 64px; }
   .tm-menu  { display: none !important; }
   .tm-hamburger { display: flex; }
-  .tm-left-logo { bottom: 8px; }
+  .tm-bottom-bar { padding: 0 18px 10px; }
   .tm-left-logo img { width: 38px; height: 38px; }
-  .tm-left-logo .tm-ltitle span { font-size: 0.74rem; letter-spacing: 3px; }
+  .tm-left-logo .tm-ltitle span { font-size: 0.65rem; letter-spacing: 1.5px; }
   .tm-f { display: none; }
 }
 @media (min-width: 769px) {
@@ -328,42 +454,41 @@ class TmHeader extends HTMLElement {
       <div class="tm-f" style="top:42%; left:78%; font-size:0.76rem; --dur:8s;  --delay:5.5s; --drift:18s; --dx:7px;  --dy:-6px">∀𝑥 ¬Bew(⌜𝜑⌝) → 𝜑</div>
     </div>
   </div>
-  <a href="https://www.terremathematiques.com/" class="tm-left-logo">
-    <img src="logo.jpg" alt="Terre Mathématiques">
-    <div class="tm-ltitle">
-      <span>Terre</span>
-      <span>Mathématiques</span>
-    </div>
-  </a>
-  <div class="tm-menu">
-    <a href="https://www.terremathematiques.com/">Accueil</a>
-    <div class="tm-dd">
-      <a href="#">Terre Mathématiques ▾</a>
-      <div class="tm-dd-panel">
-        <a href="philosophie.html">Ma philosophie</a>
-        <a href="methode.html">Ma méthode</a>
+  <div class="tm-bottom-bar">
+    <a href="https://www.terremathematiques.com/" class="tm-left-logo">
+      <img src="logo.jpg" alt="Terre Mathématiques">
+      <div class="tm-ltitle">
+        <span>Terre</span>
+        <span>Mathématiques</span>
       </div>
-    </div>
-    <div class="tm-dd">
-      <a href="#">Formations ▾</a>
-      <div class="tm-dd-panel">
-        <a href="bac.html">BAC</a>
-        <a href="https://www.terremathematiques.com/encours">Trading</a>
-        <a href="https://www.terremathematiques.com/encours">IA</a>
-        <a href="#">Voir toutes les formations →</a>
+    </a>
+    <div class="tm-menu">
+      <a href="https://www.terremathematiques.com/">Accueil</a>
+      <div class="tm-dd">
+        <a href="#">Terre Mathématiques ▾</a>
+        <div class="tm-dd-panel">
+          <a href="philosophie.html">Ma philosophie</a>
+          <a href="methode.html">Ma méthode</a>
+        </div>
       </div>
-    </div>
-    <div class="tm-dd">
-      <a href="#">Fiches Interactives ▾</a>
-      <div class="tm-dd-panel">
-        <a href="frenet-animation.html">Repère de Frenet</a>
-        <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
-        <a href="chemin-craie-luxe.html">Chemin de Craie</a>
-        <a href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
+      <div class="tm-dd">
+        <a href="#">Formations ▾</a>
+        <div class="tm-dd-panel">
+          <a href="bac.html">BAC</a>
+          <a href="https://www.terremathematiques.com/encours">Trading</a>
+          <a href="https://www.terremathematiques.com/encours">IA</a>
+          <a href="#">Voir toutes les formations →</a>
+        </div>
       </div>
+      <div class="tm-dd">
+        <a href="#">Fiches Interactives ▾</a>
+        <div class="tm-dd-panel">
+          <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
+        </div>
+      </div>
+      <a href="qui-suis-je.html">Qui suis-je ?</a>
+      <a href="#">Contact</a>
     </div>
-    <a href="qui-suis-je.html">Qui suis-je ?</a>
-    <a href="#">Contact</a>
   </div>
   <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -379,10 +504,7 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="https://www.terremathematiques.com/encours">Trading</a>
       <a class="tm-sub" href="https://www.terremathematiques.com/encours">IA</a>
       <div class="tm-drawer-section">Fiches Interactives</div>
-      <a class="tm-sub" href="frenet-animation.html">Repère de Frenet</a>
       <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
-      <a class="tm-sub" href="chemin-craie-luxe.html">Chemin de Craie</a>
-      <a class="tm-sub" href="decouvrir-courbe-gauss.html">Courbe de Gauss</a>
       <a href="qui-suis-je.html">Qui suis-je</a>
       <a href="#">Contact</a>
     </div>
