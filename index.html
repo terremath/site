@@ -27,7 +27,7 @@
     padding: 80px 24px 60px;
     position: relative;
     overflow: hidden;
-    background: var(--sand);
+    background: var(--white);
   }
 
   .hero-badge {
@@ -93,7 +93,7 @@
     gap: 12px;
     padding: 18px 44px;
     background: linear-gradient(135deg, var(--green), var(--green-light));
-    color: var(--white);
+    color: var(--sand);
     font-weight: 500;
     font-size: 1rem;
     text-decoration: none;
@@ -185,7 +185,7 @@
 
   /* ─── OBJECTIFS / TARGETS ─── */
   .targets {
-    background: var(--white);
+    background: var(--sand-warm);
   }
 
   .targets-grid {
@@ -199,7 +199,7 @@
     padding: 32px 28px;
     border: 1px solid var(--sand-dark);
     border-radius: 12px;
-    background: var(--sand);
+    background: var(--white);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -408,7 +408,7 @@
 
   /* ─── PRICING ─── */
   .pricing {
-    background: var(--white);
+    background: var(--sand-warm);
     text-align: center;
   }
 
@@ -490,7 +490,7 @@
     justify-content: center;
     padding: 20px 40px;
     background: linear-gradient(135deg, var(--green), var(--green-light));
-    color: var(--white);
+    color: var(--sand);
     font-weight: 500;
     font-size: 1.05rem;
     text-decoration: none;
@@ -568,7 +568,7 @@
 
   /* ─── FINAL CTA ─── */
   .final-cta {
-    background: var(--white);
+    background: var(--sand);
     text-align: center;
     padding: 120px 24px;
   }
@@ -588,6 +588,129 @@
   }
 
   .final-cta .hero-cta { animation: none; }
+
+  /* ─── SECTION DARK (fond vert foncé) ─── */
+  .section--dark {
+    background: var(--green);
+  }
+
+  .section--dark .section-label {
+    color: var(--green-light);
+  }
+
+  .section--dark .section-title {
+    color: var(--sand);
+  }
+
+  .section--dark .section-desc {
+    color: rgba(var(--ink-rgb), 0.72);
+  }
+
+  /* method steps sur fond sombre */
+  .section--dark .method-step {
+    background: rgba(var(--sand-rgb), 0.3);
+    border-color: rgba(var(--ink-rgb), 0.1);
+  }
+
+  .section--dark .method-step h3 {
+    color: var(--sand);
+  }
+
+  .section--dark .method-step p {
+    color: rgba(var(--ink-rgb), 0.72);
+  }
+
+  .section--dark .step-num {
+    color: rgba(var(--ink-rgb), 0.07);
+  }
+
+  /* pricing sur fond sombre */
+  .section--dark .pricing-box {
+    background: rgba(var(--sand-rgb), 0.3);
+    border-color: rgba(var(--ink-rgb), 0.12);
+    border-top-color: var(--green-light);
+  }
+
+  .section--dark .pricing-badge {
+    background: rgba(var(--ink-rgb), 0.08);
+    border-color: rgba(var(--ink-rgb), 0.15);
+    color: var(--green-light);
+  }
+
+  .section--dark .pricing-title {
+    color: var(--sand);
+  }
+
+  .section--dark .pricing-desc {
+    color: rgba(var(--ink-rgb), 0.72);
+  }
+
+  .section--dark .pricing-includes li {
+    color: rgba(var(--ink-rgb), 0.82);
+    border-bottom-color: rgba(var(--ink-rgb), 0.1);
+  }
+
+  .section--dark .pricing-includes li::before {
+    color: var(--green-light);
+    background: rgba(var(--ink-rgb), 0.1);
+  }
+
+  .section--dark .pricing-note {
+    color: rgba(var(--ink-rgb), 0.45);
+  }
+
+  /* offer items sur fond sombre */
+  .section--dark .offer-item {
+    border-bottom-color: rgba(var(--ink-rgb), 0.1);
+  }
+
+  .section--dark .offer-num {
+    color: rgba(var(--ink-rgb), 0.12);
+  }
+
+  .section--dark .offer-item h3 {
+    color: var(--sand);
+  }
+
+  .section--dark .offer-item p {
+    color: rgba(var(--ink-rgb), 0.72);
+  }
+
+  .section--dark .offer-item .tag {
+    color: var(--green-light);
+    border-color: rgba(var(--ink-rgb), 0.18);
+  }
+
+  /* proof cards sur fond sombre */
+  .section--dark .proof-card {
+    background: rgba(var(--sand-rgb), 0.3);
+    border-color: rgba(var(--ink-rgb), 0.1);
+  }
+
+  .section--dark .proof-stars {
+    color: var(--green-light);
+  }
+
+  .section--dark .proof-card blockquote {
+    color: rgba(var(--ink-rgb), 0.85);
+  }
+
+  .section--dark .proof-author {
+    color: rgba(var(--ink-rgb), 0.5);
+  }
+
+  .section--dark .proof-author span {
+    color: var(--green-light);
+  }
+
+  /* final cta sur fond sombre */
+  .section--dark.final-cta h2 {
+    color: var(--sand);
+  }
+
+  .section--dark.final-cta p {
+    color: rgba(var(--ink-rgb), 0.72);
+  }
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
@@ -640,7 +763,8 @@
 </section>
 
 <!-- ═══════════════ OBJECTIFS ═══════════════ -->
-<section class="targets">
+<!--
+<section class="targets section--light">
   <div class="container">
     <div class="section-label">Quel est ton objectif ?</div>
     <h2 class="section-title">Un accompagnement calibré sur <em>ton</em> ambition</h2>
@@ -669,9 +793,11 @@
     </div>
   </div>
 </section>
+-->
 
 <!-- ═══════════════ CE QUE TU OBTIENS ═══════════════ -->
-<section class="offer" id="offer">
+<!--
+<section class="offer section--dark" id="offer">
   <div class="container">
     <div class="section-label">L'offre en détail</div>
     <h2 class="section-title">Tout ce qui est inclus dans ton suivi</h2>
@@ -720,8 +846,9 @@
     </div>
   </div>
 </section>
-
+-->
 <!-- ═══════════════ MÉTHODE ═══════════════ -->
+<!--
 <section class="method">
   <div class="container">
     <div class="section-label">La méthode</div>
@@ -746,9 +873,9 @@
     </div>
   </div>
 </section>
-
+-->
 <!-- ═══════════════ TESTE TES COMPÉTENCES ═══════════════ -->
-<section class="quiz-cta" id="quiz" style="background: var(--navy-light); text-align: center;">
+<section class="quiz-cta" id="quiz" style="background: var(--sand); text-align: center;">
   <div class="container">
     <div class="section-label">Évalue-toi</div>
     <h2 class="section-title">Teste tes <span style="color: var(--gold)">compétences</span></h2>
@@ -761,32 +888,18 @@
 </section>
 
 <!-- ═══════════════ PREUVE SOCIALE ═══════════════ -->
-<section class="proof">
+<!--
+<section class="proof section--dark">
   <div class="container">
     <div class="section-label">Témoignages</div>
     <h2 class="section-title">Ce qu'en disent mes élèves</h2>
-    <div class="proof-cards">
-      <div class="proof-card">
-        <div class="proof-stars">★ ★ ★ ★ ★</div>
-        <blockquote>« J'ai intégré l'ENS Lyon grâce à un travail méthodique et un suivi sans faille. Les corrections détaillées m'ont fait progresser plus vite que deux ans de prépa seuls. »</blockquote>
-        <div class="proof-author">Mathieu R. — <span>Admis ENS Lyon</span></div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-stars">★ ★ ★ ★ ★</div>
-        <blockquote>« En 3 mois, je suis passée de 12 à 18 en maths. Le plan de travail personnalisé a tout changé. Je savais exactement quoi travailler chaque jour. »</blockquote>
-        <div class="proof-author">Sara K. — <span>Bac Mention Très Bien</span></div>
-      </div>
-      <div class="proof-card">
-        <div class="proof-stars">★ ★ ★ ★ ★</div>
-        <blockquote>« Les modèles de preuves et la rigueur de rédaction qu'on m'a enseignés ont fait la différence à l'écrit de Centrale. Je recommande à 100%. »</blockquote>
-        <div class="proof-author">Lucas D. — <span>Admis Centrale Paris</span></div>
-      </div>
-    </div>
+    <div id="avis-container"></div>
   </div>
 </section>
-
+-->
 <!-- ═══════════════ TARIF ═══════════════ -->
-<section class="pricing" id="pricing">
+<!--
+<section class="pricing section--light" id="pricing">
   <div class="container">
     <div class="section-label">Investissement</div>
     <h2 class="section-title">Ton futur commence ici</h2>
@@ -811,9 +924,9 @@
     </div>
   </div>
 </section>
-
+-->
 <!-- ═══════════════ FAQ ═══════════════ -->
-<section class="faq">
+<!--<section class="faq">
   <div class="container">
     <div class="section-label">Questions fréquentes</div>
     <h2 class="section-title">Tout ce que tu veux savoir</h2>
@@ -866,9 +979,10 @@
     </div>
   </div>
 </section>
-
+-->
 <!-- ═══════════════ FINAL CTA ═══════════════ -->
-<section class="final-cta">
+<!--
+<section class="final-cta section--dark">
   <h2>Prêt à viser l'<span style="color: var(--gold)">excellence</span> ?</h2>
   <p>Réserve ton appel découverte gratuit et construisons ta réussite ensemble.</p>
   <a href="#" class="hero-cta">
@@ -876,7 +990,8 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
   </a>
 </section>
-
+-->
+<tm-newsletter></tm-newsletter>
 <tm-footer></tm-footer>
 
 <script>
@@ -910,7 +1025,7 @@
     });
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.target-card, .offer-item, .method-step, .proof-card').forEach(el => {
+  document.querySelectorAll('.target-card, .offer-item, .method-step').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(24px)';
     el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -918,7 +1033,9 @@
   });
 </script>
 
+<script src="avis.js"></script>
 <script src="components.js"></script>
+<script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
 </body>
 </html>

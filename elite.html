@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TerreMathématique — Vers les Profondeurs</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="colors.js"></script>
+<style>
+:root {
+  --aubergine-deep: #2a0a2e;
+  --aubergine: #4a1942;
+  --aubergine-mid: #6b2d5b;
+  --aubergine-light: #8e4578;
+  --aubergine-glow: #b35d9d;
+  --sand-light: #f5ead6;
+  --sand: #e8d5b5;
+  --sand-mid: #d4be94;
+  --sand-dark: #b8a07a;
+  --sand-deep: #9a8462;
+  --cream: #faf6ee;
+  --gold: #c9a84c;
+  --gold-light: #e0c878;
+  --white: #fffdf8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--aubergine-deep);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NOISE TEXTURE OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  background: var(--aubergine-deep);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(ellipse at 30% 50%, rgba(107, 45, 91, 0.4) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 30%, rgba(201, 168, 76, 0.08) 0%, transparent 40%),
+              radial-gradient(ellipse at 50% 80%, rgba(142, 69, 120, 0.2) 0%, transparent 50%);
+  animation: heroShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes heroShift {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-3%, 2%) scale(1.05); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  padding: 0.6rem 1.8rem;
+  margin-bottom: 3rem;
+  animation: fadeUp 1s 0.2s both;
+}
+
+.hero h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-weight: 300;
+  color: var(--sand-light);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 1s 0.4s both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--gold-light);
+  font-weight: 400;
+}
+
+.hero-sub {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.15rem;
+  color: var(--sand-mid);
+  line-height: 1.8;
+  max-width: 650px;
+  margin: 0 auto 3rem;
+  font-style: italic;
+  animation: fadeUp 1s 0.6s both;
+}
+
+.hero-cta {
+  display: inline-block;
+  padding: 1rem 3rem;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--aubergine-deep);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.4s;
+  animation: fadeUp 1s 0.8s both;
+}
+
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(201, 168, 76, 0.3);
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  animation: pulse 2s infinite;
+}
+
+.hero-scroll span {
+  display: block;
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--gold), transparent);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── SECTION SHARED ─── */
+section { padding: 7rem 3rem; }
+
+.section-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--aubergine-light);
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 300;
+  color: var(--aubergine-deep);
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.section-title em { font-style: italic; color: var(--aubergine-mid); }
+
+/* ─── PHILOSOPHIE ─── */
+.philosophie {
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.philosophie-text p {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem;
+  line-height: 2;
+  color: var(--aubergine);
+  margin-bottom: 1.5rem;
+}
+
+.philosophie-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.philo-card {
+  padding: 2rem 2.5rem;
+  background: var(--white);
+  border-left: 3px solid var(--gold);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.philo-card:hover {
+  transform: translateX(8px);
+  box-shadow: -4px 4px 30px rgba(74, 25, 66, 0.08);
+}
+
+.philo-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--aubergine);
+  margin-bottom: 0.5rem;
+}
+
+.philo-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--aubergine-mid);
+}
+
+/* ─── PARCOURS ─── */
+.parcours {
+  background: var(--aubergine-deep);
+  color: var(--sand-light);
+  padding-bottom: 5rem;
+}
+
+.parcours .section-label { color: var(--gold); }
+.parcours .section-title { color: var(--sand-light); }
+.parcours .section-title em { color: var(--gold-light); }
+
+.parcours-intro {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: var(--sand-mid);
+  max-width: 750px;
+  margin-bottom: 4rem;
+  font-style: italic;
+}
+
+.arc-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.arc {
+  margin-bottom: 4rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+  padding-bottom: 4rem;
+}
+
+.arc:last-child { border-bottom: none; }
+
+.arc-header {
+  display: flex;
+  align-items: baseline;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  cursor: pointer;
+}
+
+.arc-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--gold);
+  line-height: 1;
+  opacity: 0.6;
+}
+
+.arc-title-group h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--sand-light);
+  margin-bottom: 0.3rem;
+}
+
+.arc-title-group .arc-subtitle {
+  font-size: 0.85rem;
+  color: var(--sand-dark);
+  letter-spacing: 0.05em;
+}
+
+.arc-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.module-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  padding: 2rem;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--aubergine-light), transparent);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.module-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(201, 168, 76, 0.2);
+  transform: translateY(-4px);
+}
+
+.module-card:hover::before { opacity: 1; }
+
+.module-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.module-card h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--sand-light);
+  margin-bottom: 0.6rem;
+}
+
+.module-card p {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--sand-dark);
+}
+
+.module-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  padding: 0.25rem 0.7rem;
+  margin-top: 1rem;
+}
+
+/* ─── MÉTHODE ─── */
+.methode {
+  background: var(--sand-light);
+  position: relative;
+}
+
+.methode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 3rem auto 0;
+}
+
+.methode-item {
+  padding: 2.5rem;
+  background: var(--white);
+  border-bottom: 3px solid var(--aubergine-light);
+  transition: all 0.4s;
+}
+
+.methode-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(74, 25, 66, 0.1);
+  border-bottom-color: var(--gold);
+}
+
+.methode-item .num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: var(--aubergine-light);
+  opacity: 0.4;
+  margin-bottom: 1rem;
+}
+
+.methode-item h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--aubergine);
+  margin-bottom: 0.8rem;
+}
+
+.methode-item p {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--aubergine-mid);
+}
+
+/* ─── LIVRABLES ─── */
+.livrables {
+  background: var(--cream);
+  text-align: center;
+}
+
+.livrables-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 3rem auto 0;
+}
+
+.livrable {
+  padding: 2.5rem 1.5rem;
+  background: var(--white);
+  border: 1px solid var(--sand);
+  transition: all 0.4s;
+}
+
+.livrable:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(74, 25, 66, 0.06);
+}
+
+.livrable-icon {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--aubergine-deep);
+  border-radius: 50%;
+}
+
+.livrable-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--gold);
+  fill: none;
+  stroke-width: 1.5;
+}
+
+.livrable h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--aubergine);
+  margin-bottom: 0.5rem;
+}
+
+.livrable p {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--aubergine-mid);
+}
+
+/* ─── VISION FINALE ─── */
+.vision {
+  background: linear-gradient(170deg, var(--aubergine-deep) 0%, var(--aubergine) 100%);
+  text-align: center;
+  padding: 8rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.vision::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--gold));
+}
+
+.vision .section-label { color: var(--gold); }
+.vision .section-title {
+  color: var(--sand-light);
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.vision .section-title em { color: var(--gold-light); }
+
+.vision-text {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 1.1rem;
+  line-height: 2;
+  color: var(--sand-mid);
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+.vision-cta {
+  display: inline-block;
+  padding: 1.1rem 3.5rem;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: all 0.4s;
+}
+
+.vision-cta:hover {
+  background: var(--gold);
+  color: var(--aubergine-deep);
+}
+
+/* ─── QUOTE BLOCK ─── */
+.epigraph {
+  padding: 5rem 3rem;
+  text-align: center;
+  background: var(--sand-light);
+  border-top: 1px solid var(--sand);
+  border-bottom: 1px solid var(--sand);
+}
+
+.epigraph blockquote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--aubergine);
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.epigraph cite {
+  display: block;
+  margin-top: 1.5rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-style: normal;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sand-deep);
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .philosophie { grid-template-columns: 1fr; gap: 3rem; }
+  .methode-grid { grid-template-columns: 1fr 1fr; }
+  .livrables-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 768px) {
+  section { padding: 4rem 1.5rem; }
+  .methode-grid { grid-template-columns: 1fr; }
+  .livrables-grid { grid-template-columns: 1fr 1fr; }
+  .arc-modules { grid-template-columns: 1fr; }
+  .arc-header { gap: 1rem; }
+  .arc-number { font-size: 2.5rem; }
+}
+
+@media (max-width: 480px) {
+  .livrables-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<tm-header></tm-header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Formation d'élite · 2026</div>
+    <h1>Vers les <em>Profondeurs</em></h1>
+    <p class="hero-sub">
+      Un voyage intellectuel sans précédent — de la mécanique quantique à la géométrie différentielle, 
+      de l'analyse stochastique à la philosophie de la science. Devenez un penseur créatif 
+      qui maîtrise les techniques.
+    </p>
+    <a href="#parcours" class="hero-cta">Découvrir le programme</a>
+  </div>
+  <div class="hero-scroll"><span></span></div>
+</section>
+
+<!-- ═══ ÉPIGRAPHE ═══ -->
+<div class="epigraph">
+  <blockquote>
+    « La philosophie est écrite dans cet immense livre qui se tient toujours ouvert devant nos yeux — 
+    l'univers — mais on ne peut le comprendre si l'on ne s'applique d'abord à en comprendre la langue 
+    et à connaître les caractères avec lesquels il est écrit. »
+  </blockquote>
+  <cite>Galilée</cite>
+</div>
+
+<!-- ═══ PHILOSOPHIE ═══ -->
+<section id="philosophie">
+  <div class="philosophie">
+    <div class="philosophie-text">
+      <div class="section-label">Notre conviction</div>
+      <h2 class="section-title">Comprendre, <em>pas mémoriser</em></h2>
+      <p>
+        La science n'est pas une collection de formules — c'est une manière de voir le monde. 
+        Chaque théorème cache une idée profonde, chaque équation raconte une histoire. 
+        Nous enseignons les deux.
+      </p>
+      <p>
+        Notre formation repose sur un principe radical : la concision rigoureuse au service 
+        de la clarté. Pas de remplissage, pas de détours inutiles. Chaque concept est présenté 
+        dans sa forme la plus pure, puis déployé avec toute sa puissance.
+      </p>
+      <p>
+        Le but final n'est pas l'accumulation de connaissances. C'est la transformation 
+        de votre regard sur le réel.
+      </p>
+    </div>
+    <div class="philosophie-visual">
+      <div class="philo-card">
+        <h4>Rigueur &amp; Intuition</h4>
+        <p>Les preuves formelles marchent main dans la main avec l'intuition géométrique et physique. L'une nourrit l'autre.</p>
+      </div>
+      <div class="philo-card">
+        <h4>Concision logique</h4>
+        <p>Chaque module est structuré comme un théorème : hypothèses claires, enchaînement nécessaire, conclusion illuminante.</p>
+      </div>
+      <div class="philo-card">
+        <h4>Vision philosophique</h4>
+        <p>Qu'est-ce que le réel ? Que signifie « comprendre » ? La science répond à ces questions — si on sait l'écouter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LE PARCOURS ═══ -->
+<section class="parcours" id="parcours">
+  <div class="arc-container">
+    <div class="section-label">Le Programme</div>
+    <h2 class="section-title">Sept arcs vers la <em>maîtrise</em></h2>
+    <p class="parcours-intro">
+      Un parcours organique où chaque arc éclaire le suivant. 
+      Les mathématiques donnent le langage, la physique donne le sens, 
+      la philosophie donne la profondeur.
+    </p>
+
+    <!-- ARC I -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">I</div>
+        <div class="arc-title-group">
+          <h3>Les Fondations Profondes</h3>
+          <div class="arc-subtitle">Analyse réelle · Algèbre linéaire · Topologie générale</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">∫</span>
+          <h4>Analyse réelle avancée</h4>
+          <p>Mesure de Lebesgue, convergence dominée, espaces Lᵖ. Le socle de toute la suite, présenté avec une élégance minimale.</p>
+          <span class="module-tag">12 vidéos · 45 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">⊗</span>
+          <h4>Algèbre linéaire structurelle</h4>
+          <p>Au-delà des matrices : espaces duaux, formes bilinéaires, décomposition spectrale. L'algèbre comme architecture.</p>
+          <span class="module-tag">10 vidéos · 38 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">τ</span>
+          <h4>Topologie — l'art de la forme</h4>
+          <p>Ouverts, compacts, connexité. Pourquoi la topologie est le langage secret de la physique moderne.</p>
+          <span class="module-tag">8 vidéos · 32 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC II -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">II</div>
+        <div class="arc-title-group">
+          <h3>Les Espaces de l'Infini</h3>
+          <div class="arc-subtitle">Analyse fonctionnelle · Théorie des opérateurs</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">ℋ</span>
+          <h4>Espaces de Banach &amp; Hilbert</h4>
+          <p>Le théorème de Hahn-Banach, le théorème spectral, les bases orthonormées. L'infini apprivoisé.</p>
+          <span class="module-tag">14 vidéos · 52 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">Â</span>
+          <h4>Opérateurs &amp; distributions</h4>
+          <p>De Schwartz à Sobolev. Comment les distributions révolutionnent notre compréhension des équations aux dérivées partielles.</p>
+          <span class="module-tag">10 vidéos · 40 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">∞</span>
+          <h4>Philosophie de l'infini</h4>
+          <p>Cantor, Hilbert, Gödel : quand les mathématiques interrogent leurs propres limites. Un détour essentiel.</p>
+          <span class="module-tag">4 vidéos · 18 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC III -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">III</div>
+        <div class="arc-title-group">
+          <h3>Le Hasard Structuré</h3>
+          <div class="arc-subtitle">Probabilités · Analyse stochastique · Finance mathématique</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">Ω</span>
+          <h4>Probabilités avancées</h4>
+          <p>Espaces de probabilité, martingales, théorèmes limites. Le hasard a une grammaire — apprenez-la.</p>
+          <span class="module-tag">12 vidéos · 48 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">dW</span>
+          <h4>Calcul stochastique d'Itô</h4>
+          <p>Mouvement brownien, intégrale d'Itô, formule d'Itô, équations différentielles stochastiques. La beauté de l'aléatoire continu.</p>
+          <span class="module-tag">14 vidéos · 55 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">$</span>
+          <h4>Finance quantitative</h4>
+          <p>Black-Scholes par le calcul stochastique, mesures risque-neutre, pricing d'options. Quand les maths rencontrent les marchés.</p>
+          <span class="module-tag">10 vidéos · 42 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC IV -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">IV</div>
+        <div class="arc-title-group">
+          <h3>La Géométrie du Monde</h3>
+          <div class="arc-subtitle">Géométrie différentielle · Variétés · Formes différentielles</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">∇</span>
+          <h4>Variétés différentielles</h4>
+          <p>Cartes, atlas, fibré tangent. Pourquoi la physique moderne vit sur des variétés, pas dans ℝ³.</p>
+          <span class="module-tag">12 vidéos · 50 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">ω</span>
+          <h4>Formes différentielles &amp; de Rham</h4>
+          <p>Le théorème de Stokes généralisé, la cohomologie. L'unification la plus élégante du calcul intégral.</p>
+          <span class="module-tag">10 vidéos · 44 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">Γ</span>
+          <h4>Connexions &amp; courbure</h4>
+          <p>Connexion de Levi-Civita, tenseur de Riemann, géodésiques. Le langage géométrique de la gravitation.</p>
+          <span class="module-tag">10 vidéos · 46 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC V -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">V</div>
+        <div class="arc-title-group">
+          <h3>La Relativité — l'Espace-Temps</h3>
+          <div class="arc-subtitle">Relativité restreinte · Relativité générale · Cosmologie</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">c</span>
+          <h4>Relativité restreinte</h4>
+          <p>Espace de Minkowski, quadrivecteurs, électrodynamique covariante. L'invariance comme principe créateur.</p>
+          <span class="module-tag">8 vidéos · 35 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">G<sub>μν</sub></span>
+          <h4>Relativité générale</h4>
+          <p>L'équation d'Einstein, les solutions de Schwarzschild, le rayonnement gravitationnel. La géométrie est la gravité.</p>
+          <span class="module-tag">14 vidéos · 60 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">Λ</span>
+          <h4>Cosmologie mathématique</h4>
+          <p>Modèle FLRW, constante cosmologique, horizons. L'univers comme objet mathématique.</p>
+          <span class="module-tag">6 vidéos · 28 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC VI -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">VI</div>
+        <div class="arc-title-group">
+          <h3>Le Monde Quantique</h3>
+          <div class="arc-subtitle">Mécanique quantique · Théorie des champs · Fondements</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">ψ</span>
+          <h4>Mécanique quantique rigoureuse</h4>
+          <p>Espaces de Hilbert en action, observables auto-adjoints, théorème spectral appliqué. La vraie fondation.</p>
+          <span class="module-tag">14 vidéos · 58 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">⟨ ⟩</span>
+          <h4>Intrication &amp; information quantique</h4>
+          <p>Inégalités de Bell, décohérence, portes quantiques. Quand la physique redéfinit l'information.</p>
+          <span class="module-tag">8 vidéos · 34 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">φ</span>
+          <h4>Introduction à la QFT</h4>
+          <p>Quantification canonique, diagrammes de Feynman, renormalisation. La théorie la plus précise jamais construite.</p>
+          <span class="module-tag">12 vidéos · 52 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">?</span>
+          <h4>Fondements &amp; interprétations</h4>
+          <p>Copenhague, mondes multiples, QBisme. Le problème de la mesure comme question philosophique ouverte.</p>
+          <span class="module-tag">6 vidéos · 24 pages</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARC VII -->
+    <div class="arc">
+      <div class="arc-header">
+        <div class="arc-number">VII</div>
+        <div class="arc-title-group">
+          <h3>Synthèse — Une Vision du Monde</h3>
+          <div class="arc-subtitle">Philosophie des sciences · Épistémologie · Pensée créative</div>
+        </div>
+      </div>
+      <div class="arc-modules">
+        <div class="module-card">
+          <span class="module-icon">◎</span>
+          <h4>Philosophie de la physique</h4>
+          <p>Le réalisme, l'instrumentalisme, le problème de la sous-détermination. Que nous dit vraiment la science sur le réel ?</p>
+          <span class="module-tag">8 vidéos · 30 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">◇</span>
+          <h4>Unité des mathématiques</h4>
+          <p>Le programme de Langlands, les connexions entre géométrie et algèbre, la « déraisonnable efficacité » des maths.</p>
+          <span class="module-tag">6 vidéos · 26 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">✦</span>
+          <h4>Devenir un penseur créatif</h4>
+          <p>Comment les grands esprits pensent. Méthodes heuristiques, analogie structurelle, l'art de poser les bonnes questions.</p>
+          <span class="module-tag">6 vidéos · 22 pages</span>
+        </div>
+        <div class="module-card">
+          <span class="module-icon">∴</span>
+          <h4>Projet de synthèse</h4>
+          <p>Votre vision personnelle du monde. Un mémoire guidé où vous articulez votre compréhension unifiée.</p>
+          <span class="module-tag">Accompagnement individuel</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ MÉTHODE ═══ -->
+<section class="methode" id="methode">
+  <div class="section-label">Comment nous enseignons</div>
+  <h2 class="section-title">Une pédagogie <em>d'architecte</em></h2>
+  <div class="methode-grid">
+    <div class="methode-item">
+      <div class="num">01</div>
+      <h4>Vidéos denses</h4>
+      <p>Des cours filmés où chaque minute compte. Pas de remplissage : démonstrations visuelles, intuition géométrique, puis formalisme précis. Format 15-40 minutes.</p>
+    </div>
+    <div class="methode-item">
+      <div class="num">02</div>
+      <h4>Documents de référence</h4>
+      <p>Des textes rédigés avec soin typographique, pensés comme des livres de chevet. Théorèmes, preuves, exemples — chaque page est un objet de beauté intellectuelle.</p>
+    </div>
+    <div class="methode-item">
+      <div class="num">03</div>
+      <h4>Problèmes ouverts</h4>
+      <p>Pas de QCM. Des problèmes qui demandent réflexion, créativité, et parfois plusieurs jours. C'est là que la vraie compréhension naît.</p>
+    </div>
+    <div class="methode-item">
+      <div class="num">04</div>
+      <h4>Séminaires philosophiques</h4>
+      <p>Des sessions en visio où l'on discute des fondements. Qu'est-ce qu'un espace ? Qu'est-ce que la réalité ? L'exercice de la pensée libre.</p>
+    </div>
+    <div class="methode-item">
+      <div class="num">05</div>
+      <h4>Suivi individuel</h4>
+      <p>Un mentor dédié qui connaît votre parcours, vos forces, vos questions. L'accompagnement haut de gamme qui fait la différence.</p>
+    </div>
+    <div class="methode-item">
+      <div class="num">06</div>
+      <h4>Communauté d'élite</h4>
+      <p>Rejoignez un cercle restreint de penseurs exigeants. Échangez, débattez, collaborez. La solitude intellectuelle n'est plus une fatalité.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LIVRABLES ═══ -->
+<section class="livrables">
+  <div class="section-label">Ce que vous recevez</div>
+  <h2 class="section-title">Une bibliothèque <em>personnelle</em></h2>
+  <div class="livrables-grid">
+    <div class="livrable">
+      <div class="livrable-icon">
+        <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <h4>180+ vidéos</h4>
+      <p>Cours filmés en haute qualité, montés avec rigueur et clarté visuelle</p>
+    </div>
+    <div class="livrable">
+      <div class="livrable-icon">
+        <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      </div>
+      <h4>800+ pages</h4>
+      <p>Documents PDF soignés, typographiés en LaTeX, pensés comme des ouvrages de référence</p>
+    </div>
+    <div class="livrable">
+      <div class="livrable-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <h4>Séminaires live</h4>
+      <p>Séances mensuelles de discussion philosophique et résolution collaborative</p>
+    </div>
+    <div class="livrable">
+      <div class="livrable-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <h4>Mentorat</h4>
+      <p>Accompagnement personnel par un chercheur ou enseignant-chercheur</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VISION FINALE ═══ -->
+<section class="vision" id="vision">
+  <div class="section-label">La promesse</div>
+  <h2 class="section-title">À la fin de ce parcours, vous ne regarderez plus le monde <em>de la même façon</em></h2>
+  <p class="vision-text">
+    Vous aurez les outils pour lire l'univers dans sa langue originale. 
+    Vous saurez pourquoi l'espace-temps se courbe, pourquoi les marchés financiers 
+    obéissent au calcul stochastique, et pourquoi la mécanique quantique interroge 
+    notre conception même de la réalité. Vous serez devenu un penseur — pas seulement un technicien.
+  </p>
+  <a href="#inscription" class="vision-cta" id="inscription">Rejoindre la formation</a>
+</section>
+
+<tm-footer></tm-footer>
+
+<script src="components.js"></script>
+<script src="cookie-consent.js"></script>
+</body>
+</html>

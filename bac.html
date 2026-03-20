@@ -97,7 +97,7 @@
     align-items: center;
     gap: 0.75rem;
     background: linear-gradient(135deg, var(--green), var(--green-light));
-    color: var(--white);
+    color: var(--sand);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.05rem;
@@ -143,7 +143,7 @@
   .promise {
     padding: 8rem 2rem;
     text-align: center;
-    background: var(--white);
+    background: var(--sand-warm);
   }
 
   .promise-quote {
@@ -221,7 +221,14 @@
   }
 
   .partie:nth-child(odd) {
-    background: var(--white);
+    background: var(--sand-warm);
+    --ink: #2A0A2E;
+    --ink-rgb: 42, 10, 46;
+    --ink-light: #6B2D5B;
+    --text: #5A2A50;
+    --text-muted: rgba(74, 25, 66, 0.55);
+    --sand-dark: rgba(74, 25, 66, 0.15);
+    --white: var(--cream);
   }
 
   .partie:nth-child(even) {
@@ -412,7 +419,7 @@
 
   /* ── BONUS ── */
   .bonus-section {
-    background: var(--white);
+    background: var(--sand-warm);
   }
 
   .bonus-grid {
@@ -484,7 +491,7 @@
     align-items: center;
     gap: 0.75rem;
     background: linear-gradient(135deg, var(--green), var(--green-light));
-    color: var(--white);
+    color: var(--sand);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.15rem;
@@ -558,7 +565,7 @@
 </header>
 
 <!-- ═══════════ PROMISE ═══════════ -->
-<section class="promise">
+<section class="promise section--light">
   <p class="promise-quote reveal">
     « Je te montre la <em>structure cachée</em> du bac —<br>
     et quand tu la vois, tout devient <em>prévisible</em>. »
@@ -856,7 +863,7 @@
 <div class="divider"></div>
 
 <!-- ═══════════ BONUS ═══════════ -->
-<section class="bonus-section reveal">
+<section class="bonus-section section--light reveal">
   <div class="container">
     <div class="section-number" style="text-align: center;">Inclus dans la formation</div>
     <h2 class="section-title" style="text-align: center; margin-bottom: 0.5rem;">Bonus Premium</h2>
@@ -900,6 +907,7 @@
 </section>
 
 <!-- ═══════════ FOOTER ═══════════ -->
+<tm-newsletter></tm-newsletter>
 <tm-footer></tm-footer>
 
 <!-- ═══════════ SCROLL REVEAL ═══════════ -->
@@ -916,6 +924,7 @@
 </script>
 
 <script src="components.js"></script>
+<script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
 </body>
 </html>

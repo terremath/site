@@ -26,6 +26,7 @@ class TmFooter extends HTMLElement {
     </a>
     <div class="footer-right">
       <div class="footer-legal">
+        <a href="/contact.html">Contact</a>
         <a href="/mentions-legales.html">Mentions légales</a>
         <a href="/politique-confidentialite.html">Confidentialité</a>
         <a href="/politique-cookies.html">Cookies</a>
@@ -84,7 +85,7 @@ footer {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  border: 1.5px solid rgba(var(--green-rgb),0.4);
+  border: 1.5px solid rgba(var(--aubergine-rgb),0.7);
   object-fit: cover;
 }
 .footer-left .footer-brand {
@@ -251,8 +252,8 @@ footer {
 }
 .tm-left-logo img {
   width: 48px; height: 48px; border-radius: 50%;
-  border: 1.5px solid rgba(var(--green-rgb),0.5);
-  box-shadow: 0 0 16px rgba(var(--green-rgb),0.35);
+  border: 1.5px solid rgba(var(--aubergine-rgb),0.7);
+  box-shadow: 0 0 16px rgba(var(--aubergine-rgb),0.4);
   object-fit: cover; flex-shrink: 0;
 }
 .tm-left-logo .tm-ltitle {
@@ -269,7 +270,7 @@ footer {
 
 /* ── Menu ── */
 .tm-menu {
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: center; gap: 6px;
   opacity: 0;
   animation: tm-fadein-menu 0.6s ease 0.15s forwards;
 }
@@ -313,26 +314,33 @@ footer {
 /* ── Dropdowns ── */
 .tm-dd { position: relative; }
 .tm-dd-panel {
-  display: none; position: absolute; top: calc(100% + 6px); left: 50%;
-  transform: translateX(-50%);
-  min-width: 210px; background: rgba(var(--sand-rgb),0.97);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(var(--green-rgb),0.15);
-  border-top: 1.5px solid rgba(var(--green-rgb),0.45);
-  padding: 6px 0; z-index: 9999;
-  box-shadow: 0 10px 32px rgba(0,0,0,0.45);
-  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute; top: 100%; left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  min-width: 210px;
+  background: var(--ink);
+  border: 1px solid rgba(var(--sand-rgb), 0.12);
+  border-top: none;
+  padding: 8px 0 14px 0; z-index: 9999;
+  box-shadow: 0 16px 40px rgba(var(--sand-rgb), 0.6);
+  border-radius: 0 0 12px 12px;
+  transition: opacity 0.22s ease, transform 0.22s ease;
 }
-.tm-dd:hover .tm-dd-panel { display: block; }
+.tm-dd:hover .tm-dd-panel {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
 .tm-dd-panel a {
   display: block; font-family: 'Fraunces', 'Cormorant Garamond', serif;
   font-weight: 600; font-size: 0.78rem;
   letter-spacing: 2px; text-transform: uppercase;
-  text-decoration: none; padding: 10px 18px;
-  color: rgba(var(--ink-rgb),0.6);
-  transition: color 0.2s, background 0.2s, padding-left 0.2s;
+  text-decoration: none; padding: 10px 20px;
+  color: rgba(var(--sand-rgb), 0.6);
+  transition: color 0.2s, padding-left 0.2s;
 }
-.tm-dd-panel a:hover { color: var(--ink); background: rgba(var(--green-rgb),0.08); padding-left: 22px; }
+.tm-dd-panel a:hover { color: var(--sand); padding-left: 26px; background: none; }
 
 /* ── Hamburger (mobile) ── */
 #tm-toggle { display: none; }
@@ -469,25 +477,25 @@ class TmHeader extends HTMLElement {
         <div class="tm-dd-panel">
           <a href="philosophie.html">Ma philosophie</a>
           <a href="methode.html">Ma méthode</a>
+          <a href="qui-suis-je.html">Qui suis-je ?</a>
         </div>
       </div>
       <div class="tm-dd">
         <a href="#">Formations ▾</a>
         <div class="tm-dd-panel">
           <a href="bac.html">BAC</a>
-          <a href="encours.html">Trading</a>
-          <a href="encours.html">IA</a>
+          <a href="elite.html">Élite</a>
+          <!-- <a href="encours.html">Trading</a> -->
+          <!-- <a href="encours.html">IA</a> -->
           <a href="formations.html">Voir toutes les formations →</a>
         </div>
       </div>
-      <div class="tm-dd">
+      <!-- <div class="tm-dd">
         <a href="#">Fiches Interactives ▾</a>
         <div class="tm-dd-panel">
           <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
         </div>
-      </div>
-      <a href="qui-suis-je.html">Qui suis-je ?</a>
-      <a href="contact.html">Contact</a>
+      </div> -->
     </div>
   </div>
   <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
@@ -499,15 +507,15 @@ class TmHeader extends HTMLElement {
       <div class="tm-drawer-section">Terre Mathématiques</div>
       <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
       <a class="tm-sub" href="methode.html">Ma méthode</a>
+      <a class="tm-sub" href="qui-suis-je.html">Qui suis-je ?</a>
       <div class="tm-drawer-section">Formations</div>
       <a class="tm-sub" href="bac.html">BAC</a>
-      <a class="tm-sub" href="encours.html">Trading</a>
-      <a class="tm-sub" href="encours.html">IA</a>
+      <a class="tm-sub" href="elite.html">Élite</a>
+      <!-- <a class="tm-sub" href="encours.html">Trading</a> -->
+      <!-- <a class="tm-sub" href="encours.html">IA</a> -->
       <a class="tm-sub" href="formations.html">Voir toutes les formations →</a>
-      <div class="tm-drawer-section">Fiches Interactives</div>
-      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
-      <a href="qui-suis-je.html">Qui suis-je</a>
-      <a href="contact.html">Contact</a>
+      <!-- <div class="tm-drawer-section">Fiches Interactives</div>
+      <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a> -->
     </div>
   </div>
 </nav>`;
