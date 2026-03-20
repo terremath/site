@@ -712,6 +712,164 @@
     color: rgba(var(--ink-rgb), 0.72);
   }
 
+  /* ─── VIDEO CAROUSEL ─── */
+  .video-carousel {
+    background: var(--white);
+    overflow: hidden;
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    margin-top: 48px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 8px;
+  }
+
+  .carousel-track::-webkit-scrollbar { display: none; }
+
+  .video-card {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: var(--sand);
+    border: 1px solid var(--sand-dark);
+    aspect-ratio: 16/9;
+  }
+
+  .video-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .video-card:hover video { transform: scale(1.04); }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .video-card:hover .play-overlay { opacity: 1; }
+
+  .play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(var(--green-rgb), 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.85);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .video-card:hover .play-btn { transform: scale(1); }
+
+  .play-btn svg { color: var(--sand); margin-left: 4px; }
+
+  .carousel-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .carousel-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--sand-dark);
+    background: var(--sand);
+    color: var(--ink);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .carousel-btn:hover {
+    border-color: rgba(var(--green-rgb),0.4);
+    color: var(--green);
+  }
+
+  /* lightbox */
+  .video-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.88);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-lightbox.active { display: flex; }
+
+  .lightbox-inner {
+    position: relative;
+    width: min(90vw, 960px);
+    aspect-ratio: 16/9;
+  }
+
+  .lightbox-inner video {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -44px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .lightbox-close:hover { opacity: 1; }
+
+  .video-card-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+    pointer-events: none;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
     .hero-stats {
@@ -887,6 +1045,67 @@
   </div>
 </section>
 
+<!-- ═══════════════ VIDEO CAROUSEL ═══════════════ -->
+<section class="video-carousel" id="videos">
+  <div class="container">
+    <div class="section-label">En action</div>
+    <h2 class="section-title">Notre travail</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+        <div class="video-card" data-src="JesusWalksOnWater.mp4">
+          <video src="JesusWalksOnWater.mp4" muted preload="metadata"></video>
+          <div class="video-card-label">Marcher sur l'eau&nbsp;?</div>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-src="JesusWalksOnWater.mp4">
+          <video src="JesusWalksOnWater.mp4" muted preload="metadata"></video>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-src="JesusWalksOnWater.mp4">
+          <video src="JesusWalksOnWater.mp4" muted preload="metadata"></video>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-src="JesusWalksOnWater.mp4">
+          <video src="JesusWalksOnWater.mp4" muted preload="metadata"></video>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn" aria-label="Précédent">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-btn" id="nextBtn" aria-label="Suivant">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox vidéo -->
+<div class="video-lightbox" id="videoLightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+    <video id="lightboxVideo" controls></video>
+  </div>
+</div>
+
 <!-- ═══════════════ PREUVE SOCIALE ═══════════════ -->
 <!--
 <section class="proof section--dark">
@@ -995,6 +1214,39 @@
 <tm-footer></tm-footer>
 
 <script>
+  // ── Video Carousel ──
+  const track = document.getElementById('carouselTrack');
+  const lightbox = document.getElementById('videoLightbox');
+  const lightboxVideo = document.getElementById('lightboxVideo');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+  });
+
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('click', () => {
+      lightboxVideo.src = card.dataset.src;
+      lightbox.classList.add('active');
+      lightboxVideo.play();
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    lightboxVideo.pause();
+    lightboxVideo.src = '';
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
   // FAQ Toggle
   document.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
