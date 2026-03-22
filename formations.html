@@ -98,8 +98,10 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
+    max-width: 760px;
+    margin: 0 auto;
   }
 
   /* ─── CARTE ─── */
@@ -140,7 +142,6 @@
 
   .card:nth-child(1) { animation-delay: 0.25s; }
   .card:nth-child(2) { animation-delay: 0.35s; }
-  .card:nth-child(3) { animation-delay: 0.45s; }
 
   /* Icône */
   .card-icon {
@@ -253,7 +254,7 @@
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 640px) {
-    .grid { grid-template-columns: 1fr; }
+    .grid { grid-template-columns: 1fr; max-width: 100%; }
     .card { padding: 32px 26px; }
   }
 </style>
@@ -284,22 +285,13 @@
       <span class="card-cta">Découvrir →</span>
     </a>
 
-    <!-- Formation Trading -->
-    <a href="encours.html" class="card">
-      <div class="card-icon">📈</div>
-      <span class="card-status soon">Bientôt disponible</span>
-      <h2 class="card-title">Formation<br>Trading</h2>
-      <p class="card-desc">Comprendre les marchés financiers avec rigueur mathématique. Analyse technique, gestion du risque et stratégies quantitatives — bientôt disponible.</p>
-      <span class="card-cta muted">En cours de création →</span>
-    </a>
-
-    <!-- Formation IA -->
-    <a href="encours.html" class="card">
-      <div class="card-icon">🤖</div>
-      <span class="card-status soon">Bientôt disponible</span>
-      <h2 class="card-title">Formation<br>Intelligence Artificielle</h2>
-      <p class="card-desc">Des fondements mathématiques de l'IA aux architectures modernes. Algèbre linéaire, probabilités, réseaux de neurones — une approche exigeante et complète.</p>
-      <span class="card-cta muted">En cours de création →</span>
+    <!-- Formation Elite -->
+    <a href="elite.html" class="card">
+      <div class="card-icon">✦</div>
+      <span class="card-status available">Disponible</span>
+      <h2 class="card-title">Formation<br>Élite</h2>
+      <p class="card-desc">Un accompagnement d'exception pour ceux qui visent le sommet. Suivi intensif, méthodes avancées et exigence maximale pour dépasser les limites.</p>
+      <span class="card-cta">Découvrir →</span>
     </a>
 
   </div>

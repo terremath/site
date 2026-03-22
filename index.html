@@ -18,16 +18,56 @@
 
   /* ─── HERO ─── */
   .hero {
-    min-height: 90vh;
+    position: relative;
+    height: 90vh;
+    overflow: hidden;
+  }
+
+  .hero-slide {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
     padding: 80px 24px 60px;
-    position: relative;
-    overflow: hidden;
-    background: var(--white);
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    pointer-events: none;
+  }
+
+  .hero-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .hero-slide:nth-child(1) { background: #2A1020; }
+  .hero-slide:nth-child(2) { background: #130E1C; }
+
+  .hero-dots {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+  }
+
+  .hero-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--green);
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    padding: 0;
+  }
+
+  .hero-dot.active {
+    background: var(--green);
   }
 
   .hero-badge {
@@ -714,8 +754,27 @@
 
   /* ─── VIDEO CAROUSEL ─── */
   .video-carousel {
-    background: var(--white);
+    background: var(--sand-warm);
     overflow: hidden;
+  }
+
+  .video-carousel .section-label { color: var(--aubergine); }
+  .video-carousel .section-title { color: #2A0A2E; }
+
+  .video-carousel .carousel-btn {
+    background: var(--cream);
+    border-color: rgba(74,25,66,0.15);
+    color: #2A0A2E;
+  }
+
+  .video-carousel .carousel-btn:hover {
+    border-color: var(--aubergine);
+    color: var(--aubergine);
+  }
+
+  .video-carousel .video-card {
+    background: var(--cream);
+    border-color: rgba(74,25,66,0.12);
   }
 
   .carousel-wrapper {
@@ -895,29 +954,37 @@
 
 <tm-header></tm-header>
 
-<!-- ═══════════════ HERO ═══════════════ -->
+<!-- ═══════════════ HERO CAROUSEL ═══════════════ -->
 <section class="hero">
-  <div class="hero-badge">Places limitées — BAC 2026</div>
-  <h1>Atteins l'<span class="gold">excellence</span> en mathématiques</h1>
-  <p class="hero-sub">Un suivi quotidien et personnalisé pour décrocher les concours les plus sélectifs — ENS, Polytechnique, Mines, Centrale — ou briller au bac et aux olympiades.</p>
-  <a href="#pricing" class="hero-cta">
-    Réserver mon appel découverte
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-  </a>
-  <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="num">97%</div>
-      <div class="label">Taux de réussite</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">+4 pts</div>
-      <div class="label">Progression moyenne</div>
-    </div>
-    <div class="hero-stat">
-      <div class="num">150+</div>
-      <div class="label">Élèves accompagnés</div>
-    </div>
+
+  <!-- ── Slide 1 : Atteins l'excellence ── -->
+  <div class="hero-slide active">
+    <div class="hero-badge">Places limitées — BAC 2026</div>
+    <h1>Atteins l'<span class="gold">excellence</span> en mathématiques</h1>
+    <p class="hero-sub">Un suivi quotidien et personnalisé pour décrocher les concours les plus sélectifs — ENS, Polytechnique, Mines, Centrale — ou briller au bac et aux olympiades.</p>
+    <a href="#pricing" class="hero-cta">
+      Réserver mon appel découverte
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
   </div>
+
+  <!-- ── Slide 2 : Teste tes compétences ── -->
+  <div class="hero-slide">
+    <div class="hero-badge">Évalue-toi</div>
+    <h1>Teste tes <span class="gold">compétences</span></h1>
+    <p class="hero-sub">Tu veux savoir où tu en es ? Lance notre QCM interactif et identifie tes points forts et tes lacunes en quelques minutes.</p>
+    <a href="qcm.html" class="hero-cta" style="animation:none;">
+      Lancer le QCM
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+
+  <!-- Indicateurs -->
+  <div class="hero-dots">
+    <button class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
+    <button class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
+  </div>
+
 </section>
 
 <!-- ═══════════════ OBJECTIFS ═══════════════ -->
@@ -1032,21 +1099,8 @@
   </div>
 </section>
 -->
-<!-- ═══════════════ TESTE TES COMPÉTENCES ═══════════════ -->
-<section class="quiz-cta" id="quiz" style="background: var(--sand); text-align: center;">
-  <div class="container">
-    <div class="section-label">Évalue-toi</div>
-    <h2 class="section-title">Teste tes <span style="color: var(--gold)">compétences</span></h2>
-    <p class="section-desc" style="margin: 0 auto 40px;">Tu veux savoir où tu en es ? Lance notre QCM interactif et identifie tes points forts et tes lacunes en quelques minutes.</p>
-    <a href="qcm.html" class="hero-cta" style="animation:none;">
-      Lancer le QCM
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-    </a>
-  </div>
-</section>
-
 <!-- ═══════════════ VIDEO CAROUSEL ═══════════════ -->
-<section class="video-carousel" id="videos">
+<section class="video-carousel section--light" id="videos">
   <div class="container">
     <div class="section-label">En action</div>
     <h2 class="section-title">Notre travail</h2>
@@ -1107,15 +1161,13 @@
 </div>
 
 <!-- ═══════════════ PREUVE SOCIALE ═══════════════ -->
-<!--
-<section class="proof section--dark">
+<section class="proof" style="background: var(--sand);">
   <div class="container">
     <div class="section-label">Témoignages</div>
     <h2 class="section-title">Ce qu'en disent mes élèves</h2>
     <div id="avis-container"></div>
   </div>
 </section>
--->
 <!-- ═══════════════ TARIF ═══════════════ -->
 <!--
 <section class="pricing section--light" id="pricing">
@@ -1214,6 +1266,73 @@
 <tm-footer></tm-footer>
 
 <script>
+  // ── Hero Carousel ──
+  (function() {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots   = document.querySelectorAll('.hero-dot');
+    let current  = 0;
+
+    function goTo(index) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        clearInterval(timer);
+        goTo(i);
+        timer = setInterval(advance, 5000);
+      });
+    });
+
+    function advance() { goTo((current + 1) % slides.length); }
+    var timer = setInterval(advance, 5000);
+
+    function navigate(dir) {
+      clearInterval(timer);
+      goTo((current + dir + slides.length) % slides.length);
+      timer = setInterval(advance, 5000);
+    }
+
+    const hero = document.querySelector('.hero');
+
+    // Trackpad — accumulation deltaX
+    let accX = 0, wheelLocked = false, resetTimer;
+    hero.addEventListener('wheel', function(e) {
+      clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { accX = 0; }, 200);
+      if (Math.abs(e.deltaX) < Math.abs(e.deltaY) * 0.5) return;
+      if (wheelLocked) return;
+      accX += e.deltaX;
+      if (accX > 40) {
+        wheelLocked = true; accX = 0;
+        navigate(1);
+        setTimeout(() => { wheelLocked = false; }, 900);
+      } else if (accX < -40) {
+        wheelLocked = true; accX = 0;
+        navigate(-1);
+        setTimeout(() => { wheelLocked = false; }, 900);
+      }
+    }, { passive: true });
+
+    // Touch (mobile / certains trackpads)
+    let tx = 0;
+    hero.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, { passive: true });
+    hero.addEventListener('touchend', e => {
+      const d = tx - e.changedTouches[0].clientX;
+      if (Math.abs(d) > 50) navigate(d > 0 ? 1 : -1);
+    }, { passive: true });
+
+    // Flèches clavier
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') navigate(1);
+      if (e.key === 'ArrowLeft')  navigate(-1);
+    });
+  })();
+
   // ── Video Carousel ──
   const track = document.getElementById('carouselTrack');
   const lightbox = document.getElementById('videoLightbox');
