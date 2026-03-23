@@ -11,7 +11,7 @@
 
   body {
     font-family: 'Outfit', sans-serif;
-    background: var(--sand);
+    background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -29,7 +29,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 65% 75% at 50% 20%, rgba(var(--green-rgb), 0.09) 0%, transparent 65%);
+    background: radial-gradient(ellipse 65% 75% at 50% 20%, rgba(var(--accent-rgb), 0.09) 0%, transparent 65%);
     pointer-events: none;
   }
 
@@ -38,14 +38,14 @@
     align-items: center;
     gap: 9px;
     padding: 7px 20px;
-    border: 1px solid rgba(var(--green-rgb), 0.28);
+    border: 1px solid rgba(var(--accent-rgb), 0.28);
     border-radius: 100px;
     font-size: 0.7rem;
     letter-spacing: 0.28em;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--accent);
     margin-bottom: 44px;
-    background: rgba(var(--green-rgb), 0.07);
+    background: rgba(var(--accent-rgb), 0.07);
     position: relative;
     z-index: 1;
     animation: fadeDown 0.7s ease-out both;
@@ -54,7 +54,7 @@
   .hero-badge::before {
     content: '';
     width: 6px; height: 6px;
-    background: var(--green);
+    background: var(--accent);
     border-radius: 50%;
     flex-shrink: 0;
   }
@@ -64,7 +64,7 @@
     font-size: clamp(2.6rem, 6vw, 4.5rem);
     font-weight: 800;
     line-height: 1.08;
-    color: var(--ink);
+    color: var(--heading);
     max-width: 640px;
     margin: 0 auto 22px;
     position: relative;
@@ -75,7 +75,7 @@
   .hero h1 em {
     font-style: italic;
     font-weight: 300;
-    color: var(--green);
+    color: var(--accent);
   }
 
   .hero-sub {
@@ -97,7 +97,7 @@
   }
   .sep-line {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(var(--green-rgb), 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.2), transparent);
   }
 
   /* ─── LAYOUT PRINCIPAL ─── */
@@ -113,8 +113,8 @@
 
   /* ─── FORMULAIRE ─── */
   .form-card {
-    background: rgba(var(--green-rgb), 0.04);
-    border: 1px solid rgba(var(--green-rgb), 0.14);
+    background: rgba(var(--accent-rgb), 0.04);
+    border: 1px solid rgba(var(--accent-rgb), 0.14);
     border-radius: 10px;
     padding: 48px 44px;
     animation: fadeUp 0.8s ease-out 0.25s both;
@@ -127,14 +127,14 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(var(--green-rgb), 0.45), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.45), transparent);
   }
 
   .form-title {
     font-family: 'Fraunces', serif;
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--heading);
     margin-bottom: 32px;
   }
 
@@ -161,13 +161,13 @@
   .field input,
   .field select,
   .field textarea {
-    background: rgba(var(--ink-rgb), 0.04);
-    border: 1px solid rgba(var(--green-rgb), 0.18);
+    background: rgba(var(--heading-rgb), 0.04);
+    border: 1px solid rgba(var(--accent-rgb), 0.18);
     border-radius: 6px;
     padding: 13px 16px;
     font-family: 'Outfit', sans-serif;
     font-size: 0.92rem;
-    color: var(--ink);
+    color: var(--heading);
     outline: none;
     transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
     width: 100%;
@@ -181,9 +181,9 @@
   .field input:focus,
   .field select:focus,
   .field textarea:focus {
-    border-color: rgba(var(--green-rgb), 0.5);
-    background: rgba(var(--green-rgb), 0.05);
-    box-shadow: 0 0 0 3px rgba(var(--green-rgb), 0.08);
+    border-color: rgba(var(--accent-rgb), 0.5);
+    background: rgba(var(--accent-rgb), 0.05);
+    box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
   }
 
   .field select {
@@ -197,7 +197,7 @@
 
   .field select option {
     background: #221B35;
-    color: var(--ink);
+    color: var(--heading);
   }
 
   .field textarea {
@@ -211,8 +211,8 @@
     align-items: center;
     gap: 10px;
     padding: 14px 32px;
-    background: var(--green);
-    color: var(--sand);
+    background: var(--accent);
+    color: var(--bg);
     border: none;
     border-radius: 6px;
     font-family: 'Outfit', sans-serif;
@@ -228,9 +228,9 @@
   }
 
   .submit-btn:hover {
-    background: var(--green-light);
+    background: var(--accent-light);
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(var(--green-rgb), 0.3);
+    box-shadow: 0 8px 28px rgba(var(--accent-rgb), 0.3);
     gap: 14px;
   }
 
@@ -253,7 +253,7 @@
   .form-success h3 {
     font-family: 'Fraunces', serif;
     font-size: 1.4rem;
-    color: var(--ink);
+    color: var(--heading);
     margin-bottom: 10px;
   }
 
@@ -272,8 +272,8 @@
   }
 
   .info-card {
-    background: rgba(var(--green-rgb), 0.04);
-    border: 1px solid rgba(var(--green-rgb), 0.14);
+    background: rgba(var(--accent-rgb), 0.04);
+    border: 1px solid rgba(var(--accent-rgb), 0.14);
     border-radius: 10px;
     padding: 30px 28px;
     position: relative;
@@ -286,14 +286,14 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(var(--green-rgb), 0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb), 0.4), transparent);
     opacity: 0;
     transition: opacity 0.3s;
   }
 
   .info-card:hover {
-    border-color: rgba(var(--green-rgb), 0.28);
-    background: rgba(var(--green-rgb), 0.07);
+    border-color: rgba(var(--accent-rgb), 0.28);
+    background: rgba(var(--accent-rgb), 0.07);
   }
 
   .info-card:hover::before { opacity: 1; }
@@ -301,8 +301,8 @@
   .info-icon {
     width: 46px; height: 46px;
     border-radius: 50%;
-    border: 1px solid rgba(var(--green-rgb), 0.2);
-    background: rgba(var(--green-rgb), 0.07);
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+    background: rgba(var(--accent-rgb), 0.07);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -321,19 +321,19 @@
   .info-value {
     font-family: 'Fraunces', serif;
     font-size: 0.95rem;
-    color: var(--ink);
+    color: var(--heading);
     font-weight: 600;
     word-break: break-all;
   }
 
   .info-value a {
-    color: var(--green);
+    color: var(--accent);
     text-decoration: none;
     transition: color 0.3s;
   }
 
   .info-value a:hover {
-    color: var(--green-light);
+    color: var(--accent-light);
   }
 
   .info-desc {
@@ -351,21 +351,21 @@
     font-size: 0.7rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--green);
+    color: var(--accent);
     margin-top: 14px;
   }
 
   .response-badge::before {
     content: '';
     width: 5px; height: 5px;
-    background: var(--green);
+    background: var(--accent);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
   }
 
   @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(var(--green-rgb), 0.5); }
-    50%       { box-shadow: 0 0 0 5px rgba(var(--green-rgb), 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.5); }
+    50%       { box-shadow: 0 0 0 5px rgba(var(--accent-rgb), 0); }
   }
 
   /* ─── ANIMATIONS ─── */

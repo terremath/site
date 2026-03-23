@@ -270,7 +270,7 @@
       width: 340px;
       flex-shrink: 0;
       padding: 30px 28px 24px;
-      background: var(--white);
+      background: var(--bg-alt);
       border: 1px solid var(--sand-dark);
       border-radius: 14px;
       display: flex;
@@ -384,7 +384,7 @@
     .avis-modal-overlay.open { opacity: 1; pointer-events: all; }
 
     .avis-modal {
-      background: var(--white);
+      background: var(--bg-alt);
       border-radius: 16px;
       padding: 44px 40px 36px;
       max-width: 560px;

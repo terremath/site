@@ -10,7 +10,7 @@
 
   body {
     font-family: 'Outfit', sans-serif;
-    background: var(--sand);
+    background: var(--bg);
     color: var(--text);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -41,8 +41,8 @@
     transform: translateY(30px);
     animation: fadeUp 0.8s ease-out 0.2s forwards;
     padding: 6px;
-    border: 1px solid rgba(var(--green-rgb),0.2);
-    background: rgba(var(--green-rgb),0.04);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    background: rgba(var(--accent-rgb),0.04);
     border-radius: 4px;
   }
 
@@ -53,7 +53,7 @@
   }
 
   .photo-wrapper:hover {
-    border-color: rgba(var(--green-rgb),0.35);
+    border-color: rgba(var(--accent-rgb),0.35);
   }
 
   /* ─── TITLE ─── */
@@ -64,14 +64,14 @@
     line-height: 1.1;
     margin-bottom: 12px;
     text-align: center;
-    color: var(--ink);
+    color: var(--heading);
     opacity: 0;
     transform: translateY(24px);
     animation: fadeUp 0.8s ease-out 0.4s forwards;
   }
 
   .page-title .gold {
-    color: var(--green);
+    color: var(--accent);
     font-style: italic;
     font-weight: 300;
   }
@@ -80,7 +80,7 @@
     display: block;
     width: 50px;
     height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent);
+    background: linear-gradient(90deg, var(--accent), transparent);
     margin: 24px auto 0;
     opacity: 0;
     animation: fadeUp 0.8s ease-out 0.5s forwards;
@@ -106,7 +106,7 @@
     font-family: 'Fraunces', serif;
     font-size: clamp(1.6rem, 3vw, 2rem);
     font-weight: 600;
-    color: var(--ink);
+    color: var(--heading);
     margin-bottom: 8px;
     line-height: 1.3;
   }
@@ -115,7 +115,7 @@
     display: block;
     width: 40px;
     height: 2px;
-    background: linear-gradient(90deg, var(--green), transparent);
+    background: linear-gradient(90deg, var(--accent), transparent);
     margin-bottom: 24px;
   }
 
@@ -132,12 +132,12 @@
 
   .section .indented {
     padding-left: 20px;
-    border-left: 3px solid rgba(var(--green-rgb),0.3);
+    border-left: 3px solid rgba(var(--accent-rgb),0.3);
     margin: 14px 0;
     font-style: italic;
     font-family: 'Fraunces', serif;
     font-size: 1rem;
-    color: var(--ink-light);
+    color: var(--heading-soft);
     line-height: 2;
   }
 
@@ -163,13 +163,13 @@
     content: '';
     flex: 1;
     height: 1px;
-    background: var(--sand-dark);
+    background: var(--border);
   }
 
   .sep-dot {
     width: 6px;
     height: 6px;
-    background: var(--green-light);
+    background: var(--accent-light);
     border-radius: 50%;
   }
 
