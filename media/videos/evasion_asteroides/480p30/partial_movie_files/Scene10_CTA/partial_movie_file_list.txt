@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/3414474089_3430652087_1329422734.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_910008212_1249665172.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_1110116458_3319603006.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_3421400682_1672868431.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_2129216174_1003324623.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_3089776016_3058973373.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_2408024828_706311776.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/evasion_asteroides/480p30/partial_movie_files/Scene10_CTA/4150228341_3523960056_1591027275.mp4'
