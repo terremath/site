@@ -40,20 +40,13 @@
     opacity: 0;
     transform: translateY(30px);
     animation: fadeUp 0.8s ease-out 0.2s forwards;
-    padding: 6px;
-    border: 1px solid rgba(var(--accent-rgb),0.2);
-    background: rgba(var(--accent-rgb),0.04);
-    border-radius: 4px;
   }
 
   .photo-wrapper img {
     width: 100%;
     display: block;
-    border-radius: 2px;
-  }
-
-  .photo-wrapper:hover {
-    border-color: rgba(var(--accent-rgb),0.35);
+    mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, black 20%, rgba(0,0,0,0.5) 50%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 45%, black 20%, rgba(0,0,0,0.5) 50%, transparent 70%);
   }
 
   /* ─── TITLE ─── */

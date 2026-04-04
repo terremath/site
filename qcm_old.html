@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QCM Maths — Teste ton niveau</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="colors.js"></script>
+<style>
+:root {
+  --bg-card: #2A1020;
+  --bg-card-hover: #3A1A30;
+  --border-active: var(--accent);
+  --text-dim: rgba(200,185,164,0.35);
+  --accent-glow: rgba(var(--accent-rgb), 0.25);
+  --green: #34d399;
+  --green-bg: rgba(52, 211, 153, 0.1);
+  --green-border: rgba(52, 211, 153, 0.3);
+  --red: #f87171;
+  --red-bg: rgba(248, 113, 113, 0.1);
+  --red-border: rgba(248, 113, 113, 0.3);
+  --gold: #fbbf24;
+  --gold-bg: rgba(251, 191, 36, 0.1);
+  --premium-gradient: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
+  --radius: 12px;
+  --radius-lg: 20px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== BACKGROUND EFFECTS ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(ellipse at 30% 20%, rgba(var(--accent-rgb), 0.07) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(139, 77, 127, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== HEADER ===== */
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.header-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(var(--accent-rgb), 0.1);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--accent-light);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, var(--heading) 0%, var(--accent-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.header p {
+  color: var(--text-muted);
+  font-size: 17px;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== SCREEN MANAGEMENT ===== */
+.screen { display: none; animation: fadeUp 0.4s ease; }
+.screen.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== LEVEL CARDS ===== */
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.level-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.06), transparent);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.level-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
+.level-card:hover::before { opacity: 1; }
+.level-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.level-card .level-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.level-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+
+.level-card p {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ===== MODE SELECTOR ===== */
+.mode-section {
+  margin-bottom: 32px;
+}
+
+.mode-section h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+
+.mode-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.mode-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.mode-card:hover { border-color: var(--border-active); }
+.mode-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+
+.mode-card.premium-card { border-color: rgba(251, 191, 36, 0.25); }
+.mode-card.premium-card:hover { border-color: rgba(251, 191, 36, 0.5); }
+.mode-card.premium-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-bg); }
+
+.mode-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+}
+
+.mode-tag.free { background: rgba(var(--accent-rgb), 0.15); color: var(--accent-light); }
+.mode-tag.premium { background: var(--gold-bg); color: var(--gold); }
+
+.mode-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+.mode-card p { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
+
+/* ===== PREMIUM CODE INPUT ===== */
+.premium-unlock {
+  margin-top: 16px;
+  padding: 20px 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius);
+  display: none;
+}
+
+.premium-unlock.visible { display: block; animation: fadeUp 0.3s ease; }
+
+.premium-unlock label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--gold);
+}
+
+.premium-unlock .input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.premium-unlock input {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.premium-unlock input:focus { border-color: var(--gold); }
+
+.premium-unlock .unlock-btn {
+  padding: 10px 20px;
+  background: var(--premium-gradient);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.premium-unlock .or-buy {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.premium-unlock .or-buy a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+.premium-error {
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 8px;
+  display: none;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'Outfit', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 20px var(--accent-glow);
+}
+
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-secondary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover { border-color: var(--border-active); }
+
+.btn-center { display: flex; justify-content: center; margin-top: 24px; }
+
+/* ===== QUIZ SCREEN ===== */
+.quiz-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.quiz-level-badge {
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent-light);
+}
+
+.quiz-counter {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.quiz-counter span { color: var(--text); font-weight: 700; }
+
+/* Progress bar */
+.progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  margin-bottom: 40px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* Question */
+.question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  margin-bottom: 20px;
+}
+
+.question-number {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-light);
+  margin-bottom: 16px;
+}
+
+.question-text {
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* Choices */
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.choice:hover { border-color: var(--border-active); background: var(--bg-card-hover); }
+.choice.selected { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.08); }
+
+.choice-letter {
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(var(--accent-rgb), 0.1);
+  color: var(--accent-light);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.choice.selected .choice-letter {
+  background: var(--accent);
+  color: #fff;
+}
+
+.choice-text { flex: 1; }
+
+/* Quiz nav */
+.quiz-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== EMAIL GATE ===== */
+.email-screen {
+  text-align: center;
+}
+
+.email-screen .icon-lock {
+  width: 72px; height: 72px;
+  margin: 0 auto 24px;
+  background: rgba(var(--accent-rgb), 0.1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+
+.email-screen h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+
+.email-screen p {
+  color: var(--text-muted);
+  font-size: 15px;
+  margin-bottom: 28px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.email-form {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.email-form input {
+  width: 100%;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-size: 15px;
+  font-family: 'Outfit', sans-serif;
+  outline: none;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+
+.email-form input:focus { border-color: var(--accent); }
+.email-form input::placeholder { color: var(--text-dim); }
+
+.email-legal {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ===== RESULTS SCREEN ===== */
+.results-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.score-ring {
+  width: 160px; height: 160px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
+.score-ring-fill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.2s ease;
+}
+
+.score-ring .score-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-value .number {
+  font-family: 'Fraunces', serif;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.score-value .total {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.results-appreciation {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.results-level-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent-light);
+  margin-bottom: 8px;
+}
+
+/* Correction list */
+.corrections { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+
+.correction-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.correction-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.correction-status {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.correction-status.correct { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.correction-status.wrong { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+
+.correction-q {
+  flex: 1;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.correction-detail {
+  display: none;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.correction-item.open .correction-detail { display: block; }
+
+.correction-detail .your-answer { color: var(--red); }
+.correction-detail .correct-answer { color: var(--green); }
+.correction-detail .explanation { margin-top: 8px; color: var(--text); }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+  .container { padding: 24px 16px; }
+  .levels-grid, .mode-cards { grid-template-columns: 1fr; }
+  .question-card { padding: 24px 20px; }
+  .question-text { font-size: 16px; }
+  .choice { padding: 14px 16px; font-size: 15px; }
+  .quiz-nav { flex-wrap: wrap; gap: 10px; }
+}
+
+/* ===== KATEX OVERRIDES ===== */
+.katex { font-size: 1.05em; }
+.katex-display { margin: 12px 0; overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<tm-header></tm-header>
+
+
+
+<div class="container">
+  <!-- ===== HEADER ===== -->
+  <div class="header" id="mainHeader">
+    <div class="header-badge">QCM Mathématiques</div>
+    <h1>Teste ton niveau en maths</h1>
+    <p>Du Brevet à la MP — choisis ton niveau et découvre ton bilan détaillé.</p>
+  </div>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div class="screen active" id="screenHome">
+    <!-- Level selection -->
+    <div class="levels-grid">
+      <div class="level-card" data-level="brevet" onclick="selectLevel(this)">
+        <span class="level-icon">📐</span>
+        <h3>Brevet</h3>
+        <p>Niveau collège — 3ème</p>
+      </div>
+      <div class="level-card" data-level="bac" onclick="selectLevel(this)">
+        <span class="level-icon">📊</span>
+        <h3>Bac</h3>
+        <p>Niveau lycée — Terminale</p>
+      </div>
+      <div class="level-card" data-level="mpsi" onclick="selectLevel(this)">
+        <span class="level-icon">🔬</span>
+        <h3>Fin MPSI</h3>
+        <p>Prépa — 1ère année</p>
+      </div>
+      <div class="level-card" data-level="mp" onclick="selectLevel(this)">
+        <span class="level-icon">🧮</span>
+        <h3>Fin MP</h3>
+        <p>Prépa — 2ème année</p>
+      </div>
+    </div>
+
+    <!-- Mode selection -->
+    <div class="mode-section">
+      <h2>Choisis ton mode</h2>
+      <div class="mode-cards">
+        <div class="mode-card selected" data-mode="free" onclick="selectMode(this)">
+          <span class="mode-tag free">Gratuit</span>
+          <h3>10 questions</h3>
+          <p>Idéal pour un test rapide. Bilan envoyé par email.</p>
+        </div>
+        <div class="mode-card premium-card" data-mode="premium" onclick="selectMode(this)">
+          <span class="mode-tag premium">Premium</span>
+          <h3>50 questions</h3>
+          <p>Évaluation complète avec bilan détaillé par thème.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium unlock -->
+    <div class="premium-unlock" id="premiumUnlock">
+      <label>🔑 Entre ton code d'accès Premium</label>
+      <div class="input-row">
+        <input type="text" id="premiumCode" placeholder="Ex : PREMIUM2025">
+        <button class="unlock-btn" onclick="checkPremiumCode()">Débloquer</button>
+      </div>
+      <div class="premium-error" id="premiumError">Code invalide. Réessaye.</div>
+      <p class="or-buy">Pas encore de code ? <a href="https://TON-LIEN-DE-PAIEMENT.com" target="_blank">Acheter l'accès Premium →</a></p>
+    </div>
+
+    <div class="btn-center">
+      <button class="btn btn-primary" id="btnStart" disabled onclick="startQuiz()">Commencer le QCM →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: QUIZ ===== -->
+  <div class="screen" id="screenQuiz">
+    <div class="quiz-top-bar">
+      <span class="quiz-level-badge" id="quizLevelBadge"></span>
+      <span class="quiz-counter">Question <span id="quizCurrent">1</span> / <span id="quizTotal">10</span></span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="question-card">
+      <div class="question-number" id="questionNumber">QUESTION 1</div>
+      <div class="question-text" id="questionText"></div>
+    </div>
+    <div class="choices" id="choicesContainer"></div>
+    <div class="quiz-nav">
+      <button class="btn btn-secondary" id="btnPrev" onclick="prevQuestion()">← Précédente</button>
+      <button class="btn btn-primary" id="btnNext" onclick="nextQuestion()">Suivante →</button>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: EMAIL GATE ===== -->
+  <div class="screen" id="screenEmail">
+    <div class="email-screen">
+      <div class="icon-lock">🎯</div>
+      <h2>Ton QCM est terminé !</h2>
+      <p>Entre ton email pour recevoir ton bilan détaillé avec les corrections.</p>
+      <div class="email-form">
+        <input type="email" id="emailInput" placeholder="ton.email@exemple.com" required>
+        <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Voir mon bilan →</button>
+        <p class="email-legal">En soumettant, tu acceptes de recevoir ton bilan par email. Pas de spam.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: RESULTS ===== -->
+  <div class="screen" id="screenResults">
+    <div class="results-header">
+      <div class="score-ring">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="score-ring-bg" cx="80" cy="80" r="68"/>
+          <circle class="score-ring-fill" id="scoreCircle" cx="80" cy="80" r="68"
+            stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
+        </svg>
+        <div class="score-value">
+          <span class="number" id="scoreNumber">0</span>
+          <span class="total" id="scoreTotal">/ 10</span>
+        </div>
+      </div>
+      <span class="results-level-badge" id="resultsLevelBadge"></span>
+      <p class="results-appreciation" id="appreciation"></p>
+    </div>
+
+    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:16px;">Correction détaillée</h2>
+    <div class="corrections" id="correctionsContainer"></div>
+
+    <div class="btn-center" style="gap:12px; flex-wrap:wrap;">
+      <button class="btn btn-secondary" onclick="restartQuiz()">↺ Recommencer</button>
+      <button class="btn btn-primary" onclick="goHome()">Changer de niveau →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+//  📝 QUESTIONS DATABASE — TEMPLATE
+//  Ajoute tes questions ici ! Utilise du LaTeX avec $ ... $ ou $$ ... $$
+//  Structure :
+//  {
+//    question: "Texte avec $\\LaTeX$",
+//    choices: ["Choix A", "Choix B $x^2$", "Choix C", "Choix D"],
+//    correct: 0,  // index de la bonne réponse (0 = A, 1 = B, ...)
+//    explanation: "Explication avec $\\LaTeX$ si besoin"
+//  }
+// ============================================================
+
+const QUESTIONS = {
+  brevet: {
+    free: [
+      {
+        question: "Quel est le résultat de $(-3)^2$ ?",
+        choices: ["$-9$", "$9$", "$6$", "$-6$"],
+        correct: 1,
+        explanation: "$(-3)^2 = (-3) \\times (-3) = 9$. Attention : $-3^2 = -9$ mais $(-3)^2 = 9$."
+      },
+      {
+        question: "Simplifier la fraction $\\dfrac{12}{18}$.",
+        choices: ["$\\dfrac{3}{4}$", "$\\dfrac{2}{3}$", "$\\dfrac{4}{6}$", "$\\dfrac{6}{9}$"],
+        correct: 1,
+        explanation: "$\\text{PGCD}(12,18) = 6$, donc $\\dfrac{12}{18} = \\dfrac{2}{3}$."
+      },
+      {
+        question: "Dans un triangle rectangle, si les deux côtés de l'angle droit mesurent $3$ cm et $4$ cm, combien mesure l'hypoténuse ?",
+        choices: ["$6$ cm", "$7$ cm", "$5$ cm", "$\\sqrt{7}$ cm"],
+        correct: 2,
+        explanation: "Par le théorème de Pythagore : $c = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$ cm."
+      },
+      // AJOUTE ICI tes questions brevet gratuites (10 au total)
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions brevet premium
+      // Copie le même format que ci-dessus
+    ]
+  },
+
+  bac: {
+    free: [
+      {
+        question: "Quelle est la dérivée de $f(x) = e^{2x}$ ?",
+        choices: ["$e^{2x}$", "$2e^{2x}$", "$2xe^{2x}$", "$e^{2x+1}$"],
+        correct: 1,
+        explanation: "Par la règle de la chaîne : $f'(x) = 2e^{2x}$."
+      },
+      {
+        question: "La suite $(u_n)$ définie par $u_n = \\left(1 + \\dfrac{1}{n}\\right)^n$ converge vers :",
+        choices: ["$1$", "$+\\infty$", "$e$", "$2$"],
+        correct: 2,
+        explanation: "C'est une limite classique : $\\lim_{n \\to +\\infty} \\left(1 + \\frac{1}{n}\\right)^n = e$."
+      },
+      {
+        question: "Calculer $\\displaystyle\\int_0^1 2x\\,dx$.",
+        choices: ["$0$", "$1$", "$2$", "$\\dfrac{1}{2}$"],
+        correct: 1,
+        explanation: "$\\int_0^1 2x\\,dx = \\left[x^2\\right]_0^1 = 1 - 0 = 1$."
+      },
+      // AJOUTE ICI tes questions bac gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions bac premium
+    ]
+  },
+
+  mpsi: {
+    free: [
+      {
+        question: "Soit $A \\in \\mathcal{M}_n(\\mathbb{R})$ telle que $A^2 = A$. Alors $A$ est :",
+        choices: ["Inversible", "Nilpotente", "Un projecteur", "Antisymétrique"],
+        correct: 2,
+        explanation: "$A^2 = A$ signifie que $A$ est idempotente, c'est la définition matricielle d'un projecteur."
+      },
+      {
+        question: "Le rayon de convergence de $\\displaystyle\\sum_{n \\geq 1} \\frac{x^n}{n}$ est :",
+        choices: ["$0$", "$1$", "$+\\infty$", "$e$"],
+        correct: 1,
+        explanation: "Par la règle de d'Alembert, $R = \\lim \\frac{n+1}{n} = 1$. C'est la série de $-\\ln(1-x)$."
+      },
+      {
+        question: "Le groupe $(\\mathbb{Z}/6\\mathbb{Z}, +)$ est isomorphe à :",
+        choices: ["$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$", "$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$", "$S_3$", "$\\mathbb{Z}/6\\mathbb{Z}$ uniquement"],
+        correct: 0,
+        explanation: "Par le théorème chinois, comme $\\text{pgcd}(2,3)=1$, $\\mathbb{Z}/6\\mathbb{Z} \\simeq \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$."
+      },
+      // AJOUTE ICI tes questions MPSI gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions MPSI premium
+    ]
+  },
+
+  mp: {
+    free: [
+      {
+        question: "Soit $E$ un espace de Banach et $T : E \\to E$ une application linéaire contractante. Alors :",
+        choices: [
+          "$T$ admet exactement un point fixe",
+          "$T$ n'a pas de point fixe",
+          "$T$ admet une infinité de points fixes",
+          "On ne peut pas conclure"
+        ],
+        correct: 0,
+        explanation: "C'est le théorème du point fixe de Banach-Picard : toute contraction sur un espace complet admet un unique point fixe."
+      },
+      {
+        question: "L'espace dual de $\\ell^1(\\mathbb{N})$ est :",
+        choices: ["$\\ell^1(\\mathbb{N})$", "$\\ell^2(\\mathbb{N})$", "$\\ell^\\infty(\\mathbb{N})$", "$c_0(\\mathbb{N})$"],
+        correct: 2,
+        explanation: "C'est un résultat classique d'analyse fonctionnelle : $(\\ell^1)' = \\ell^\\infty$."
+      },
+      {
+        question: "Soit $f$ holomorphe sur $\\mathbb{C}$ et bornée. Alors :",
+        choices: [
+          "$f$ est un polynôme",
+          "$f$ est constante",
+          "$f$ est périodique",
+          "$f$ admet une infinité de zéros"
+        ],
+        correct: 1,
+        explanation: "C'est le théorème de Liouville : toute fonction entière bornée est constante."
+      },
+      // AJOUTE ICI tes questions MP gratuites
+    ],
+    premium: [
+      // AJOUTE ICI tes 50 questions MP premium
+    ]
+  }
+};
+
+// ============================================================
+//  ⚙️ CONFIG — Modifie ici
+// ============================================================
+
+// Code premium (change-le !)
+const PREMIUM_CODE = "PREMIUM2025";
+
+// Lien de paiement (remplace dans le HTML aussi)
+// const PAYMENT_LINK = "https://TON-LIEN-DE-PAIEMENT.com";
+
+// ============================================================
+//  🎮 GAME STATE
+// ============================================================
+let state = {
+  level: null,
+  mode: 'free',
+  premiumUnlocked: false,
+  questions: [],
+  answers: [],    // index of chosen answer per question, -1 = not answered
+  currentQ: 0,
+  email: ''
+};
+
+// ============================================================
+//  🧭 NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ============================================================
+//  🏠 HOME SCREEN LOGIC
+// ============================================================
+function selectLevel(el) {
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.level = el.dataset.level;
+  updateStartButton();
+}
+
+function selectMode(el) {
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.mode = el.dataset.mode;
+
+  const unlock = document.getElementById('premiumUnlock');
+  if (state.mode === 'premium' && !state.premiumUnlocked) {
+    unlock.classList.add('visible');
+  } else {
+    unlock.classList.remove('visible');
+  }
+  updateStartButton();
+}
+
+function checkPremiumCode() {
+  const code = document.getElementById('premiumCode').value.trim();
+  if (code === PREMIUM_CODE) {
+    state.premiumUnlocked = true;
+    document.getElementById('premiumUnlock').classList.remove('visible');
+    document.getElementById('premiumError').style.display = 'none';
+    // Visual feedback
+    document.querySelector('.premium-card .mode-tag').textContent = '✓ DÉBLOQUÉ';
+    updateStartButton();
+  } else {
+    document.getElementById('premiumError').style.display = 'block';
+  }
+}
+
+function updateStartButton() {
+  const btn = document.getElementById('btnStart');
+  const canStart = state.level && (state.mode === 'free' || state.premiumUnlocked);
+  btn.disabled = !canStart;
+}
+
+// ============================================================
+//  🧩 QUIZ LOGIC
+// ============================================================
+function startQuiz() {
+  const pool = QUESTIONS[state.level][state.mode];
+  if (!pool || pool.length === 0) {
+    alert("Pas encore de questions pour ce niveau/mode. Ajoute-les dans l'objet QUESTIONS !");
+    return;
+  }
+  state.questions = [...pool];
+  state.answers = new Array(state.questions.length).fill(-1);
+  state.currentQ = 0;
+
+  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
+  document.getElementById('quizLevelBadge').textContent = levelNames[state.level];
+  document.getElementById('quizTotal').textContent = state.questions.length;
+
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = state.questions[state.currentQ];
+  const i = state.currentQ;
+  const total = state.questions.length;
+
+  document.getElementById('quizCurrent').textContent = i + 1;
+  document.getElementById('questionNumber').textContent = `QUESTION ${i + 1}`;
+  document.getElementById('questionText').innerHTML = q.question;
+
+  // Progress
+  document.getElementById('progressFill').style.width = `${((i + 1) / total) * 100}%`;
+
+  // Choices
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const container = document.getElementById('choicesContainer');
+  container.innerHTML = '';
+  q.choices.forEach((choice, ci) => {
+    const div = document.createElement('div');
+    div.className = 'choice' + (state.answers[i] === ci ? ' selected' : '');
+    div.innerHTML = `<span class="choice-letter">${letters[ci]}</span><span class="choice-text">${choice}</span>`;
+    div.onclick = () => selectChoice(ci);
+    container.appendChild(div);
+  });
+
+  // Nav buttons
+  document.getElementById('btnPrev').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('btnNext').textContent = i === total - 1 ? 'Terminer ✓' : 'Suivante →';
+
+  // Render LaTeX
+  renderMathInElement(document.getElementById('screenQuiz'), {
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+      { left: '\\(', right: '\\)', display: false },
+      { left: '\\[', right: '\\]', display: true }
+    ],
+    throwOnError: false
+  });
+}
+
+function selectChoice(ci) {
+  state.answers[state.currentQ] = ci;
+  document.querySelectorAll('.choice').forEach((c, idx) => {
+    c.classList.toggle('selected', idx === ci);
+  });
+}
+
+function nextQuestion() {
+  if (state.currentQ < state.questions.length - 1) {
+    state.currentQ++;
+    renderQuestion();
+  } else {
+    showScreen('screenEmail');
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQ > 0) {
+    state.currentQ--;
+    renderQuestion();
+  }
+}
+
+// ============================================================
+//  📧 EMAIL GATE
+// ============================================================
+function submitEmail() {
+  const input = document.getElementById('emailInput');
+  const email = input.value.trim();
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    input.style.borderColor = 'var(--red)';
+    return;
+  }
+  state.email = email;
+
+  // ===== ICI : envoie l'email à ton backend / webhook =====
+  // Exemple avec fetch :
+  // fetch('https://ton-endpoint.com/collect', {
+  //   method: 'POST',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body: JSON.stringify({
+  //     email: state.email,
+  //     level: state.level,
+  //     mode: state.mode,
+  //     score: computeScore(),
+  //     date: new Date().toISOString()
+  //   })
+  // });
+  console.log('📧 Email collecté :', email);
+
+  showResults();
+}
+
+// ============================================================
+//  📊 RESULTS
+// ============================================================
+function computeScore() {
+  let correct = 0;
+  state.questions.forEach((q, i) => {
+    if (state.answers[i] === q.correct) correct++;
+  });
+  return correct;
+}
+
+function showResults() {
+  showScreen('screenResults');
+  const total = state.questions.length;
+  const score = computeScore();
+  const pct = score / total;
+
+  // Score circle animation
+  const circle = document.getElementById('scoreCircle');
+  const circumference = 2 * Math.PI * 68; // r=68
+  setTimeout(() => {
+    circle.style.strokeDashoffset = circumference * (1 - pct);
+    if (pct >= 0.7) circle.style.stroke = 'var(--green)';
+    else if (pct >= 0.4) circle.style.stroke = 'var(--gold)';
+    else circle.style.stroke = 'var(--red)';
+  }, 100);
+
+  document.getElementById('scoreNumber').textContent = score;
+  document.getElementById('scoreTotal').textContent = `/ ${total}`;
+
+  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
+  document.getElementById('resultsLevelBadge').textContent = levelNames[state.level];
+
+  // Appreciation
+  let msg = '';
+  if (pct === 1) msg = 'Parfait ! Score impeccable 🏆';
+  else if (pct >= 0.8) msg = 'Excellent ! Très bonne maîtrise 🎯';
+  else if (pct >= 0.6) msg = 'Bien ! Quelques points à revoir 📖';
+  else if (pct >= 0.4) msg = 'Moyen — du travail en perspective 💪';
+  else msg = 'Il faut reprendre les bases 📚';
+  document.getElementById('appreciation').textContent = msg;
+
+  // Corrections
+  const container = document.getElementById('correctionsContainer');
+  container.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+  state.questions.forEach((q, i) => {
+    const isCorrect = state.answers[i] === q.correct;
+    const userAnswer = state.answers[i] >= 0 ? letters[state.answers[i]] + '. ' + q.choices[state.answers[i]] : 'Pas de réponse';
+    const correctAnswer = letters[q.correct] + '. ' + q.choices[q.correct];
+
+    const item = document.createElement('div');
+    item.className = 'correction-item';
+    item.innerHTML = `
+      <div class="correction-top">
+        <span class="correction-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓' : '✗'}</span>
+        <span class="correction-q"><strong>Q${i + 1}.</strong> ${q.question}</span>
+      </div>
+      <div class="correction-detail">
+        ${!isCorrect ? `<div class="your-answer">Ta réponse : ${userAnswer}</div>` : ''}
+        <div class="correct-answer">Bonne réponse : ${correctAnswer}</div>
+        ${q.explanation ? `<div class="explanation">💡 ${q.explanation}</div>` : ''}
+      </div>
+    `;
+    item.onclick = () => item.classList.toggle('open');
+    container.appendChild(item);
+  });
+
+  // Render LaTeX in results
+  renderMathInElement(document.getElementById('screenResults'), {
+    delimiters: [
+      { left: '$$', right: '$$', display: true },
+      { left: '$', right: '$', display: false },
+      { left: '\\(', right: '\\)', display: false },
+      { left: '\\[', right: '\\]', display: true }
+    ],
+    throwOnError: false
+  });
+}
+
+function restartQuiz() {
+  state.currentQ = 0;
+  state.answers = new Array(state.questions.length).fill(-1);
+  showScreen('screenQuiz');
+  renderQuestion();
+}
+
+function goHome() {
+  state.level = null;
+  state.mode = 'free';
+  state.questions = [];
+  state.answers = [];
+  state.currentQ = 0;
+  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector('[data-mode="free"]').classList.add('selected');
+  document.getElementById('premiumUnlock').classList.remove('visible');
+  document.getElementById('btnStart').disabled = true;
+  showScreen('screenHome');
+}
+</script>
+
+<tm-footer></tm-footer>
+
+<script src="components.js"></script>
+<script src="/cookie-consent.js"></script>
+</body>
+</html>

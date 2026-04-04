@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/1904248797_3034698420_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_2312814611_3602271860.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_3647085544_1341093589.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_3792758761_3486748219.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_1839128356_4015179899.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_3733506617_4103541932.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_2408024828_610839347.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene02_Probleme/601603905_244641309_2477456382.mp4'

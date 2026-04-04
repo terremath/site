@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/1904248797_1949771378_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/601603905_665308089_2023915952.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/601603905_1810729412_2901088145.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/601603905_1279541413_485930794.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/601603905_1734327179_1001504539.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene12_Goethe/601603905_2174120090_3267659737.mp4'

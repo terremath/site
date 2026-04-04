@@ -3,1201 +3,755 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QCM Maths — Teste ton niveau</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="colors.js"></script>
+<title>QCM TerreMathématiques — Es-tu fait pour les maths ?</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 <style>
 :root {
-  --bg: #0c0f1a;
-  --bg-card: #141829;
-  --bg-card-hover: #1a1f38;
-  --border: #252a45;
-  --border-active: #6366f1;
-  --accent-rgb: 99, 102, 241;
-  --text: #e2e4f0;
-  --text-muted: #8b8fa8;
-  --text-dim: #5c6080;
-  --accent: #6366f1;
-  --accent-glow: rgba(99, 102, 241, 0.25);
-  --accent-light: #818cf8;
-  --green: #34d399;
-  --green-bg: rgba(52, 211, 153, 0.1);
-  --green-border: rgba(52, 211, 153, 0.3);
-  --red: #f87171;
-  --red-bg: rgba(248, 113, 113, 0.1);
-  --red-border: rgba(248, 113, 113, 0.3);
-  --gold: #fbbf24;
-  --gold-bg: rgba(251, 191, 36, 0.1);
-  --premium-gradient: linear-gradient(135deg, #fbbf24, #f59e0b, #d97706);
-  --radius: 12px;
-  --radius-lg: 20px;
+  --aubergine: #2D1B33;
+  --aubergine-light: #4A2D54;
+  --sable: #F5E6C8;
+  --sable-light: #FBF3E4;
+  --sable-dark: #E8D4A8;
+  --gold: #C9A84C;
+  --gold-light: #DFBF6E;
+  --gold-dark: #A68A3C;
+  --text-dark: #1A1118;
+  --text-muted: #6B5A5E;
 }
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+* { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--sable);
+  color: var(--text-dark);
   min-height: 100vh;
   overflow-x: hidden;
 }
-
-/* ===== BACKGROUND EFFECTS ===== */
 body::before {
   content: '';
   position: fixed;
-  top: -50%; left: -50%;
-  width: 200%; height: 200%;
-  background: radial-gradient(ellipse at 30% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-              radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 0;
+  z-index: 9999;
 }
 
-.container {
-  max-width: 780px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  position: relative;
-  z-index: 1;
-}
-
-/* ===== HEADER ===== */
-.header {
+/* LANDING */
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  margin-bottom: 48px;
+  padding: 2rem;
+  position: relative;
 }
-
-.header-badge {
-  display: inline-block;
-  padding: 6px 16px;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 100px;
-  font-size: 13px;
-  color: var(--accent-light);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  margin-bottom: 20px;
+.landing::before {
+  content: '';
+  position: absolute;
+  top: -20%; right: -10%;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(45,27,51,0.06) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.brand-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
+  color: var(--aubergine-light);
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.2s;
 }
-
-.header h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(2.2rem, 5vw, 3.4rem);
-  font-weight: 400;
+.landing h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 700;
+  color: var(--aubergine);
   line-height: 1.15;
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, #e2e4f0 0%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.landing h1 em { font-style: italic; color: var(--gold-dark); }
+.landing-subtitle {
+  font-size: 1.05rem; color: var(--text-muted);
+  max-width: 480px; line-height: 1.7;
+  margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.6s;
+}
+.landing-meta {
+  display: flex; gap: 2rem; margin-bottom: 3rem;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.7s;
+}
+.landing-meta span {
+  font-size: 0.82rem; color: var(--text-muted);
+  letter-spacing: 0.05em;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.landing-meta span::before {
+  content: ''; width: 6px; height: 6px;
+  background: var(--gold); border-radius: 50%;
+}
+.btn-primary {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem; font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 1rem 3rem;
+  background: var(--aubergine); color: var(--sable);
+  border: none; cursor: pointer;
+  transition: all 0.4s ease;
+  opacity: 0; animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.btn-primary:hover {
+  background: var(--aubergine-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(45,27,51,0.2);
 }
 
-.header p {
-  color: var(--text-muted);
-  font-size: 17px;
-  line-height: 1.6;
-  max-width: 500px;
-  margin: 0 auto;
+/* QUIZ */
+.quiz-container {
+  max-width: 720px; margin: 0 auto;
+  padding: 2rem 1.5rem 4rem; min-height: 100vh;
+}
+.progress-bar {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: var(--sable-dark); z-index: 100;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--aubergine), var(--gold));
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quiz-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.5rem 0 2rem;
+  border-bottom: 1px solid rgba(45,27,51,0.08);
+  margin-bottom: 2.5rem;
+}
+.quiz-brand {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--aubergine-light);
+}
+.quiz-counter {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem; color: var(--text-muted);
+}
+.quiz-counter strong {
+  color: var(--aubergine); font-size: 1.4rem; font-weight: 700;
+}
+.question-category {
+  display: inline-block; font-size: 0.7rem;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-dark); background: rgba(201,168,76,0.12);
+  padding: 0.35rem 1rem; border-radius: 2px;
+  margin-bottom: 1.5rem; font-weight: 600;
+}
+.question-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.3rem, 3vw, 1.6rem);
+  font-weight: 600; color: var(--aubergine);
+  line-height: 1.55; margin-bottom: 2.5rem;
+}
+.options-list {
+  list-style: none; display: flex;
+  flex-direction: column; gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+.option-btn {
+  width: 100%; text-align: left;
+  padding: 1.15rem 1.4rem;
+  background: var(--sable-light);
+  border: 1.5px solid rgba(45,27,51,0.08);
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem; line-height: 1.55;
+  color: var(--text-dark); transition: all 0.25s ease;
+  display: flex; gap: 0.8rem; align-items: flex-start;
+}
+.option-btn:hover:not(.selected) {
+  border-color: var(--aubergine-light);
+  background: white; transform: translateX(4px);
+}
+.option-btn.selected {
+  border-color: var(--aubergine);
+  background: rgba(45,27,51,0.07);
+}
+.option-letter {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700; font-size: 1rem;
+  color: var(--aubergine-light);
+  min-width: 1.4rem; flex-shrink: 0;
+}
+.option-btn.selected .option-letter { color: var(--aubergine); }
+.option-check {
+  margin-left: auto; flex-shrink: 0;
+  width: 20px; height: 20px;
+  border: 1.5px solid rgba(45,27,51,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s ease; align-self: center;
+}
+.option-btn.selected .option-check {
+  border-color: var(--aubergine); background: var(--aubergine);
+}
+.option-btn.selected .option-check::after {
+  content: ''; width: 6px; height: 6px;
+  background: var(--sable); border-radius: 50%;
 }
 
-/* ===== SCREEN MANAGEMENT ===== */
-.screen { display: none; animation: fadeUp 0.4s ease; }
-.screen.active { display: block; }
+/* Nav */
+.quiz-nav {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-top: 1rem;
+}
+.btn-nav {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-weight: 600;
+  letter-spacing: 0.08em; padding: 0.85rem 2rem;
+  border: none; cursor: pointer; transition: all 0.3s ease;
+}
+.btn-back {
+  background: transparent; color: var(--text-muted); padding-left: 0;
+}
+.btn-back:hover { color: var(--aubergine); }
+.btn-next {
+  background: var(--aubergine); color: var(--sable); margin-left: auto;
+}
+.btn-next:hover { background: var(--aubergine-light); transform: translateY(-1px); }
+.btn-next:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+.btn-next:disabled:hover { background: var(--aubergine); transform: none; }
+
+/* Dots */
+.question-dots {
+  display: flex; justify-content: center;
+  gap: 6px; margin-top: 2rem; flex-wrap: wrap;
+}
+.q-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sable-dark); transition: all 0.3s ease;
+}
+.q-dot.answered { background: var(--gold); }
+.q-dot.current { background: var(--aubergine); transform: scale(1.3); }
+
+/* EMAIL SCREEN */
+.email-screen {
+  min-height: 100vh; display: flex;
+  flex-direction: column; align-items: center;
+  justify-content: center; text-align: center;
+  padding: 2rem;
+}
+.completion-icon {
+  font-size: 3rem; margin-bottom: 1.5rem;
+  color: var(--gold);
+  opacity: 0; animation: fadeUp 0.6s ease forwards 0.1s;
+}
+.completion-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700; color: var(--aubergine);
+  margin-bottom: 0.8rem;
+  opacity: 0; animation: fadeUp 0.6s ease forwards 0.2s;
+}
+.summary-bar {
+  display: flex; justify-content: center;
+  gap: 4px; margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.6s ease forwards 0.3s;
+}
+.summary-dot {
+  width: 10px; height: 10px; border-radius: 2px; background: var(--gold);
+}
+.summary-dot.unanswered { background: var(--sable-dark); }
+.completion-sub {
+  font-size: 0.95rem; color: var(--text-muted);
+  max-width: 460px; line-height: 1.7;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.6s ease forwards 0.4s;
+}
+.email-box {
+  background: white; padding: 2.5rem;
+  max-width: 480px; width: 100%;
+  border: 1px solid rgba(45,27,51,0.08);
+  opacity: 0; animation: fadeUp 0.6s ease forwards 0.5s;
+}
+.email-box h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 700;
+  color: var(--aubergine); margin-bottom: 1rem;
+}
+.email-perks { text-align: left; margin-bottom: 1.5rem; }
+.email-perk {
+  display: flex; align-items: flex-start;
+  gap: 0.6rem; font-size: 0.85rem;
+  color: var(--text-dark); margin-bottom: 0.7rem; line-height: 1.4;
+}
+.email-perk::before {
+  content: '\2192'; color: var(--gold-dark);
+  font-weight: 700; flex-shrink: 0; margin-top: 0.05rem;
+}
+.email-field { display: flex; flex-direction: column; gap: 0.75rem; }
+.email-input {
+  width: 100%; padding: 0.95rem 1rem;
+  border: 1.5px solid var(--sable-dark);
+  font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+  background: var(--sable-light); color: var(--text-dark);
+  outline: none; transition: border-color 0.3s;
+}
+.email-input:focus { border-color: var(--aubergine-light); }
+.email-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+.btn-submit-email {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem; font-weight: 600;
+  letter-spacing: 0.08em; padding: 0.95rem 2rem;
+  background: var(--gold); color: var(--aubergine);
+  border: none; cursor: pointer;
+  transition: all 0.3s ease; width: 100%;
+}
+.btn-submit-email:hover { background: var(--gold-light); transform: translateY(-1px); }
+.email-success-msg {
+  display: none;
+  background: rgba(74,124,89,0.08);
+  border: 1px solid rgba(74,124,89,0.2);
+  padding: 1rem; margin-top: 1rem;
+  font-size: 0.88rem; color: #3d6b4a; line-height: 1.5;
+}
+.email-privacy {
+  font-size: 0.72rem; color: var(--text-muted);
+  opacity: 0.5; margin-top: 0.8rem;
+}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ===== LEVEL CARDS ===== */
-.levels-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-  margin-bottom: 32px;
-}
-
-.level-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 28px 24px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.level-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06), transparent);
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-
-.level-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
-.level-card:hover::before { opacity: 1; }
-.level-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-
-.level-card .level-icon {
-  font-size: 28px;
-  margin-bottom: 12px;
-  display: block;
-}
-
-.level-card h3 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 6px;
-}
-
-.level-card p {
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* ===== MODE SELECTOR ===== */
-.mode-section {
-  margin-bottom: 32px;
-}
-
-.mode-section h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 22px;
-  font-weight: 400;
-  margin-bottom: 14px;
-}
-
-.mode-cards {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
-}
-
-.mode-card {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: relative;
-}
-
-.mode-card:hover { border-color: var(--border-active); }
-.mode-card.selected { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
-
-.mode-card.premium-card { border-color: rgba(251, 191, 36, 0.25); }
-.mode-card.premium-card:hover { border-color: rgba(251, 191, 36, 0.5); }
-.mode-card.premium-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-bg); }
-
-.mode-tag {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-}
-
-.mode-tag.free { background: rgba(99, 102, 241, 0.15); color: var(--accent-light); }
-.mode-tag.premium { background: var(--gold-bg); color: var(--gold); }
-
-.mode-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
-.mode-card p { color: var(--text-muted); font-size: 13px; line-height: 1.5; }
-
-/* ===== PREMIUM CODE INPUT ===== */
-.premium-unlock {
-  margin-top: 16px;
-  padding: 20px 24px;
-  background: var(--bg-card);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: var(--radius);
-  display: none;
-}
-
-.premium-unlock.visible { display: block; animation: fadeUp 0.3s ease; }
-
-.premium-unlock label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: var(--gold);
-}
-
-.premium-unlock .input-row {
-  display: flex;
-  gap: 10px;
-}
-
-.premium-unlock input {
-  flex: 1;
-  padding: 10px 16px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 14px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.premium-unlock input:focus { border-color: var(--gold); }
-
-.premium-unlock .unlock-btn {
-  padding: 10px 20px;
-  background: var(--premium-gradient);
-  border: none;
-  border-radius: 8px;
-  color: #000;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.premium-unlock .or-buy {
-  margin-top: 12px;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-
-.premium-unlock .or-buy a {
-  color: var(--gold);
-  text-decoration: underline;
-}
-
-.premium-error {
-  color: var(--red);
-  font-size: 13px;
-  margin-top: 8px;
-  display: none;
-}
-
-/* ===== BUTTONS ===== */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px 32px;
-  border: none;
-  border-radius: var(--radius);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: 0 4px 20px var(--accent-glow);
-}
-
-.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-.btn-secondary {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.btn-secondary:hover { border-color: var(--border-active); }
-
-.btn-center { display: flex; justify-content: center; margin-top: 24px; }
-
-/* ===== QUIZ SCREEN ===== */
-.quiz-top-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 32px;
-}
-
-.quiz-level-badge {
-  padding: 5px 14px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba(99, 102, 241, 0.12);
-  color: var(--accent-light);
-}
-
-.quiz-counter {
-  font-size: 14px;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.quiz-counter span { color: var(--text); font-weight: 700; }
-
-/* Progress bar */
-.progress-track {
-  width: 100%;
-  height: 4px;
-  background: var(--border);
-  border-radius: 100px;
-  margin-bottom: 40px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--accent);
-  border-radius: 100px;
-  transition: width 0.4s ease;
-  box-shadow: 0 0 12px var(--accent-glow);
-}
-
-/* Question */
-.question-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 36px 32px;
-  margin-bottom: 20px;
-}
-
-.question-number {
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent-light);
-  margin-bottom: 16px;
-}
-
-.question-text {
-  font-size: 18px;
-  line-height: 1.7;
-  font-weight: 500;
-}
-
-/* Choices */
-.choices {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.choice {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.choice:hover { border-color: var(--border-active); background: var(--bg-card-hover); }
-.choice.selected { border-color: var(--accent); background: rgba(99, 102, 241, 0.08); }
-
-.choice-letter {
-  width: 32px; height: 32px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 700;
-  background: rgba(99, 102, 241, 0.1);
-  color: var(--accent-light);
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-
-.choice.selected .choice-letter {
-  background: var(--accent);
-  color: #fff;
-}
-
-.choice-text { flex: 1; }
-
-/* Quiz nav */
-.quiz-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ===== EMAIL GATE ===== */
-.email-screen {
-  text-align: center;
-}
-
-.email-screen .icon-lock {
-  width: 72px; height: 72px;
-  margin: 0 auto 24px;
-  background: rgba(99, 102, 241, 0.1);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 32px;
-}
-
-.email-screen h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 28px;
-  font-weight: 400;
-  margin-bottom: 10px;
-}
-
-.email-screen p {
-  color: var(--text-muted);
-  font-size: 15px;
-  margin-bottom: 28px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.email-form {
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.email-form input {
-  width: 100%;
-  padding: 14px 18px;
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  font-size: 15px;
-  font-family: 'DM Sans', sans-serif;
-  outline: none;
-  margin-bottom: 14px;
-  transition: border-color 0.2s;
-}
-
-.email-form input:focus { border-color: var(--accent); }
-.email-form input::placeholder { color: var(--text-dim); }
-
-.email-legal {
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-top: 12px;
-  line-height: 1.5;
-}
-
-/* ===== RESULTS SCREEN ===== */
-.results-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.score-ring {
-  width: 160px; height: 160px;
-  margin: 0 auto 24px;
-  position: relative;
-}
-
-.score-ring svg { transform: rotate(-90deg); }
-
-.score-ring-bg { fill: none; stroke: var(--border); stroke-width: 8; }
-.score-ring-fill {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 8;
-  stroke-linecap: round;
-  transition: stroke-dashoffset 1.2s ease;
-}
-
-.score-ring .score-value {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.score-value .number {
-  font-family: 'DM Serif Display', serif;
-  font-size: 42px;
-  line-height: 1;
-}
-
-.score-value .total {
-  font-size: 14px;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-.results-appreciation {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-
-.results-level-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 100px;
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  background: rgba(99, 102, 241, 0.12);
-  color: var(--accent-light);
-  margin-bottom: 8px;
-}
-
-/* Correction list */
-.corrections { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
-
-.correction-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.correction-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.correction-status {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.correction-status.correct { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
-.correction-status.wrong { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
-
-.correction-q {
-  flex: 1;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-.correction-detail {
-  display: none;
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  font-size: 14px;
-  line-height: 1.7;
-  color: var(--text-muted);
-}
-
-.correction-item.open .correction-detail { display: block; }
-
-.correction-detail .your-answer { color: var(--red); }
-.correction-detail .correct-answer { color: var(--green); }
-.correction-detail .explanation { margin-top: 8px; color: var(--text); }
-
-/* ===== RESPONSIVE ===== */
 @media (max-width: 600px) {
-  .container { padding: 24px 16px; }
-  .levels-grid, .mode-cards { grid-template-columns: 1fr; }
-  .question-card { padding: 24px 20px; }
-  .question-text { font-size: 16px; }
-  .choice { padding: 14px 16px; font-size: 15px; }
-  .quiz-nav { flex-wrap: wrap; gap: 10px; }
+  .quiz-container { padding: 1.5rem 1rem 3rem; }
+  .landing-meta { flex-direction: column; gap: 0.8rem; }
+  .option-btn { padding: 1rem 1.1rem; font-size: 0.88rem; }
+  .email-box { padding: 1.8rem; }
 }
 
-/* ===== KATEX OVERRIDES ===== */
-.katex { font-size: 1.05em; }
-.katex-display { margin: 12px 0; overflow-x: auto; }
+.hidden { display: none !important; }
 </style>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<tm-header></tm-header>
-
-
-
-<div class="container">
-  <!-- ===== HEADER ===== -->
-  <div class="header" id="mainHeader">
-    <div class="header-badge">QCM Mathématiques</div>
-    <h1>Teste ton niveau en maths</h1>
-    <p>Du Brevet à la MP — choisis ton niveau et découvre ton bilan détaillé.</p>
+<div id="quiz" class="quiz-container">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="quiz-header">
+    <div class="quiz-brand">TerreMath&eacute;matiques</div>
+    <div class="quiz-counter"><strong id="qNum">1</strong><span> / 21</span></div>
   </div>
-
-  <!-- ===== SCREEN: HOME ===== -->
-  <div class="screen active" id="screenHome">
-    <!-- Level selection -->
-    <div class="levels-grid">
-      <div class="level-card" data-level="brevet" onclick="selectLevel(this)">
-        <span class="level-icon">📐</span>
-        <h3>Brevet</h3>
-        <p>Niveau collège — 3ème</p>
-      </div>
-      <div class="level-card" data-level="bac" onclick="selectLevel(this)">
-        <span class="level-icon">📊</span>
-        <h3>Bac</h3>
-        <p>Niveau lycée — Terminale</p>
-      </div>
-      <div class="level-card" data-level="mpsi" onclick="selectLevel(this)">
-        <span class="level-icon">🔬</span>
-        <h3>Fin MPSI</h3>
-        <p>Prépa — 1ère année</p>
-      </div>
-      <div class="level-card" data-level="mp" onclick="selectLevel(this)">
-        <span class="level-icon">🧮</span>
-        <h3>Fin MP</h3>
-        <p>Prépa — 2ème année</p>
-      </div>
-    </div>
-
-    <!-- Mode selection -->
-    <div class="mode-section">
-      <h2>Choisis ton mode</h2>
-      <div class="mode-cards">
-        <div class="mode-card selected" data-mode="free" onclick="selectMode(this)">
-          <span class="mode-tag free">Gratuit</span>
-          <h3>10 questions</h3>
-          <p>Idéal pour un test rapide. Bilan envoyé par email.</p>
-        </div>
-        <div class="mode-card premium-card" data-mode="premium" onclick="selectMode(this)">
-          <span class="mode-tag premium">Premium</span>
-          <h3>50 questions</h3>
-          <p>Évaluation complète avec bilan détaillé par thème.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Premium unlock -->
-    <div class="premium-unlock" id="premiumUnlock">
-      <label>🔑 Entre ton code d'accès Premium</label>
-      <div class="input-row">
-        <input type="text" id="premiumCode" placeholder="Ex : PREMIUM2025">
-        <button class="unlock-btn" onclick="checkPremiumCode()">Débloquer</button>
-      </div>
-      <div class="premium-error" id="premiumError">Code invalide. Réessaye.</div>
-      <p class="or-buy">Pas encore de code ? <a href="https://TON-LIEN-DE-PAIEMENT.com" target="_blank">Acheter l'accès Premium →</a></p>
-    </div>
-
-    <div class="btn-center">
-      <button class="btn btn-primary" id="btnStart" disabled onclick="startQuiz()">Commencer le QCM →</button>
-    </div>
+  <div id="questionArea"></div>
+  <div class="quiz-nav">
+    <button class="btn-nav btn-back" id="btnBack" onclick="prevQuestion()">&larr; Pr&eacute;c&eacute;dent</button>
+    <button class="btn-nav btn-next" id="btnNext" onclick="nextQuestion()" disabled>Suivant &rarr;</button>
   </div>
-
-  <!-- ===== SCREEN: QUIZ ===== -->
-  <div class="screen" id="screenQuiz">
-    <div class="quiz-top-bar">
-      <span class="quiz-level-badge" id="quizLevelBadge"></span>
-      <span class="quiz-counter">Question <span id="quizCurrent">1</span> / <span id="quizTotal">10</span></span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-    </div>
-    <div class="question-card">
-      <div class="question-number" id="questionNumber">QUESTION 1</div>
-      <div class="question-text" id="questionText"></div>
-    </div>
-    <div class="choices" id="choicesContainer"></div>
-    <div class="quiz-nav">
-      <button class="btn btn-secondary" id="btnPrev" onclick="prevQuestion()">← Précédente</button>
-      <button class="btn btn-primary" id="btnNext" onclick="nextQuestion()">Suivante →</button>
-    </div>
-  </div>
-
-  <!-- ===== SCREEN: EMAIL GATE ===== -->
-  <div class="screen" id="screenEmail">
-    <div class="email-screen">
-      <div class="icon-lock">🎯</div>
-      <h2>Ton QCM est terminé !</h2>
-      <p>Entre ton email pour recevoir ton bilan détaillé avec les corrections.</p>
-      <div class="email-form">
-        <input type="email" id="emailInput" placeholder="ton.email@exemple.com" required>
-        <button class="btn btn-primary" style="width:100%" onclick="submitEmail()">Voir mon bilan →</button>
-        <p class="email-legal">En soumettant, tu acceptes de recevoir ton bilan par email. Pas de spam.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SCREEN: RESULTS ===== -->
-  <div class="screen" id="screenResults">
-    <div class="results-header">
-      <div class="score-ring">
-        <svg width="160" height="160" viewBox="0 0 160 160">
-          <circle class="score-ring-bg" cx="80" cy="80" r="68"/>
-          <circle class="score-ring-fill" id="scoreCircle" cx="80" cy="80" r="68"
-            stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
-        </svg>
-        <div class="score-value">
-          <span class="number" id="scoreNumber">0</span>
-          <span class="total" id="scoreTotal">/ 10</span>
-        </div>
-      </div>
-      <span class="results-level-badge" id="resultsLevelBadge"></span>
-      <p class="results-appreciation" id="appreciation"></p>
-    </div>
-
-    <h2 style="font-family:'DM Serif Display',serif; font-size:22px; font-weight:400; margin-bottom:16px;">Correction détaillée</h2>
-    <div class="corrections" id="correctionsContainer"></div>
-
-    <div class="btn-center" style="gap:12px; flex-wrap:wrap;">
-      <button class="btn btn-secondary" onclick="restartQuiz()">↺ Recommencer</button>
-      <button class="btn btn-primary" onclick="goHome()">Changer de niveau →</button>
-    </div>
-  </div>
+  <div class="question-dots" id="questionDots"></div>
 </div>
 
+<div id="emailScreen" class="email-screen hidden"></div>
+
 <script>
-// ============================================================
-//  📝 QUESTIONS DATABASE — TEMPLATE
-//  Ajoute tes questions ici ! Utilise du LaTeX avec $ ... $ ou $$ ... $$
-//  Structure :
-//  {
-//    question: "Texte avec $\\LaTeX$",
-//    choices: ["Choix A", "Choix B $x^2$", "Choix C", "Choix D"],
-//    correct: 0,  // index de la bonne réponse (0 = A, 1 = B, ...)
-//    explanation: "Explication avec $\\LaTeX$ si besoin"
-//  }
-// ============================================================
-
-const QUESTIONS = {
-  brevet: {
-    free: [
-      {
-        question: "Quel est le résultat de $(-3)^2$ ?",
-        choices: ["$-9$", "$9$", "$6$", "$-6$"],
-        correct: 1,
-        explanation: "$(-3)^2 = (-3) \\times (-3) = 9$. Attention : $-3^2 = -9$ mais $(-3)^2 = 9$."
-      },
-      {
-        question: "Simplifier la fraction $\\dfrac{12}{18}$.",
-        choices: ["$\\dfrac{3}{4}$", "$\\dfrac{2}{3}$", "$\\dfrac{4}{6}$", "$\\dfrac{6}{9}$"],
-        correct: 1,
-        explanation: "$\\text{PGCD}(12,18) = 6$, donc $\\dfrac{12}{18} = \\dfrac{2}{3}$."
-      },
-      {
-        question: "Dans un triangle rectangle, si les deux côtés de l'angle droit mesurent $3$ cm et $4$ cm, combien mesure l'hypoténuse ?",
-        choices: ["$6$ cm", "$7$ cm", "$5$ cm", "$\\sqrt{7}$ cm"],
-        correct: 2,
-        explanation: "Par le théorème de Pythagore : $c = \\sqrt{3^2 + 4^2} = \\sqrt{25} = 5$ cm."
-      },
-      // AJOUTE ICI tes questions brevet gratuites (10 au total)
+var questions = [
+  {
+    category: "Maths \u00b7 Raisonnement",
+    text: "On montre $P(0)$ et on montre que $P(n) \\Rightarrow P(2n+1)$ pour tout $n \\geq 0$. Qu\u2019a-t-on prouv\u00e9 ?",
+    options: [
+      "$P(n)$ pour tout $n \\in \\mathbb{N}$",
+      "$P(n)$ pour tout $n$ impair",
+      "$P(n)$ pour tout $n \\geq 0$ par r\u00e9currence classique",
+      "Aucune des r\u00e9ponses ci-dessus"
     ],
-    premium: [
-      // AJOUTE ICI tes 50 questions brevet premium
-      // Copie le même format que ci-dessus
-    ]
+    correct: 3
   },
-
-  bac: {
-    free: [
-      {
-        question: "Quelle est la dérivée de $f(x) = e^{2x}$ ?",
-        choices: ["$e^{2x}$", "$2e^{2x}$", "$2xe^{2x}$", "$e^{2x+1}$"],
-        correct: 1,
-        explanation: "Par la règle de la chaîne : $f'(x) = 2e^{2x}$."
-      },
-      {
-        question: "La suite $(u_n)$ définie par $u_n = \\left(1 + \\dfrac{1}{n}\\right)^n$ converge vers :",
-        choices: ["$1$", "$+\\infty$", "$e$", "$2$"],
-        correct: 2,
-        explanation: "C'est une limite classique : $\\lim_{n \\to +\\infty} \\left(1 + \\frac{1}{n}\\right)^n = e$."
-      },
-      {
-        question: "Calculer $\\displaystyle\\int_0^1 2x\\,dx$.",
-        choices: ["$0$", "$1$", "$2$", "$\\dfrac{1}{2}$"],
-        correct: 1,
-        explanation: "$\\int_0^1 2x\\,dx = \\left[x^2\\right]_0^1 = 1 - 0 = 1$."
-      },
-      // AJOUTE ICI tes questions bac gratuites
+  {
+    category: "Maths \u00b7 Raisonnement",
+    text: "Sur une \u00eele, les chevaliers disent toujours la v\u00e9rit\u00e9, les menteurs mentent toujours. Un habitant vous dit : \u00ab\u00a0Je suis un menteur.\u00a0\u00bb Que concluez-vous ?",
+    options: [
+      "Il est menteur",
+      "Il est chevalier",
+      "Cette situation est impossible \u2014 la phrase est ind\u00e9cidable dans ce syst\u00e8me",
+      "Il est l\u2019un ou l\u2019autre, on ne peut simplement pas savoir"
     ],
-    premium: [
-      // AJOUTE ICI tes 50 questions bac premium
-    ]
+    correct: 2
   },
-
-  mpsi: {
-    free: [
-      {
-        question: "Soit $A \\in \\mathcal{M}_n(\\mathbb{R})$ telle que $A^2 = A$. Alors $A$ est :",
-        choices: ["Inversible", "Nilpotente", "Un projecteur", "Antisymétrique"],
-        correct: 2,
-        explanation: "$A^2 = A$ signifie que $A$ est idempotente, c'est la définition matricielle d'un projecteur."
-      },
-      {
-        question: "Le rayon de convergence de $\\displaystyle\\sum_{n \\geq 1} \\frac{x^n}{n}$ est :",
-        choices: ["$0$", "$1$", "$+\\infty$", "$e$"],
-        correct: 1,
-        explanation: "Par la règle de d'Alembert, $R = \\lim \\frac{n+1}{n} = 1$. C'est la série de $-\\ln(1-x)$."
-      },
-      {
-        question: "Le groupe $(\\mathbb{Z}/6\\mathbb{Z}, +)$ est isomorphe à :",
-        choices: ["$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$", "$\\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/2\\mathbb{Z}$", "$S_3$", "$\\mathbb{Z}/6\\mathbb{Z}$ uniquement"],
-        correct: 0,
-        explanation: "Par le théorème chinois, comme $\\text{pgcd}(2,3)=1$, $\\mathbb{Z}/6\\mathbb{Z} \\simeq \\mathbb{Z}/2\\mathbb{Z} \\times \\mathbb{Z}/3\\mathbb{Z}$."
-      },
-      // AJOUTE ICI tes questions MPSI gratuites
+  {
+    category: "Maths \u00b7 Raisonnement",
+    text: "On d\u00e9montre qu\u2019il existe deux irrationnels $a$ et $b$ tels que $a^b$ est rationnel, en consid\u00e9rant $\\sqrt{2}^{\\sqrt{2}}$ : soit c\u2019est rationnel et c\u2019est fini, soit c\u2019est irrationnel et alors $(\\sqrt{2}^{\\sqrt{2}})^{\\sqrt{2}} = 2$. Cette preuve :",
+    options: [
+      "Est parfaitement constructive \u2014 on a exhib\u00e9 $a$ et $b$",
+      "Prouve l\u2019existence sans dire quel cas est le bon \u2014 elle utilise le tiers exclu",
+      "Est fausse car $\\sqrt{2}^{\\sqrt{2}}$ n\u2019est pas bien d\u00e9fini",
+      "Fonctionne par r\u00e9currence sur les puissances de $\\sqrt{2}$"
     ],
-    premium: [
-      // AJOUTE ICI tes 50 questions MPSI premium
-    ]
+    correct: 1
   },
-
-  mp: {
-    free: [
-      {
-        question: "Soit $E$ un espace de Banach et $T : E \\to E$ une application linéaire contractante. Alors :",
-        choices: [
-          "$T$ admet exactement un point fixe",
-          "$T$ n'a pas de point fixe",
-          "$T$ admet une infinité de points fixes",
-          "On ne peut pas conclure"
-        ],
-        correct: 0,
-        explanation: "C'est le théorème du point fixe de Banach-Picard : toute contraction sur un espace complet admet un unique point fixe."
-      },
-      {
-        question: "L'espace dual de $\\ell^1(\\mathbb{N})$ est :",
-        choices: ["$\\ell^1(\\mathbb{N})$", "$\\ell^2(\\mathbb{N})$", "$\\ell^\\infty(\\mathbb{N})$", "$c_0(\\mathbb{N})$"],
-        correct: 2,
-        explanation: "C'est un résultat classique d'analyse fonctionnelle : $(\\ell^1)' = \\ell^\\infty$."
-      },
-      {
-        question: "Soit $f$ holomorphe sur $\\mathbb{C}$ et bornée. Alors :",
-        choices: [
-          "$f$ est un polynôme",
-          "$f$ est constante",
-          "$f$ est périodique",
-          "$f$ admet une infinité de zéros"
-        ],
-        correct: 1,
-        explanation: "C'est le théorème de Liouville : toute fonction entière bornée est constante."
-      },
-      // AJOUTE ICI tes questions MP gratuites
+  {
+    category: "Maths \u00b7 Analyse",
+    text: "Une voiture parcourt $100\\text{ km}$ en exactement $1$ heure. Peut-on affirmer qu\u2019\u00e0 un instant pr\u00e9cis, sa vitesse valait exactement $100\\text{ km/h}$ ?",
+    options: [
+      "Non, elle a pu acc\u00e9l\u00e9rer et freiner sans jamais passer par $100\\text{ km/h}$",
+      "Oui \u2014 la vitesse \u00e9tant continue, elle passe n\u00e9cessairement par toutes les valeurs interm\u00e9diaires, dont $100\\text{ km/h}$",
+      "Seulement si elle n\u2019a jamais frein\u00e9",
+      "Seulement si on conna\u00eet la fonction position exacte"
     ],
-    premium: [
-      // AJOUTE ICI tes 50 questions MP premium
-    ]
+    correct: 1
+  },
+  {
+    category: "Maths \u00b7 Analyse",
+    text: "Soit $u_n = \\dfrac{(-1)^n}{n}$. La suite $(u_n)$ :",
+    options: [
+      "Diverge car elle change de signe \u00e0 chaque terme",
+      "Converge vers $0$",
+      "Admet deux valeurs d\u2019adh\u00e9rence $0^+$ et $0^-$, donc pas de limite",
+      "N\u2019a pas de limite car elle n\u2019est pas monotone"
+    ],
+    correct: 1
+  },
+  {
+    category: "Maths \u00b7 Analyse",
+    text: "La fonction $f(x) = e^{\\sin(x)}$ admet-elle une limite en $+\\infty$ ?",
+    options: [
+      "Oui, elle converge vers $1$ car $\\sin$ oscille sym\u00e9triquement autour de $0$",
+      "Oui, elle converge vers $e$ car l\u2019exponentielle domine",
+      "Non, elle oscille ind\u00e9finiment entre $e^{-1}$ et $e$",
+      "Non, elle diverge vers $+\\infty$"
+    ],
+    correct: 2
+  },
+  {
+    category: "Maths \u00b7 Probabilit\u00e9s",
+    text: "Peut-on construire un jeu o\u00f9 chaque issue est \u00e9quiprobable et pourtant le joueur perd en esp\u00e9rance ?",
+    options: [
+      "Non, \u00e9quiprobable implique jeu \u00e9quitable",
+      "Oui, il suffit que les gains et pertes soient asym\u00e9triques",
+      "Seulement si le nombre d\u2019issues est impair",
+      "Oui, mais uniquement avec un nombre infini d\u2019issues"
+    ],
+    correct: 1
+  },
+  {
+    category: "Maths \u00b7 Probabilit\u00e9s",
+    text: "Bob et Alice jouent avec une pi\u00e8ce pip\u00e9e (probabilit\u00e9 $p$ inconnue de tomber sur face, $0 < p < 1$). Peuvent-ils r\u00e9aliser une exp\u00e9rience de probabilit\u00e9 exactement $\\dfrac{1}{2}$ ?",
+    options: [
+      "Non, sans conna\u00eetre $p$ c\u2019est impossible",
+      "Oui, en lan\u00e7ant un tr\u00e8s grand nombre de fois et en comptant",
+      "Oui, en comparant l\u2019ordre de deux lancers successifs",
+      "Oui, mais seulement si $p$ est rationnel"
+    ],
+    correct: 2
+  },
+  {
+    category: "Maths \u00b7 Alg\u00e8bre",
+    text: "Dans $\\mathbb{R}^3$, trois vecteurs non nuls dont le produit scalaire deux \u00e0 deux est strictement positif forment-ils toujours une base ?",
+    options: [
+      "Oui, le produit scalaire positif garantit l\u2019ind\u00e9pendance",
+      "Oui, \u00e0 condition qu\u2019ils soient de norme $1$",
+      "Non \u2014 trois vecteurs proches l\u2019un de l\u2019autre peuvent \u00eatre coplanaires malgr\u00e9 un produit scalaire positif",
+      "Non, seulement si le produit scalaire vaut exactement $0$"
+    ],
+    correct: 2
+  },
+  {
+    category: "Maths \u00b7 Alg\u00e8bre",
+    text: "$f : \\mathbb{Z} \\to \\mathbb{Z}$ v\u00e9rifie $f(a + b) = f(a) + f(b)$ pour tous $a, b \\in \\mathbb{Z}$. Alors n\u00e9cessairement :",
+    options: [
+      "$f(x) = x$ pour tout $x$",
+      "$f(x) = cx$ pour un certain $c \\in \\mathbb{Z}$",
+      "$f$ est n\u00e9cessairement bijective",
+      "$f(0)$ peut valoir n\u2019importe quel entier"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 M\u00e9canique",
+    text: "On veut v\u00e9rifier que deux objets de masses diff\u00e9rentes tombent \u00e0 la m\u00eame vitesse \u00ab\u00a0dans le vide\u00a0\u00bb. On propose de l\u00e2cher une bougie allum\u00e9e et une bille d\u2019acier dans une chambre \u00e0 vide parfait. L\u2019exp\u00e9rience :",
+    options: [
+      "Confirmerait Galil\u00e9e \u2014 les deux tombent ensemble",
+      "Est impossible : la flamme s\u2019\u00e9teint imm\u00e9diatement dans le vide",
+      "Est impossible : l\u2019acier ne tombe pas dans le vide",
+      "Donnerait un r\u00e9sultat diff\u00e9rent de Galil\u00e9e \u00e0 cause de la flamme"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 M\u00e9canique",
+    text: "Un objet se d\u00e9place en ligne droite \u00e0 vitesse constante dans l\u2019espace, loin de toute masse. Aucune force ne s\u2019exerce sur lui. Que se passe-t-il ?",
+    options: [
+      "Il ralentit progressivement jusqu\u2019\u00e0 s\u2019arr\u00eater",
+      "Il continue ind\u00e9finiment \u00e0 la m\u00eame vitesse",
+      "Il acc\u00e9l\u00e8re car rien ne le freine",
+      "Il finit par s\u2019arr\u00eater \u00e0 cause de l\u2019entropie"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 Logique",
+    text: "Un boulet de canon absolument indestructible frappe un mur absolument in\u00e9branlable. Que se passe-t-il ?",
+    options: [
+      "Le boulet rebondit",
+      "Le mur finit par c\u00e9der malgr\u00e9 tout",
+      "Le boulet traverse le mur",
+      "La situation est logiquement impossible \u2014 les deux propri\u00e9t\u00e9s ne peuvent coexister"
+    ],
+    correct: 3
+  },
+  {
+    category: "Physique \u00b7 Cosmologie",
+    text: "Si l\u2019univers \u00e9tait infini, statique, \u00e9ternel, et uniform\u00e9ment rempli d\u2019\u00e9toiles, le ciel nocturne devrait \u00eatre :",
+    options: [
+      "Noir \u2014 les \u00e9toiles sont trop loin pour nous \u00e9clairer significativement",
+      "Enti\u00e8rement lumineux \u2014 chaque ligne de vue aboutirait \u00e0 une \u00e9toile",
+      "Sombre avec quelques points lumineux, comme on l\u2019observe",
+      "Impossible \u00e0 pr\u00e9dire sans conna\u00eetre la densit\u00e9 exacte d\u2019\u00e9toiles"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 Optique",
+    text: "Peut-on mesurer la distance entre soi et un arc-en-ciel ?",
+    options: [
+      "Oui, par triangulation avec un deuxi\u00e8me observateur",
+      "Oui, environ $1$ \u00e0 $2$ km en moyenne",
+      "Non \u2014 l\u2019arc-en-ciel n\u2019a pas de position physique, chaque observateur voit le sien",
+      "Non, car il se d\u00e9place quand on s\u2019en approche"
+    ],
+    correct: 2
+  },
+  {
+    category: "Physique \u00b7 Relativit\u00e9",
+    text: "L\u2019ombre d\u2019un objet peut-elle se d\u00e9placer plus vite que la lumi\u00e8re ?",
+    options: [
+      "Non, rien ne d\u00e9passe la vitesse de la lumi\u00e8re \u2014 c\u2019est un principe absolu",
+      "Oui, et cela prouve qu\u2019Einstein avait tort sur certains points",
+      "Oui, car une ombre ne transporte ni mati\u00e8re ni information",
+      "Seulement dans le vide spatial"
+    ],
+    correct: 2
+  },
+  {
+    category: "Physique \u00b7 Ondes",
+    text: "Le son voyage le plus vite dans :",
+    options: [
+      "Le vide",
+      "L\u2019air",
+      "L\u2019eau",
+      "L\u2019acier"
+    ],
+    correct: 3
+  },
+  {
+    category: "Physique \u00b7 Optique",
+    text: "Un objet rouge est \u00e9clair\u00e9 par une lumi\u00e8re bleue pure. Il appara\u00eet :",
+    options: [
+      "Violet \u2014 m\u00e9lange additif du rouge et du bleu",
+      "Noir ou tr\u00e8s sombre",
+      "Rouge, car c\u2019est sa couleur \u00ab\u00a0propre\u00a0\u00bb",
+      "Bleu, car la lumi\u00e8re incidente domine"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 Gravitation",
+    text: "L\u2019ISS orbite \u00e0 environ $400$ km d\u2019altitude. La gravit\u00e9 y est :",
+    options: [
+      "Quasi nulle \u2014 c\u2019est pour cela que les astronautes flottent",
+      "Environ $90\\%$ de celle au sol \u2014 ils flottent car ils sont en chute libre permanente",
+      "Exactement z\u00e9ro \u2014 ils sont \u00ab\u00a0dans l\u2019espace\u00a0\u00bb",
+      "Variable selon la position de la Lune"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 Relativit\u00e9",
+    text: "Deux jumeaux : l\u2019un reste sur Terre, l\u2019autre voyage \u00e0 $99\\%$ de la vitesse de la lumi\u00e8re pendant $1$ an (mesur\u00e9 par le voyageur). Au retour :",
+    options: [
+      "Ils ont le m\u00eame \u00e2ge \u2014 le temps est absolu",
+      "Le voyageur est plus jeune que le terrien",
+      "Le terrien est plus jeune que le voyageur",
+      "Impossible de comparer \u2014 r\u00e9f\u00e9rentiels diff\u00e9rents"
+    ],
+    correct: 1
+  },
+  {
+    category: "Physique \u00b7 Information",
+    text: "Selon la physique th\u00e9orique moderne, o\u00f9 se trouve l\u2019information contenue dans un objet tomb\u00e9 dans un trou noir ?",
+    options: [
+      "Elle est d\u00e9truite \u00e0 jamais au-del\u00e0 de l\u2019horizon des \u00e9v\u00e9nements",
+      "Elle est encod\u00e9e sur la surface $2D$ de l\u2019horizon, comme un hologramme",
+      "Elle reste intacte \u00e0 l\u2019int\u00e9rieur, simplement inaccessible",
+      "La question n\u2019a pas de sens \u2014 l\u2019information n\u2019est pas une grandeur physique"
+    ],
+    correct: 1
   }
-};
+];
 
-// ============================================================
-//  ⚙️ CONFIG — Modifie ici
-// ============================================================
+var currentQ = 0;
+var answers = new Array(questions.length).fill(null);
 
-// Code premium (change-le !)
-const PREMIUM_CODE = "PREMIUM2025";
-
-// Lien de paiement (remplace dans le HTML aussi)
-// const PAYMENT_LINK = "https://TON-LIEN-DE-PAIEMENT.com";
-
-// ============================================================
-//  🎮 GAME STATE
-// ============================================================
-let state = {
-  level: null,
-  mode: 'free',
-  premiumUnlocked: false,
-  questions: [],
-  answers: [],    // index of chosen answer per question, -1 = not answered
-  currentQ: 0,
-  email: ''
-};
-
-// ============================================================
-//  🧭 NAVIGATION
-// ============================================================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ============================================================
-//  🏠 HOME SCREEN LOGIC
-// ============================================================
-function selectLevel(el) {
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.level = el.dataset.level;
-  updateStartButton();
-}
-
-function selectMode(el) {
-  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.mode = el.dataset.mode;
-
-  const unlock = document.getElementById('premiumUnlock');
-  if (state.mode === 'premium' && !state.premiumUnlocked) {
-    unlock.classList.add('visible');
-  } else {
-    unlock.classList.remove('visible');
-  }
-  updateStartButton();
-}
-
-function checkPremiumCode() {
-  const code = document.getElementById('premiumCode').value.trim();
-  if (code === PREMIUM_CODE) {
-    state.premiumUnlocked = true;
-    document.getElementById('premiumUnlock').classList.remove('visible');
-    document.getElementById('premiumError').style.display = 'none';
-    // Visual feedback
-    document.querySelector('.premium-card .mode-tag').textContent = '✓ DÉBLOQUÉ';
-    updateStartButton();
-  } else {
-    document.getElementById('premiumError').style.display = 'block';
-  }
-}
-
-function updateStartButton() {
-  const btn = document.getElementById('btnStart');
-  const canStart = state.level && (state.mode === 'free' || state.premiumUnlocked);
-  btn.disabled = !canStart;
-}
-
-// ============================================================
-//  🧩 QUIZ LOGIC
-// ============================================================
 function startQuiz() {
-  const pool = QUESTIONS[state.level][state.mode];
-  if (!pool || pool.length === 0) {
-    alert("Pas encore de questions pour ce niveau/mode. Ajoute-les dans l'objet QUESTIONS !");
-    return;
+  renderDots();
+  showQuestion();
+}
+
+document.addEventListener('DOMContentLoaded', startQuiz);
+
+function renderDots() {
+  var dots = document.getElementById('questionDots');
+  var html = '';
+  for (var i = 0; i < questions.length; i++) {
+    var cls = 'q-dot';
+    if (i === currentQ) cls += ' current';
+    else if (answers[i] !== null) cls += ' answered';
+    html += '<div class="' + cls + '"></div>';
   }
-  state.questions = [...pool];
-  state.answers = new Array(state.questions.length).fill(-1);
-  state.currentQ = 0;
-
-  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
-  document.getElementById('quizLevelBadge').textContent = levelNames[state.level];
-  document.getElementById('quizTotal').textContent = state.questions.length;
-
-  showScreen('screenQuiz');
-  renderQuestion();
+  dots.innerHTML = html;
 }
 
-function renderQuestion() {
-  const q = state.questions[state.currentQ];
-  const i = state.currentQ;
-  const total = state.questions.length;
+function showQuestion() {
+  var q = questions[currentQ];
+  document.getElementById('qNum').textContent = currentQ + 1;
+  document.getElementById('progressFill').style.width = ((currentQ) / questions.length * 100) + '%';
+  document.getElementById('btnBack').style.visibility = currentQ === 0 ? 'hidden' : 'visible';
 
-  document.getElementById('quizCurrent').textContent = i + 1;
-  document.getElementById('questionNumber').textContent = `QUESTION ${i + 1}`;
-  document.getElementById('questionText').innerHTML = q.question;
+  var btnNext = document.getElementById('btnNext');
+  btnNext.disabled = answers[currentQ] === null;
+  btnNext.innerHTML = currentQ === questions.length - 1 ? 'Terminer &rarr;' : 'Suivant &rarr;';
 
-  // Progress
-  document.getElementById('progressFill').style.width = `${((i + 1) / total) * 100}%`;
+  var letters = ['A', 'B', 'C', 'D'];
+  var html = '<div class="question-category">' + q.category + '</div>';
+  html += '<div class="question-text">' + q.text + '</div>';
+  html += '<ul class="options-list">';
+  for (var i = 0; i < q.options.length; i++) {
+    var sel = answers[currentQ] === i ? ' selected' : '';
+    html += '<li><button class="option-btn' + sel + '" onclick="selectAnswer(' + i + ')">';
+    html += '<span class="option-letter">' + letters[i] + ')</span>';
+    html += '<span class="option-text">' + q.options[i] + '</span>';
+    html += '<span class="option-check"></span>';
+    html += '</button></li>';
+  }
+  html += '</ul>';
 
-  // Choices
-  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-  const container = document.getElementById('choicesContainer');
-  container.innerHTML = '';
-  q.choices.forEach((choice, ci) => {
-    const div = document.createElement('div');
-    div.className = 'choice' + (state.answers[i] === ci ? ' selected' : '');
-    div.innerHTML = `<span class="choice-letter">${letters[ci]}</span><span class="choice-text">${choice}</span>`;
-    div.onclick = () => selectChoice(ci);
-    container.appendChild(div);
-  });
+  var area = document.getElementById('questionArea');
+  area.innerHTML = html;
 
-  // Nav buttons
-  document.getElementById('btnPrev').style.visibility = i === 0 ? 'hidden' : 'visible';
-  document.getElementById('btnNext').textContent = i === total - 1 ? 'Terminer ✓' : 'Suivante →';
-
-  // Render LaTeX
-  renderMathInElement(document.getElementById('screenQuiz'), {
-    delimiters: [
-      { left: '$$', right: '$$', display: true },
-      { left: '$', right: '$', display: false },
-      { left: '\\(', right: '\\)', display: false },
-      { left: '\\[', right: '\\]', display: true }
-    ],
-    throwOnError: false
-  });
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    MathJax.typesetPromise([area]).catch(function(err) { console.log('MathJax:', err); });
+  }
+  renderDots();
 }
 
-function selectChoice(ci) {
-  state.answers[state.currentQ] = ci;
-  document.querySelectorAll('.choice').forEach((c, idx) => {
-    c.classList.toggle('selected', idx === ci);
-  });
+function selectAnswer(idx) {
+  answers[currentQ] = idx;
+  var btns = document.querySelectorAll('.option-btn');
+  for (var i = 0; i < btns.length; i++) {
+    if (i === idx) btns[i].classList.add('selected');
+    else btns[i].classList.remove('selected');
+  }
+  document.getElementById('btnNext').disabled = false;
 }
 
 function nextQuestion() {
-  if (state.currentQ < state.questions.length - 1) {
-    state.currentQ++;
-    renderQuestion();
+  if (answers[currentQ] === null) return;
+  if (currentQ < questions.length - 1) {
+    currentQ++;
+    showQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
-    showScreen('screenEmail');
+    showEmailScreen();
   }
 }
 
 function prevQuestion() {
-  if (state.currentQ > 0) {
-    state.currentQ--;
-    renderQuestion();
+  if (currentQ > 0) {
+    currentQ--;
+    showQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
-// ============================================================
-//  📧 EMAIL GATE
-// ============================================================
+function showEmailScreen() {
+  document.getElementById('quiz').classList.add('hidden');
+  var screen = document.getElementById('emailScreen');
+  screen.classList.remove('hidden');
+
+  var dotsHtml = '';
+  for (var i = 0; i < answers.length; i++) {
+    dotsHtml += '<div class="summary-dot' + (answers[i] === null ? ' unanswered' : '') + '"></div>';
+  }
+
+  var answeredCount = answers.filter(function(a) { return a !== null; }).length;
+
+  screen.innerHTML = '<div class="completion-icon">\u2726</div>' +
+    '<div class="completion-title">Test termin\u00e9.</div>' +
+    '<div class="summary-bar">' + dotsHtml + '</div>' +
+    '<p class="completion-sub">Tes r\u00e9ponses sont enregistr\u00e9es. Pour d\u00e9couvrir ton score, recevoir la correction d\u00e9taill\u00e9e de chaque question et des ouvertures vers les th\u00e9or\u00e8mes sous-jacents \u2014 entre ton adresse mail ci-dessous.</p>' +
+    '<div class="email-box">' +
+      '<h3>Recevoir ma correction</h3>' +
+      '<div class="email-perks">' +
+        '<div class="email-perk">Ton score et le corrig\u00e9 complet des 21 questions</div>' +
+        '<div class="email-perk">L\u2019explication du raisonnement derri\u00e8re chaque r\u00e9ponse</div>' +
+        '<div class="email-perk">Des ouvertures : G\u00f6del, Banach-Tarski, Von Neumann, principe holographique\u2026</div>' +
+        '<div class="email-perk">Un aper\u00e7u de la m\u00e9thode TerreMath\u00e9matique</div>' +
+      '</div>' +
+      '<div class="email-field">' +
+        '<input type="text" class="email-input" id="prenomInput" placeholder="Ton pr\u00e9nom" onkeydown="if(event.key===\'Enter\')submitEmail()">' +
+        '<input type="email" class="email-input" id="emailInput" placeholder="ton@email.com" onkeydown="if(event.key===\'Enter\')submitEmail()">' +
+        '<button class="btn-submit-email" onclick="submitEmail()">Recevoir ma correction \u2192</button>' +
+      '</div>' +
+      '<div class="email-success-msg" id="emailSuccess">' +
+        '<strong>C\u2019est parti !</strong> V\u00e9rifie ta bo\u00eete mail \u2014 tu recevras ton analyse d\u00e9taill\u00e9e dans quelques minutes.' +
+      '</div>' +
+      '<div class="email-privacy">Pas de spam. Jamais. D\u00e9sabonnement en un clic.</div>' +
+    '</div>';
+}
+
 function submitEmail() {
-  const input = document.getElementById('emailInput');
-  const email = input.value.trim();
-  if (!email || !email.includes('@') || !email.includes('.')) {
-    input.style.borderColor = 'var(--red)';
-    return;
-  }
-  state.email = email;
+  var prenomInput = document.getElementById('prenomInput');
+  var emailInput = document.getElementById('emailInput');
+  var prenom = prenomInput.value.trim();
+  var email = emailInput.value.trim();
 
-  // ===== ICI : envoie l'email à ton backend / webhook =====
-  // Exemple avec fetch :
-  // fetch('https://ton-endpoint.com/collect', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({
-  //     email: state.email,
-  //     level: state.level,
-  //     mode: state.mode,
-  //     score: computeScore(),
-  //     date: new Date().toISOString()
-  //   })
-  // });
-  console.log('📧 Email collecté :', email);
+  var hasError = false;
+  if (!prenom) { prenomInput.style.borderColor = '#8B3A3A'; hasError = true; } else { prenomInput.style.borderColor = ''; }
+  if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) { emailInput.style.borderColor = '#8B3A3A'; hasError = true; } else { emailInput.style.borderColor = ''; }
+  if (hasError) return;
 
-  showResults();
-}
+  // Soumission vers systeme.io — formulaire natif garanti
+  var form = document.createElement('form');
+  form.method = 'post';
+  form.action = 'https://systeme.io/embedded/38553227/subscription';
 
-// ============================================================
-//  📊 RESULTS
-// ============================================================
-function computeScore() {
-  let correct = 0;
-  state.questions.forEach((q, i) => {
-    if (state.answers[i] === q.correct) correct++;
+  var fields = { 'surname': prenom, 'email': email, 'redirect_url': 'https://app.terremathematiques.com/merci-news', 'tag_names[]': 'QCM' };
+  Object.keys(fields).forEach(function(key) {
+    var inp = document.createElement('input');
+    inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
+    form.appendChild(inp);
   });
-  return correct;
-}
+  document.body.appendChild(form);
+  form.submit();
 
-function showResults() {
-  showScreen('screenResults');
-  const total = state.questions.length;
-  const score = computeScore();
-  const pct = score / total;
-
-  // Score circle animation
-  const circle = document.getElementById('scoreCircle');
-  const circumference = 2 * Math.PI * 68; // r=68
-  setTimeout(() => {
-    circle.style.strokeDashoffset = circumference * (1 - pct);
-    if (pct >= 0.7) circle.style.stroke = 'var(--green)';
-    else if (pct >= 0.4) circle.style.stroke = 'var(--gold)';
-    else circle.style.stroke = 'var(--red)';
-  }, 100);
-
-  document.getElementById('scoreNumber').textContent = score;
-  document.getElementById('scoreTotal').textContent = `/ ${total}`;
-
-  const levelNames = { brevet: 'Brevet', bac: 'Bac', mpsi: 'MPSI', mp: 'MP' };
-  document.getElementById('resultsLevelBadge').textContent = levelNames[state.level];
-
-  // Appreciation
-  let msg = '';
-  if (pct === 1) msg = 'Parfait ! Score impeccable 🏆';
-  else if (pct >= 0.8) msg = 'Excellent ! Très bonne maîtrise 🎯';
-  else if (pct >= 0.6) msg = 'Bien ! Quelques points à revoir 📖';
-  else if (pct >= 0.4) msg = 'Moyen — du travail en perspective 💪';
-  else msg = 'Il faut reprendre les bases 📚';
-  document.getElementById('appreciation').textContent = msg;
-
-  // Corrections
-  const container = document.getElementById('correctionsContainer');
-  container.innerHTML = '';
-  const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
-
-  state.questions.forEach((q, i) => {
-    const isCorrect = state.answers[i] === q.correct;
-    const userAnswer = state.answers[i] >= 0 ? letters[state.answers[i]] + '. ' + q.choices[state.answers[i]] : 'Pas de réponse';
-    const correctAnswer = letters[q.correct] + '. ' + q.choices[q.correct];
-
-    const item = document.createElement('div');
-    item.className = 'correction-item';
-    item.innerHTML = `
-      <div class="correction-top">
-        <span class="correction-status ${isCorrect ? 'correct' : 'wrong'}">${isCorrect ? '✓' : '✗'}</span>
-        <span class="correction-q"><strong>Q${i + 1}.</strong> ${q.question}</span>
-      </div>
-      <div class="correction-detail">
-        ${!isCorrect ? `<div class="your-answer">Ta réponse : ${userAnswer}</div>` : ''}
-        <div class="correct-answer">Bonne réponse : ${correctAnswer}</div>
-        ${q.explanation ? `<div class="explanation">💡 ${q.explanation}</div>` : ''}
-      </div>
-    `;
-    item.onclick = () => item.classList.toggle('open');
-    container.appendChild(item);
-  });
-
-  // Render LaTeX in results
-  renderMathInElement(document.getElementById('screenResults'), {
-    delimiters: [
-      { left: '$$', right: '$$', display: true },
-      { left: '$', right: '$', display: false },
-      { left: '\\(', right: '\\)', display: false },
-      { left: '\\[', right: '\\]', display: true }
-    ],
-    throwOnError: false
-  });
-}
-
-function restartQuiz() {
-  state.currentQ = 0;
-  state.answers = new Array(state.questions.length).fill(-1);
-  showScreen('screenQuiz');
-  renderQuestion();
-}
-
-function goHome() {
-  state.level = null;
-  state.mode = 'free';
-  state.questions = [];
-  state.answers = [];
-  state.currentQ = 0;
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-  document.querySelector('[data-mode="free"]').classList.add('selected');
-  document.getElementById('premiumUnlock').classList.remove('visible');
-  document.getElementById('btnStart').disabled = true;
-  showScreen('screenHome');
+  document.getElementById('emailSuccess').style.display = 'block';
+  var btn = document.querySelector('.btn-submit-email');
+  btn.textContent = 'Envoy\u00e9 \u2713';
+  btn.style.background = '#4A7C59';
+  btn.style.color = 'white';
+  btn.disabled = true;
+  emailInput.disabled = true;
+  prenomInput.disabled = true;
 }
 </script>
-
-<tm-footer></tm-footer>
-
-<script src="components.js"></script>
-<script src="/cookie-consent.js"></script>
 </body>
 </html>
