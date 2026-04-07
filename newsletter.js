@@ -123,12 +123,12 @@ class TmNewsletter extends HTMLElement {
   <div class="tm-nl-inner">
     <span class="tm-nl-eyebrow">Newsletter</span>
     <h2 class="tm-nl-title">Reçois mes conseils maths</h2>
-    <p class="tm-nl-sub">Méthodes, exercices et stratégies pour progresser — directement dans ta boîte mail.</p>
+    <p class="tm-nl-sub">Méthodes, exercices et stratégies pour progresser — directement dans ta boîte mail. Tu seras aussi notifié(e) en avant-première à chaque nouvelle formation.</p>
 
     <form method="post" action="https://systeme.io/embedded/38553227/subscription" class="tm-nl-form">
       <input type="hidden" name="redirect_url" value="https://app.terremathematiques.com/merci-news" />
       <div class="tm-nl-fields">
-        <input type="text"  name="surname" placeholder="Ton prénom"       required />
+        <input type="text"  name="first_name" placeholder="Ton prénom"       required />
         <input type="email" name="email"   placeholder="Ton adresse email" required />
       </div>
       <button type="submit" class="tm-nl-btn">S'inscrire →</button>

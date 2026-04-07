@@ -1,0 +1,13 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/201107225_3199737729_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_891910075_2809664358.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_2602543251_788473459.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_891910075_3790471710.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_2038892491_3213619876.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_4189728552_3482934101.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_587427174_3718143485.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_4189728552_2397506098.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_1957523448_3390371316.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_717689341_1100889838.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_2711977637_2217050310.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma/1920p30/partial_movie_files/Scene01_Hook/2806708422_3152910415_90150494.mp4'

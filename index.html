@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suivi Personnalisé Maths — Excellence & Grandes Écoles</title>
+<title>Terre Mathematiqus</title>
 <script src="colors.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -32,7 +32,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 80px 24px 60px;
+    padding: 80px 24px 130px;
     opacity: 0;
     transition: opacity 0.9s ease;
     pointer-events: none;
@@ -506,6 +506,22 @@
     background: var(--bg);
     text-align: center;
   }
+
+  /* Cartes avis en thème sable/aubergine */
+  .proof .avis-card {
+    background: #F5EAD6 !important;
+    border-color: rgba(74, 25, 66, 0.15) !important;
+  }
+  .proof .avis-card:hover {
+    border-color: rgba(212, 164, 120, 0.45) !important;
+  }
+  .proof .avis-stars,
+  .proof .avis-nom,
+  .proof .avis-voir-plus,
+  .proof .avis-voir-plus:hover { color: #8B4D7F !important; }
+  .proof .avis-texte { color: #5A2A50 !important; }
+  .proof .avis-date { color: rgba(74, 25, 66, 0.55) !important; }
+  .proof .avis-footer { border-color: rgba(74, 25, 66, 0.12) !important; }
 
   .proof-cards {
     display: grid;
@@ -1089,8 +1105,8 @@
 
   <!-- Indicateurs -->
   <div class="hero-dots">
-    <button class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
-    <button class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
+    <button type="button" class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
+    <button type="button" class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
   </div>
 
 </section>
@@ -1234,7 +1250,16 @@
         </div>
         <div class="video-card" data-src="evasion_asteroides_FINAL.mp4">
           <video src="evasion_asteroides_FINAL.mp4" poster="evasion_asteroides.jpg" muted preload="metadata"></video>
-          <div class="video-card-label">Evasion des asteroides </div>
+          <div class="video-card-label">Guerre interstellaire </div>
+          <div class="play-overlay">
+            <div class="play-btn">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="video-card" data-src="turing_enigma_FINAL.mp4">
+          <video src="turing_enigma_FINAL.mp4" poster="turing_enigma.jpg" muted preload="metadata"></video>
+          <div class="video-card-label">Enigma de Turing</div>
           <div class="play-overlay">
             <div class="play-btn">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
@@ -1243,10 +1268,10 @@
         </div>
       </div>
       <div class="carousel-nav">
-        <button class="carousel-btn" id="prevBtn" aria-label="Précédent">
+        <button type="button" class="carousel-btn" id="prevBtn" aria-label="Précédent">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
-        <button class="carousel-btn" id="nextBtn" aria-label="Suivant">
+        <button type="button" class="carousel-btn" id="nextBtn" aria-label="Suivant">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </button>
       </div>
@@ -1257,7 +1282,7 @@
 <!-- Lightbox vidéo -->
 <div class="video-lightbox" id="videoLightbox">
   <div class="lightbox-inner">
-    <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+    <button type="button" class="lightbox-close" id="lightboxClose">&#x2715;</button>
     <video id="lightboxVideo" controls></video>
   </div>
 </div>

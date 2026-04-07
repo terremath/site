@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QCM TerreMathématiques — Es-tu fait pour les maths ?</title>
+<title>QCM Terre Mathématiques — Es-tu fait pour les maths ?</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <script>
 window.MathJax = {
@@ -350,13 +350,13 @@ body::before {
 <div id="quiz" class="quiz-container">
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
   <div class="quiz-header">
-    <div class="quiz-brand">TerreMath&eacute;matiques</div>
+    <div class="quiz-brand">Terre Math&eacute;matiques</div>
     <div class="quiz-counter"><strong id="qNum">1</strong><span> / 21</span></div>
   </div>
   <div id="questionArea"></div>
   <div class="quiz-nav">
-    <button class="btn-nav btn-back" id="btnBack" onclick="prevQuestion()">&larr; Pr&eacute;c&eacute;dent</button>
-    <button class="btn-nav btn-next" id="btnNext" onclick="nextQuestion()" disabled>Suivant &rarr;</button>
+    <button type="button" class="btn-nav btn-back" id="btnBack" onclick="prevQuestion()">&larr; Pr&eacute;c&eacute;dent</button>
+    <button type="button" class="btn-nav btn-next" id="btnNext" onclick="nextQuestion()" disabled>Suivant &rarr;</button>
   </div>
   <div class="question-dots" id="questionDots"></div>
 </div>
@@ -636,7 +636,7 @@ function showQuestion() {
   html += '<ul class="options-list">';
   for (var i = 0; i < q.options.length; i++) {
     var sel = answers[currentQ] === i ? ' selected' : '';
-    html += '<li><button class="option-btn' + sel + '" onclick="selectAnswer(' + i + ')">';
+    html += '<li><button type="button" class="option-btn' + sel + '" onclick="selectAnswer(' + i + ')">';
     html += '<span class="option-letter">' + letters[i] + ')</span>';
     html += '<span class="option-text">' + q.options[i] + '</span>';
     html += '<span class="option-check"></span>';
@@ -732,9 +732,9 @@ function submitEmail() {
   // Soumission vers systeme.io — formulaire natif garanti
   var form = document.createElement('form');
   form.method = 'post';
-  form.action = 'https://systeme.io/embedded/38553227/subscription';
+  form.action = 'https://systeme.io/embedded/39705817/subscription';
 
-  var fields = { 'surname': prenom, 'email': email, 'redirect_url': 'https://app.terremathematiques.com/merci-news', 'tag_names[]': 'QCM' };
+  var fields = { 'first_name': prenom, 'email': email, 'redirect_url': 'https://app.terremathematiques.com/merci-news' };
   Object.keys(fields).forEach(function(key) {
     var inp = document.createElement('input');
     inp.type = 'hidden'; inp.name = key; inp.value = fields[key];

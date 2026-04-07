@@ -7,6 +7,10 @@ Manim Community Edition
 from manim import *
 import numpy as np
 
+# Format portrait 9:16 — largeur standard conservée pour ne pas agrandir le texte
+config.frame_width  = 14.222
+config.frame_height = 25.28
+
 # ═══════════════════════════════════════════
 # MÉTADONNÉES DU PROJET (lues par render_all.bat)
 # ═══════════════════════════════════════════
