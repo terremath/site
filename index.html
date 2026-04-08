@@ -883,13 +883,10 @@
   .video-carousel .section-title { color: #2A0A2E; }
 
   .video-carousel .carousel-btn {
-    background: var(--bg-light-alt);
-    border-color: rgba(74,25,66,0.15);
     color: #2A0A2E;
   }
 
   .video-carousel .carousel-btn:hover {
-    border-color: var(--deep);
     color: var(--deep);
   }
 
@@ -911,6 +908,14 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding-bottom: 8px;
+    touch-action: pan-x;
+    cursor: grab;
+  }
+
+  .carousel-track.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
   }
 
   .carousel-track::-webkit-scrollbar { display: none; }
@@ -969,28 +974,38 @@
   .play-btn svg { color: var(--bg); margin-left: 4px; }
 
   .carousel-nav {
+    position: absolute;
+    inset: 0;
     display: flex;
-    gap: 10px;
-    margin-top: 24px;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    padding: 0 10px;
   }
 
   .carousel-btn {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--bg);
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.85);
     color: var(--heading);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease;
+    pointer-events: auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    backdrop-filter: blur(4px);
+    flex-shrink: 0;
   }
 
   .carousel-btn:hover {
+    background: rgba(255,255,255,1);
     border-color: rgba(var(--accent-rgb),0.4);
     color: var(--accent);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
   }
 
   /* lightbox */
@@ -1096,9 +1111,9 @@
     <div class="hero-badge">Bac Éclair — Juin 2026</div>
     <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
     <p class="hero-subtitle">Toujours les mêmes maths</p>
-    <p class="hero-tagline">Tenir un chemin droit</p>
-    <a href="bac.html" class="hero-cta">
-      Découvrir le programme
+    <p class="hero-tagline">Ouverture mi-avril — sois le premier averti.</p>
+    <a href="formation-avertir.html" class="hero-cta">
+      Je veux être averti
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
     </a>
   </div>
@@ -1475,8 +1490,31 @@
     track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
   });
 
+  // ── Drag & swipe ──
+  let isDragging = false, dragStartX = 0, dragScrollLeft = 0, dragMoved = false;
+
+  track.addEventListener('mousedown', e => {
+    isDragging = true;
+    dragMoved = false;
+    dragStartX = e.pageX - track.offsetLeft;
+    dragScrollLeft = track.scrollLeft;
+    track.classList.add('dragging');
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    track.classList.remove('dragging');
+  });
+  track.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const x = e.pageX - track.offsetLeft;
+    const walk = x - dragStartX;
+    if (Math.abs(walk) > 5) dragMoved = true;
+    track.scrollLeft = dragScrollLeft - walk;
+  });
+
   document.querySelectorAll('.video-card').forEach(card => {
     card.addEventListener('click', () => {
+      if (dragMoved) return;
       lightboxVideo.src = card.dataset.src;
       lightbox.classList.add('active');
       lightboxVideo.play();

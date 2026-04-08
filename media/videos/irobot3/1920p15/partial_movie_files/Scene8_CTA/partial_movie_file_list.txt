@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3062631736_1074953388_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_3922293284_3468275886.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2096792875_2003377384.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_1871935726_2377955424.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2375725557_507782024.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2352858702_507782024.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2352858702_507782024.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2408024828_4017805415.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot3/1920p15/partial_movie_files/Scene8_CTA/3339537102_2113453375_3934934767.mp4'

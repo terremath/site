@@ -842,7 +842,7 @@ class Scene13_CTA(Scene):
 
         self.play(FadeIn(logo, scale=1.3), FadeIn(mask), Create(border), run_time=1)
 
-        name = Tex(r"\textbf{TerreMath\'ematiques}", font_size=24, color=AUBERGINE).move_to(UP * 1.2)
+        name = Tex(r"\textbf{Terre Math\'ematiques}", font_size=24, color=AUBERGINE).move_to(UP * 1.2)
 
         sep = Line(LEFT * 1.6, RIGHT * 1.6, color=GOLD, stroke_width=1.2)
         sep.next_to(name, DOWN, buff=0.3)

@@ -1,0 +1,60 @@
+1)Le paramètre buff contrôle l'espace entre les deux textes. Actuellement il vaut 0.55.
+
+Pour ajouter de l'espace, augmente cette valeur :
+
+
+VGroup(title, subtitle).arrange(DOWN, buff=1.2).move_to(ORIGIN)
+
+Explication du paramètre buff en Manim :
+
+Valeur	Effet
+0.55	espace actuel (peu d'espace)
+1.0	espace moyen
+1.5	espace large
+2.0	très espacé
+buff est mesuré en unités Manim (1 unité ≈ hauteur d'une ligne de texte normale). 
+Plus le chiffre est grand, 
+plus les deux blocs s'éloignent.
+
+2) Pour le centrer, utilise Paragraph à la place de Text — c'est la classe Manim qui supporte alignment :
+
+Remplace Text par Paragraph avec alignment="center" :
+Text("ligne1\nligne2") → Manim n'a pas d'option d'alignement
+Paragraph("ligne1", "ligne2", alignment="center") → chaque ligne est centrée
+
+line_spacing contrôle l'espace entre les lignes à l'intérieur d'un même texte multiligne.
+
+C'est un multiplicateur de la hauteur de ligne :
+
+Valeur	Effet
+1.0	lignes collées (espacement normal)
+1.3	30% d'espace supplémentaire ← actuel
+2.0	double interligne
+Dans ton cas, ça joue sur l'espace entre "Comment les 3 Lois" et "produisent un tyran" à l'intérieur du Paragraph.
+
+C'est différent du buff=1.2 dans le arrange(DOWN, buff=1.2) qui lui contrôle l'espace entre le titre et le sous-titre.
+
+3)Le paramètre à changer est i * 1.1 ligne 194 — c'est l'écart entre chaque box :
+1.1 → 1.8
+
+
+C'est le paramètre run_time dans chaque self.play(). Plus la valeur est grande, plus l'animation est lente
+
+Règle générale :
+
+run_time	Effet
+0.3 - 0.5	rapide
+0.8 - 1.2	normal
+1.5 - 2.5	lent / dramatique
+Tu peux aussi ajouter self.wait() entre les animations pour faire des pauses :
+
+
+self.play(FadeIn(r, shift=UP * 0.15), run_time=0.9)
+self.wait(0.5)  # pause de 0.5 seconde après chaque box
+
+line_buff=0.45 au lieu de la valeur par défaut 0.22 — ça double l'espace entre les lignes. Ajuste si besoin :
+
+line_buff	Effet
+0.22	défaut (serré)
+0.45	← nouveau (équivalent ~1.3)
+0.6	très espacé
