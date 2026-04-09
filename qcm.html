@@ -508,7 +508,7 @@ function showEmailScreen() {
     '</div>';
 }
 
-function submitEmail() {
+async function submitEmail() {
   var prenomInput = document.getElementById('prenomInput');
   var emailInput = document.getElementById('emailInput');
   var prenom = prenomInput.value.trim();
@@ -519,19 +519,23 @@ function submitEmail() {
   if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) { emailInput.style.borderColor = '#8B3A3A'; hasError = true; } else { emailInput.style.borderColor = ''; }
   if (hasError) return;
 
-  // Soumission vers systeme.io — formulaire natif garanti
-  var form = document.createElement('form');
-  form.method = 'post';
-  form.action = 'https://systeme.io/embedded/39705817/subscription';
+  // Soumission vers systeme.io — formulaire natif (avec tag)
+  var sioForm = document.getElementById('systemeio-form');
+  sioForm.querySelector('[name=first_name]').value = prenom;
+  sioForm.querySelector('[name=email]').value = email;
+  sioForm.querySelector('[name=redirect_url]').value = 'https://app.terremathematiques.com/merci-news';
+  sioForm.querySelector('[name=answers]').value = JSON.stringify(answers);
+  sioForm.submit();
 
-  var fields = { 'first_name': prenom, 'email': email, 'redirect_url': 'https://app.terremathematiques.com/merci-news', 'answers': JSON.stringify(answers), 'tags': 'QCM' };
-  Object.keys(fields).forEach(function(key) {
-    var inp = document.createElement('input');
-    inp.type = 'hidden'; inp.name = key; inp.value = fields[key];
-    form.appendChild(inp);
+  // Envoi au backend
+  var data = { prenom: prenom, email: email, answers: answers };
+  await fetch("https://qcm-backend-mmkd.onrender.com/qcm", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
   });
-  document.body.appendChild(form);
-  form.submit();
 
   document.getElementById('emailSuccess').style.display = 'block';
   var btn = document.querySelector('.btn-submit-email');
@@ -543,5 +547,14 @@ function submitEmail() {
   prenomInput.disabled = true;
 }
 </script>
+
+<!-- Formulaire systeme.io natif caché — nécessaire pour que le tag soit appliqué -->
+<form id="systemeio-form" method="post" action="https://systeme.io/embedded/39815731/subscription" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
+  <input type="hidden" name="first_name" value="" />
+  <input type="hidden" name="email" value="" />
+  <input type="hidden" name="redirect_url" value="" />
+  <input type="hidden" name="answers" value="" />
+</form>
+<script id="form-script-tag-23548537" src="https://app.terremathematiques.com/public/remote/page/398157315591be9af8f349908517440c3b49c1fd.js"></script>
 </body>
 </html>
