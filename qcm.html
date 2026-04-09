@@ -374,7 +374,7 @@ var questions = [
       "$P(n)$ pour tout $n \\geq 0$ par r\u00e9currence classique",
       "Aucune des r\u00e9ponses ci-dessus"
     ],
-    correct: 3
+    correct: 4
   },
   {
     category: "Maths \u00b7 Raisonnement",
@@ -385,7 +385,7 @@ var questions = [
       "Cette situation est impossible \u2014 la phrase est ind\u00e9cidable dans ce syst\u00e8me",
       "Il est l\u2019un ou l\u2019autre, on ne peut simplement pas savoir"
     ],
-    correct: 2
+    correct: 4
     }
 ];
 var currentQ = 0;
@@ -482,79 +482,70 @@ function showEmailScreen() {
     dotsHtml += '<div class="summary-dot' + (answers[i] === null ? ' unanswered' : '') + '"></div>';
   }
 
-  var answeredCount = answers.filter(function(a) { return a !== null; }).length;
-
-  screen.innerHTML = '<div class="completion-icon">\u2726</div>' +
+  screen.innerHTML =
+    '<div class="completion-icon">\u2726</div>' +
     '<div class="completion-title">Test termin\u00e9.</div>' +
     '<div class="summary-bar">' + dotsHtml + '</div>' +
-    '<p class="completion-sub">Tes r\u00e9ponses sont enregistr\u00e9es. Pour d\u00e9couvrir ton score, recevoir la correction d\u00e9taill\u00e9e de chaque question et des ouvertures vers les th\u00e9or\u00e8mes sous-jacents \u2014 entre ton adresse mail ci-dessous.</p>' +
-    '<div class="email-box">' +
-      '<h3>Recevoir ma correction</h3>' +
-      '<div class="email-perks">' +
-        '<div class="email-perk">Ton score et le corrig\u00e9 complet des 21 questions</div>' +
-        '<div class="email-perk">L\u2019explication du raisonnement derri\u00e8re chaque r\u00e9ponse</div>' +
-        '<div class="email-perk">Des ouvertures : G\u00f6del, Banach-Tarski, Von Neumann, principe holographique\u2026</div>' +
-        '<div class="email-perk">Un aper\u00e7u de la m\u00e9thode TerreMath\u00e9matique</div>' +
-      '</div>' +
-      '<div class="email-field">' +
-        '<input type="text" class="email-input" id="prenomInput" placeholder="Ton pr\u00e9nom" onkeydown="if(event.key===\'Enter\')submitEmail()">' +
-        '<input type="email" class="email-input" id="emailInput" placeholder="ton@email.com" onkeydown="if(event.key===\'Enter\')submitEmail()">' +
-        '<button class="btn-submit-email" onclick="submitEmail()">Recevoir ma correction \u2192</button>' +
-      '</div>' +
-      '<div class="email-success-msg" id="emailSuccess">' +
-        '<strong>C\u2019est parti !</strong> V\u00e9rifie ta bo\u00eete mail \u2014 tu recevras ton analyse d\u00e9taill\u00e9e dans quelques minutes.' +
-      '</div>' +
-      '<div class="email-privacy">Pas de spam. Jamais. D\u00e9sabonnement en un clic.</div>' +
-    '</div>';
-}
+    '<p class="completion-sub">Tes r\u00e9ponses sont enregistr\u00e9es. Pour d\u00e9couvrir ton score, recevoir la correction d\u00e9taill\u00e9e de chaque question et des ouvertures vers les th\u00e9or\u00e8mes sous-jacents \u2014 entre ton adresse mail ci-dessous.</p>';
 
-async function submitEmail() {
-  var prenomInput = document.getElementById('prenomInput');
-  var emailInput = document.getElementById('emailInput');
-  var prenom = prenomInput.value.trim();
-  var email = emailInput.value.trim();
-
-  var hasError = false;
-  if (!prenom) { prenomInput.style.borderColor = '#8B3A3A'; hasError = true; } else { prenomInput.style.borderColor = ''; }
-  if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) { emailInput.style.borderColor = '#8B3A3A'; hasError = true; } else { emailInput.style.borderColor = ''; }
-  if (hasError) return;
-
-  // Soumission vers systeme.io — formulaire natif (avec tag)
-  var sioForm = document.getElementById('systemeio-form');
-  sioForm.querySelector('[name=first_name]').value = prenom;
-  sioForm.querySelector('[name=email]').value = email;
-  sioForm.querySelector('[name=redirect_url]').value = 'https://app.terremathematiques.com/merci-news';
-  sioForm.querySelector('[name=answers]').value = JSON.stringify(answers);
-  sioForm.submit();
-
-  // Envoi au backend
-  var data = { prenom: prenom, email: email, answers: answers };
-  await fetch("https://qcm-backend-mmkd.onrender.com/qcm", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
+  // Convertir le tableau answers en { q1: "A", q2: "B", ... } pour le backend
+  var letters = ['A', 'B', 'C', 'D'];
+  var answerData = {};
+  answers.forEach(function(val, i) {
+    answerData['q' + (i + 1)] = (val !== null && val !== undefined) ? (letters[val] || val) : null;
   });
 
-  document.getElementById('emailSuccess').style.display = 'block';
-  var btn = document.querySelector('.btn-submit-email');
-  btn.textContent = 'Envoy\u00e9 \u2713';
-  btn.style.background = '#4A7C59';
-  btn.style.color = 'white';
-  btn.disabled = true;
-  emailInput.disabled = true;
-  prenomInput.disabled = true;
+  // Notre propre formulaire — le backend gère tag + score + correction via l'API systeme.io
+  var box = document.createElement('div');
+  box.className = 'email-box';
+  box.innerHTML =
+    '<h3>Recevoir ma correction</h3>' +
+    '<div class="email-perks">' +
+      '<div class="email-perk">Ton score et le corrigé complet des 21 questions</div>' +
+      '<div class="email-perk">L\'explication du raisonnement derrière chaque réponse</div>' +
+      '<div class="email-perk">Des ouvertures : Gödel, Banach-Tarski, Von Neumann…</div>' +
+    '</div>' +
+    '<div class="email-field">' +
+      '<input type="text" class="email-input" id="prenomInput" placeholder="Ton prénom">' +
+      '<input type="email" class="email-input" id="emailInput" placeholder="ton@email.com">' +
+      '<button class="btn-submit-email" id="submitBtn">Recevoir ma correction →</button>' +
+    '</div>' +
+    '<div class="email-success-msg" id="emailSuccess" style="display:none">' +
+      '<strong>C\'est parti !</strong> Vérifie ta boîte mail dans quelques minutes.' +
+    '</div>' +
+    '<div class="email-privacy">Pas de spam. Jamais. Désabonnement en un clic.</div>';
+
+  screen.appendChild(box);
+
+  document.getElementById('submitBtn').addEventListener('click', async function() {
+    var prenom = document.getElementById('prenomInput').value.trim();
+    var email = document.getElementById('emailInput').value.trim();
+    var btn = document.getElementById('submitBtn');
+
+    if (!prenom) { document.getElementById('prenomInput').style.borderColor = '#8B3A3A'; return; }
+    if (!email || !email.includes('@')) { document.getElementById('emailInput').style.borderColor = '#8B3A3A'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Envoi en cours…';
+
+    try {
+      await fetch('https://qcm-backend-mmkd.onrender.com/qcm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ prenom: prenom, email: email }, answerData))
+      });
+      document.getElementById('emailSuccess').style.display = 'block';
+      btn.textContent = 'Envoyé ✓';
+      btn.style.background = '#4A7C59';
+    } catch(err) {
+      btn.disabled = false;
+      btn.textContent = 'Recevoir ma correction →';
+      alert('Erreur réseau, réessaie.');
+    }
+  });
 }
+
 </script>
 
-<!-- Formulaire systeme.io natif caché — nécessaire pour que le tag soit appliqué -->
-<form id="systemeio-form" method="post" action="https://systeme.io/embedded/39815731/subscription" style="position:absolute;left:-9999px;opacity:0;pointer-events:none">
-  <input type="hidden" name="first_name" value="" />
-  <input type="hidden" name="email" value="" />
-  <input type="hidden" name="redirect_url" value="" />
-  <input type="hidden" name="answers" value="" />
-</form>
-<script id="form-script-tag-23548537" src="https://app.terremathematiques.com/public/remote/page/398157315591be9af8f349908517440c3b49c1fd.js"></script>
 </body>
 </html>

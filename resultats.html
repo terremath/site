@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tes résultats — Terre Mathématiques</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <style>
+  :root {
+    --aubergine: #2D1B33;
+    --aubergine-light: #4A2D54;
+    --sable: #F5E6C8;
+    --sable-light: #FBF3E4;
+    --sable-dark: #E8D4A8;
+    --gold: #C9A84C;
+    --gold-light: #DFBF6E;
+    --gold-dark: #A68A3C;
+    --text-dark: #1A1118;
+    --text-muted: #6B5A5E;
+    --correct: #2d6a4f;
+    --incorrect: #8B3A3A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sable);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding: 48px 20px 80px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--aubergine-light);
+    text-align: center; margin-bottom: 48px;
+  }
+
+  /* Score */
+  .score-block {
+    text-align: center; margin-bottom: 56px;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .score-circle {
+    display: inline-flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 130px; height: 130px; border-radius: 50%;
+    border: 2px solid var(--aubergine);
+    margin-bottom: 20px;
+  }
+  .score-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 700;
+    color: var(--aubergine); line-height: 1;
+  }
+  .score-denom {
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .score-verdict {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: var(--aubergine); margin-bottom: 6px;
+  }
+  .score-sub { font-size: 0.88rem; color: var(--text-muted); }
+
+  /* Cards */
+  .question-card {
+    background: var(--sable-light);
+    border: 1px solid rgba(45,27,51,0.1);
+    border-left: 4px solid var(--sable-dark);
+    padding: 24px 28px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  .question-card.correct { border-left-color: var(--correct); }
+  .question-card.incorrect { border-left-color: var(--incorrect); }
+
+  .card-meta {
+    display: flex; align-items: center;
+    gap: 10px; margin-bottom: 14px;
+  }
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .card-category {
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--gold-dark); background: rgba(201,168,76,0.12);
+    padding: 0.2rem 0.7rem; border-radius: 2px;
+  }
+  .card-status { margin-left: auto; font-size: 1.1rem; }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: var(--aubergine); line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .options-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 7px;
+    margin-bottom: 16px;
+  }
+  .option-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid rgba(45,27,51,0.08);
+    font-size: 0.9rem; line-height: 1.5;
+    background: var(--sable);
+  }
+  .option-item.is-correct {
+    border-color: var(--correct);
+    background: rgba(45,106,79,0.07);
+  }
+  .option-item.is-wrong {
+    border-color: var(--incorrect);
+    background: rgba(139,58,58,0.07);
+  }
+  .option-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700; font-size: 1rem;
+    color: var(--aubergine-light); flex-shrink: 0; min-width: 1.2rem;
+  }
+  .option-item.is-correct .option-letter { color: var(--correct); }
+  .option-item.is-wrong .option-letter { color: var(--incorrect); }
+  .option-marker { margin-left: auto; flex-shrink: 0; font-size: 0.9rem; }
+
+  .explanation {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(45,27,51,0.08);
+    font-size: 0.9rem; line-height: 1.7; color: #4a3a40;
+  }
+  .explanation-label {
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+
+  /* Erreur */
+  .error-block {
+    text-align: center; padding: 80px 20px; color: var(--text-muted);
+  }
+  .error-block a {
+    color: var(--aubergine); text-decoration: underline;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 18px 18px; }
+    .score-circle { width: 110px; height: 110px; }
+    .score-num { font-size: 2.5rem; }
+  }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="page-brand">Terre Mathématiques &mdash; Corrigé</div>
+  <div id="score-block" class="score-block" style="display:none">
+    <div class="score-circle">
+      <span class="score-num" id="scoreNum">—</span>
+      <span class="score-denom" id="scoreDenom"></span>
+    </div>
+    <div class="score-verdict" id="scoreVerdict"></div>
+    <div class="score-sub" id="scoreSub"></div>
+  </div>
+  <div id="questions-list"></div>
+  <div class="error-block" id="error-block" style="display:none">
+    Aucun résultat trouvé. <a href="qcm.html">Reprendre le QCM</a>
+  </div>
+</div>
+
+<script>
+var QUESTIONS = [
+  {
+    id: "q1",
+    category: "Raisonnement \u00b7 R\u00e9currence",
+    text: "On montre $P(0)$ et on montre que $P(n) \\Rightarrow P(2n+1)$ pour tout $n \\geq 0$. Qu\u2019a-t-on prouv\u00e9\u00a0?",
+    options: [
+      { letter: "A", text: "$P(n)$ pour tout $n \\in \\mathbb{N}$" },
+      { letter: "B", text: "$P(n)$ pour tout $n$ impair" },
+      { letter: "C", text: "$P(n)$ pour tout $n \\geq 0$ par r\u00e9currence classique" },
+      { letter: "D", text: "Aucune des r\u00e9ponses ci-dessus" }
+    ],
+    correct: "D",
+    explanation: "On a prouv\u00e9 P(0), P(1), P(3), P(7)\u2026 c\u2019est-\u00e0-dire les entiers de la forme 2\u207f\u22121. Pas tous les entiers naturels. Une r\u00e9currence non standard ne couvre que les entiers qu\u2019elle atteint effectivement."
+  },
+  {
+    id: "q2",
+    category: "Raisonnement \u00b7 Logique",
+    text: "Sur une \u00eele, les chevaliers disent toujours la v\u00e9rit\u00e9, les menteurs mentent toujours. Un habitant vous dit\u00a0: \u00ab\u00a0Je suis un menteur.\u00a0\u00bb Que concluez-vous\u00a0?",
+    options: [
+      { letter: "A", text: "Il est menteur" },
+      { letter: "B", text: "Il est chevalier" },
+      { letter: "C", text: "Cette situation est impossible \u2014 la phrase est ind\u00e9cidable dans ce syst\u00e8me" },
+      { letter: "D", text: "Il est l\u2019un ou l\u2019autre, on ne peut simplement pas savoir" }
+    ],
+    correct: "C",
+    explanation: "Si c\u2019est un chevalier, il ment \u2192 contradiction. Si c\u2019est un menteur, il dit la v\u00e9rit\u00e9 \u2192 contradiction. Personne ne peut dire \u00ab\u00a0Je suis un menteur\u00a0\u00bb dans ce syst\u00e8me. C\u2019est le paradoxe du menteur."
+  }
+];
+
+function generateCorrectionFromAnswers(answersMap) {
+  var score = 0;
+  var questions = QUESTIONS.map(function(q, i) {
+    var userAnswer = answersMap[q.id] || null;
+    var isCorrect = userAnswer === q.correct;
+    if (isCorrect) score++;
+    return {
+      number: i + 1,
+      category: q.category,
+      text: q.text,
+      options: q.options,
+      correct: isCorrect,
+      userAnswer: userAnswer,
+      correctAnswer: q.correct,
+      explanation: q.explanation
+    };
+  });
+  return { score: score, total: QUESTIONS.length, questions: questions };
+}
+
+function displayResults(data) {
+  var pct = Math.round(data.score / data.total * 100);
+  document.getElementById('scoreNum').textContent = data.score;
+  document.getElementById('scoreDenom').textContent = '/ ' + data.total;
+  document.getElementById('scoreVerdict').textContent =
+    pct >= 80 ? 'Excellent.' :
+    pct >= 60 ? 'Tr\u00e8s bon r\u00e9sultat.' :
+    pct >= 40 ? 'Des points \u00e0 retravailler.' : '\u00c0 revoir.';
+  document.getElementById('scoreSub').textContent =
+    pct >= 60
+      ? 'Tu as un vrai sens du raisonnement math\u00e9matique.'
+      : 'Ces questions touchent \u00e0 des id\u00e9es profondes \u2014 elles m\u00e9ritent d\u2019\u00eatre retravill\u00e9es.';
+  document.getElementById('score-block').style.display = 'block';
+
+  var list = document.getElementById('questions-list');
+  data.questions.forEach(function(q, i) {
+    var card = document.createElement('div');
+    card.className = 'question-card ' + (q.correct ? 'correct' : 'incorrect');
+    card.style.animationDelay = (i * 0.08) + 's';
+
+    var optionsHtml = '<ul class="options-list">';
+    q.options.forEach(function(opt) {
+      var isCorrect = opt.letter === q.correctAnswer;
+      var isWrong = opt.letter === q.userAnswer && !q.correct;
+      var cls = isCorrect ? ' is-correct' : isWrong ? ' is-wrong' : '';
+      var marker = isCorrect ? ' <span class="option-marker">\u2713</span>' : isWrong ? ' <span class="option-marker">\u2717</span>' : '';
+      optionsHtml +=
+        '<li class="option-item' + cls + '">' +
+          '<span class="option-letter">' + opt.letter + ')</span>' +
+          '<span>' + opt.text + '</span>' +
+          marker +
+        '</li>';
+    });
+    optionsHtml += '</ul>';
+
+    card.innerHTML =
+      '<div class="card-meta">' +
+        '<span class="card-num">Q' + q.number + '</span>' +
+        '<span class="card-category">' + q.category + '</span>' +
+        '<span class="card-status">' + (q.correct ? '\u2705' : '\u274c') + '</span>' +
+      '</div>' +
+      '<div class="question-text">' + q.text + '</div>' +
+      optionsHtml +
+      '<div class="explanation"><div class="explanation-label">Explication</div>' + q.explanation + '</div>';
+
+    list.appendChild(card);
+  });
+
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    MathJax.typesetPromise([list]).catch(function(e) { console.log(e); });
+  }
+}
+
+// Priorité 1 : lien email avec ?r=DCAB... (réponses encodées)
+var urlParam = new URLSearchParams(window.location.search).get('r');
+if (urlParam) {
+  var letters = urlParam.toUpperCase().split('');
+  var answersMap = {};
+  QUESTIONS.forEach(function(q, i) {
+    answersMap[q.id] = (letters[i] && letters[i] !== 'X') ? letters[i] : null;
+  });
+  displayResults(generateCorrectionFromAnswers(answersMap));
+} else {
+  // Priorité 2 : sessionStorage (flux direct après QCM)
+  var raw = sessionStorage.getItem('qcm_resultats');
+  if (!raw) {
+    document.getElementById('error-block').style.display = 'block';
+  } else {
+    var data = JSON.parse(raw);
+    sessionStorage.removeItem('qcm_resultats');
+    displayResults(data);
+  }
+}
+</script>
+</body>
+</html>
