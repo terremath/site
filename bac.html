@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terre Math&eacute;matiques — Bac Éclair</title>
+<title>Terre Math&eacute;matiques - Bac Éclair</title>
 <script src="colors.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -43,8 +43,8 @@
   }
 
   .hero-badge {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.7rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
     letter-spacing: 0.35em;
     text-transform: uppercase;
     color: var(--accent);
@@ -57,11 +57,12 @@
   }
 
   .hero-title {
-    font-family: 'Fraunces', serif;
-    font-size: clamp(3.5rem, 10vw, 8rem);
-    font-weight: 800;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 300;
     line-height: 0.95;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
     margin-bottom: 0.3em;
     color: var(--heading);
     animation: fadeDown 1s 0.15s ease both;
@@ -75,15 +76,17 @@
   }
 
   .hero-subtitle {
-    font-family: 'Fraunces', serif;
-    font-style: italic;
-    font-size: clamp(1rem, 2.5vw, 1.5rem);
-    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    color: #d4be94;
+    max-width: 480px;
+    line-height: 1.7;
     margin-bottom: 1rem;
     animation: fadeDown 1s 0.3s ease both;
   }
 
   .hero-tagline {
+    font-family: 'DM Sans', sans-serif;
     font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--text);
     max-width: 550px;
@@ -96,21 +99,24 @@
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent-light));
-    color: var(--bg);
+    background: linear-gradient(135deg, #c9a84c, #e0c878);
+    color: #2a0a2e;
     text-decoration: none;
-    font-weight: 500;
-    font-size: 1.05rem;
-    padding: 1rem 2.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 1rem 3rem;
     border-radius: 8px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 30px rgba(var(--accent-rgb),0.2);
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 30px rgba(201,168,76,0.2);
     animation: fadeDown 1s 0.6s ease both;
   }
 
   .hero-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.35);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.3);
   }
 
   .hero-cta svg { transition: transform 0.3s ease; }
@@ -521,10 +527,10 @@
 
 <!-- ═══════════ HERO ═══════════ -->
 <header class="hero">
-  <div class="hero-badge">Bac Éclair — Juin 2026</div>
+  <div class="hero-badge">Bac Éclair : Juin 2026</div>
   <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
   <p class="hero-subtitle">Toujours les mêmes maths</p>
-  <p class="hero-tagline">Ouverture mi-avril — sois le premier averti.</p>
+  <p class="hero-tagline">Ouverture mi-avril. Sois le premier averti.</p>
   <a href="formation-avertir.html" class="hero-cta">
     Je veux être averti
   </a>
@@ -793,7 +799,7 @@
   <p class="final-quote">Le bac n'est pas difficile.<br>Il est répétitif.</p>
   <p class="final-sub">On ne vous a jamais montré la répétition.</p>
   <a href="formation-avertir.html" class="final-btn">
-    Restez connecté — être averti en premier
+    Restez connecté - être averti en premier
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
   </a>
 </section>

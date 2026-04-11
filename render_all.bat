@@ -54,14 +54,37 @@ for %%S in (!SCENES!) do (
     echo file '!OUTDIR!\%%S.mp4' >> filelist.txt
 )
 
-ffmpeg -y -f concat -safe 0 -i filelist.txt -c copy !OUTNAME!
+:: Fichier temporaire : évite "Permission denied" si !OUTNAME! est ouvert
+:: (lecteur vidéo, navigateur, aperçu Cursor, OneDrive, etc.)
+set "STAGE=!OUTNAME!.new.mp4"
+if exist "!STAGE!" del "!STAGE!"
+
+ffmpeg -y -f concat -safe 0 -i filelist.txt -c copy "!STAGE!"
 
 if errorlevel 1 (
     echo X Erreur ffmpeg
+    if exist "!STAGE!" del "!STAGE!"
+    del filelist.txt
     exit /b 1
 )
 
 del filelist.txt
+
+move /Y "!STAGE!" "!OUTNAME!" >nul 2>&1
+if errorlevel 1 (
+    echo.
+    echo AVERTISSEMENT : impossible d'ecraser !OUTNAME! ^(fichier verrouille / ouvert ailleurs^).
+    echo La video complete est dans : !STAGE!
+    echo Fermez lecteur, onglet video ou l'onglet du .mp4 dans l'IDE, puis :
+    echo   del !OUTNAME! ^&^& move /Y !STAGE! !OUTNAME!
+    echo.
+    echo ======================================
+    echo   OK ^(staging^) - !STAGE!
+    echo   Scenes individuelles : !OUTDIR!\
+    echo ======================================
+    exit /b 0
+)
+
 echo.
 echo ======================================
 echo   OK - !OUTNAME!

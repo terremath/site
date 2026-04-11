@@ -229,7 +229,7 @@
       du code embed (ça ressemble à : https://systeme.io/subscription-form/XXXXXX/subscribe)
     -->
     <form class="waitlist-form"
-          action="https://systeme.io/subscription-form/TON_FORM_ID/subscribe"
+          action="https://systeme.io/embedded/39889402/subscription"
           method="POST">
 
       <div class="form-field">
@@ -248,6 +248,13 @@
                name="email"
                placeholder="toi@exemple.com"
                required>
+      </div>
+
+      <div class="form-field">
+        <input type="hidden"
+               name="tags[]"
+               value="1959600"
+        >
       </div>
 
       <button type="submit" class="waitlist-cta">

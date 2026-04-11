@@ -1,0 +1,13 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/1904248797_287376408_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_807203501_819018280.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_3720237343_862640441.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_799967897_180705726.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_1184110052_1440778620.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_2985532336_2276452918.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_2324860314_1742031086.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_3836361521_131778502.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_1539008376_414001373.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_3584924945_2229806813.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_1734327179_2987151164.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene09_Gravite/601603905_2978808015_2379370253.mp4'

@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/1904248797_2532740414_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_3556819395_3303083652.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_325019432_1623026135.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_162772724_2005477956.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_385344636_3039381314.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_3364785300_3039381314.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_3364785300_3039381314.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_2408024828_3707318444.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/1920p30/partial_movie_files/Scene14_CTA/601603905_3798004179_156680562.mp4'
