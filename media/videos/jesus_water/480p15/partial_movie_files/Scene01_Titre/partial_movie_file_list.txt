@@ -1,8 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/1490560626_1183580038_1490108904.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_3558762871_4033731522.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_3474652805_2170066128.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_3684782149_3965924389.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_1106442524_1737432118.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_1839128356_68926320.mp4'
-file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/jesus_water/480p15/partial_movie_files/Scene01_Titre/2857562080_3418611687_3514947287.mp4'

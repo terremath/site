@@ -1103,11 +1103,11 @@
 
   <!-- ── Slide 1 : QCM ── -->
   <div class="hero-slide active hero-slide--qcm">
-    <div class="qcm-brand-mark">Terre Math&eacute;matiques</div>
-    <h1>Veux-tu <em>tester</em> tes<br>connaissances<br>sur la Science des Modernes?</h1>
+    <div class="hero-badge">QCM pour tous: Amateurs ou confirmés</div>
+    <h1>Veux-tu <em>tester</em> tes<br>connaissances sur la Science?<br></h1>
     <p class="qcm-subtitle">21 questions de raisonnement math&eacute;matique et physique. 
-      Pas de formules &agrave; r&eacute;citer, ici c'est comme le dit le grand mathematician Alain Connes: la pens&eacute;e en movement.</p>
-    <!--<div class="qcm-meta">
+      Pas de formules &agrave; r&eacute;citer, ici c'est comme le dit le grand math&eacute;matician Alain Connes : &laquo;&nbsp;La pens&eacute;e en mouvement.&nbsp;&raquo;</p>
+`    <!--<div class="qcm-meta">
       <span>21 questions</span>
       <span>~12 minutes</span>
       <span>Niveau lyc&eacute;e +</span>
@@ -1435,17 +1435,17 @@
       dot.addEventListener('click', () => {
         clearInterval(timer);
         goTo(i);
-        timer = setInterval(advance, 5000);
+        timer = setInterval(advance, 8000);
       });
     });
 
     function advance() { goTo((current + 1) % slides.length); }
-    var timer = setInterval(advance, 5000);
+    var timer = setInterval(advance, 8000);
 
     function navigate(dir) {
       clearInterval(timer);
       goTo((current + dir + slides.length) % slides.length);
-      timer = setInterval(advance, 5000);
+      timer = setInterval(advance, 8000);
     }
 
     const hero = document.querySelector('.hero');

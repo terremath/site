@@ -18,7 +18,6 @@ SCENES = [
     "Scene02_Probleme",
     "Scene03_BilanForces",
     "Scene04_OndeImpact",
-    "Scene05_DoOuVientF",
     "Scene06_PourquoiMoyenne",
     "Scene07_Condition",
     "Scene08_VitesseImpossible",
@@ -61,7 +60,7 @@ HEADER_FONT = 32
 HEADER_BUFF = 0.55
 TITLE_FONT = 56
 SUBTITLE_FONT = 44
-SCENE_HOOK_FONT = 34  # gros accroche type scène 2
+SCENE_HOOK_FONT = 34
 BODY_FONT = 17
 BODY_FONT_SMALL = 15
 MATH_DISPLAY_FONT = 30
@@ -74,15 +73,15 @@ MATH_INLINE_FONT = 26
 def make_header(text, font_size=None):
     fs = font_size if font_size is not None else HEADER_FONT
     h = Tex(r"\textbf{" + text + "}", font_size=fs, color=AUBERGINE)
+    fit_mobject_width(h, fraction_of_frame=0.82)
     h.to_edge(UP, buff=HEADER_BUFF)
-    span = min(config.frame_width * 0.88, max(h.width + 0.6, 2.8))
+    span = min(config.frame_width * 0.82, max(h.width + 0.4, 2.8))
     line = Line(LEFT * span / 2, RIGHT * span / 2, color=GOLD, stroke_width=2)
     line.next_to(h, DOWN, buff=0.14)
     return VGroup(h, line)
 
 
 def fit_mobject_width(mob, fraction_of_frame=0.82):
-    """Réduit l'échelle si le mob dépasse une fraction de la largeur du cadre."""
     max_w = config.frame_width * fraction_of_frame
     if mob.width > max_w:
         mob.scale_to_fit_width(max_w)
@@ -154,7 +153,7 @@ class Scene01_Titre(Scene):
         title_block = VGroup(title, subtitle, sep, author).arrange(
             DOWN, buff=0.42, aligned_edge=ORIGIN,
         )
-        title_block.move_to(UP * 1.05)
+        title_block.move_to(UP * 2.0)
 
         self.play(Write(title), run_time=1.5)
         self.play(FadeIn(subtitle, shift=UP * 0.3), run_time=1)
@@ -164,7 +163,7 @@ class Scene01_Titre(Scene):
             wave.animate.shift(RIGHT * 0.3),
             rate_func=there_and_back, run_time=2,
         )
-        self.wait(1)
+        self.wait(2)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.8)
 
 
@@ -186,7 +185,7 @@ class Scene02_Probleme(Scene):
         self.play(Write(q2), run_time=0.6)
         self.play(Write(q3), run_time=0.6)
         self.play(Write(q4), run_time=0.8)
-        self.wait(1)
+        self.wait(2)
 
         teaser = TLines(
             r"Commen\c{c}ons par comprendre",
@@ -195,7 +194,7 @@ class Scene02_Probleme(Scene):
         )
         teaser.move_to(DOWN * 2.35)
         self.play(FadeIn(teaser), run_time=0.6)
-        self.wait(2)
+        self.wait(3)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
@@ -226,7 +225,6 @@ class Scene03_BilanForces(Scene):
         ).move_to(UP * 2.38)
         self.play(FadeIn(expl), run_time=0.5)
 
-        # Poids — flèche vers le bas, label à droite bien écarté
         w_arrow = Arrow(
             center_mass, center_mass + DOWN * 1.6,
             color=RED, stroke_width=4, buff=0,
@@ -235,9 +233,8 @@ class Scene03_BilanForces(Scene):
         w_label = MathTex(r"mg", font_size=22, color=RED).move_to(center_mass + RIGHT * 1.0 + DOWN * 0.5)
         w_desc = Tex(r"poids", font_size=11, color=RED).next_to(w_label, DOWN, buff=0.12)
         self.play(GrowArrow(w_arrow), FadeIn(w_label), FadeIn(w_desc), run_time=0.8)
-        self.wait(0.5)
+        self.wait(1.5)
 
-        # Réaction eau — flèche vers le haut, label à gauche bien écarté
         f_arrow = Arrow(
             foot_pos + DOWN * 0.1, foot_pos + UP * 0.6,
             color=LIGHT_BLUE, stroke_width=4, buff=0,
@@ -246,15 +243,14 @@ class Scene03_BilanForces(Scene):
         f_label = MathTex(r"F_{\text{eau}}", font_size=22, color=LIGHT_BLUE).move_to(foot_pos + LEFT * 1.1 + UP * 0.3)
         f_desc = Tex(r"r\'eaction de l'eau", font_size=10, color=LIGHT_BLUE).next_to(f_label, DOWN, buff=0.12)
         self.play(GrowArrow(f_arrow), FadeIn(f_label), FadeIn(f_desc), run_time=0.8)
-        self.wait(0.5)
+        self.wait(1.5)
 
         self.play(FadeOut(expl), run_time=0.3)
         constat = MathTex(r"F_{\text{eau}} \ll mg", font_size=MATH_DISPLAY_FONT, color=RED).move_to(DOWN * 2.75)
         box = SurroundingRectangle(constat, color=RED, buff=0.12, stroke_width=1.5, corner_radius=0.08)
         self.play(Write(constat), Create(box), run_time=0.8)
-        self.wait(0.8)
+        self.wait(2)
 
-        # Il coule
         sink_group = VGroup(person, w_arrow, w_label, w_desc, f_arrow, f_label, f_desc)
         self.play(
             sink_group.animate.shift(DOWN * 1.5),
@@ -270,7 +266,7 @@ class Scene03_BilanForces(Scene):
             font_size=22, color=AUBERGINE, buff=0.1,
         ).move_to(UP * 0.75)
         self.play(FadeIn(question), run_time=0.6)
-        self.wait(2)
+        self.wait(3)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
@@ -347,158 +343,27 @@ class Scene04_OndeImpact(Scene):
             run_time=2, rate_func=linear,
         )
 
+        newton_intro = Tex(
+            r"D'apr\`es la deuxi\`eme loi de Newton, on a :",
+            font_size=BODY_FONT, color=SOFT_BLACK,
+        ).move_to(DOWN * 1.8)
+        self.play(FadeIn(newton_intro), run_time=0.8)
+        self.wait(1)
+
         eq = MathTex(
             r"F_{\text{impact}} \sim \rho\,A\,v^2",
             font_size=MATH_DISPLAY_FONT, color=GOLD,
-        ).move_to(DOWN * 2.45)
+        ).move_to(DOWN * 2.55)
         self.play(Write(eq), run_time=0.8)
+        self.wait(3)
 
         self.play(
             t_val.animate.set_value(4),
             impact_val.animate.set_value(0.3),
             run_time=2, rate_func=linear,
         )
-
-        transition = TLines(
-            r"Justifions...",
-            font_size=BODY_FONT, color=AUBERGINE, buff=0.1,
-        ).move_to(DOWN * 3.25)
-        self.play(FadeIn(transition), run_time=0.5)
-        self.wait(2)
         wave.remove_updater(wave_upd)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
-
-
-# ═══════════════════════════════════════════
-# SCENE 05 : D'OÙ VIENT F ~ \rho A v² ?
-#   Dérivation rigoureuse via 2e loi de Newton
-# ═══════════════════════════════════════════
-class Scene05_DoOuVientF(Scene):
-    def construct(self):
-        self.camera.background_color = SABLE
-
-        header = make_header(r"D'où vient $F \sim \rho A v^2$ ?")
-        self.play(Write(header), run_time=0.8)
-
-        # ── Étape 1 : volume balayé ──
-        step1 = Text("① Volume balayé en dt", font_size=20, color=AUBERGINE, weight=BOLD).move_to(UP * 2.45)
-        self.play(FadeIn(step1), run_time=1.2)
-
-        # Pied + cylindre sous le pied
-        foot = RoundedRectangle(
-            width=0.9, height=0.15, corner_radius=0.03,
-            color=AUBERGINE, fill_opacity=0.85, stroke_width=1,
-        ).move_to(UP * 1.8)
-        a_lab = MathTex(r"A", font_size=18, color=ORANGE).next_to(foot, LEFT, buff=0.15)
-
-        # Cylindre balayé (rectangle vertical)
-        cyl = Rectangle(
-            width=0.9, height=0.7,
-            fill_color=WATER_LIGHT, fill_opacity=0.4, stroke_color=WATER_DARK, stroke_width=1,
-        ).next_to(foot, DOWN, buff=0)
-
-        v_arrow = Arrow(
-            foot.get_bottom() + LEFT * 0.7, cyl.get_bottom() + LEFT * 0.7,
-            color=GREEN, stroke_width=2.5, buff=0, max_tip_length_to_length_ratio=0.18,
-        )
-        v_lab = MathTex(r"v\,\mathrm{d}t", font_size=16, color=GREEN).next_to(v_arrow, LEFT, buff=0.08)
-
-        self.play(FadeIn(foot), FadeIn(a_lab), run_time=1.2)
-        self.play(FadeIn(cyl), GrowArrow(v_arrow), FadeIn(v_lab), run_time=1.2)
-
-        eq1 = MathTex(r"\mathrm{d}V = A \cdot v\,\mathrm{d}t", font_size=MATH_INLINE_FONT, color=AUBERGINE).move_to(UP * 0.48)
-        self.play(Write(eq1), run_time=0.8)
-        self.wait(1)
-
-        self.play(FadeOut(step1), FadeOut(eq1), run_time=3)
-
-        # ── Étape 2 : masse déplacée ──
-        step2 = Text("② Masse d'eau déplacée", font_size=20, color=AUBERGINE, weight=BOLD).move_to(UP * 2.45)
-        self.play(FadeIn(step2), run_time=1.2)
-        self.play(cyl.animate.set_fill(WATER_DARK, opacity=0.7), run_time=1.2)
-
-        eq2 = MathTex(
-            r"\mathrm{d}m = \rho\,\mathrm{d}V = \rho\,A\,v\,\mathrm{d}t",
-            font_size=MATH_INLINE_FONT - 2, color=AUBERGINE,
-        ).move_to(UP * 0.48)
-        self.play(Write(eq2), run_time=1)
-        self.wait(1)
-
-        self.play(FadeOut(step2), FadeOut(eq2), run_time=3)
-
-        # ── Étape 3 : variation de quantité de mouvement ──
-        step3 = Text("③ Quantité de mouvement", font_size=20, color=AUBERGINE, weight=BOLD).move_to(UP * 2.45)
-        self.play(FadeIn(step3), run_time=1.2)
-
-        # Flèche vitesse sur la masse
-        p_arrow = Arrow(
-            cyl.get_center() + LEFT * 0.2, cyl.get_center() + LEFT * 0.2 + DOWN * 0.4,
-            color=RED, stroke_width=2.5, buff=0, max_tip_length_to_length_ratio=0.2,
-        )
-        p_lab = MathTex(r"v", font_size=16, color=RED).next_to(p_arrow, LEFT, buff=0.08)
-        self.play(GrowArrow(p_arrow), FadeIn(p_lab), run_time=1.2)
-
-        eq3 = MathTex(
-            r"\mathrm{d}p = \mathrm{d}m \cdot v = \rho\,A\,v^2\,\mathrm{d}t",
-            font_size=MATH_INLINE_FONT - 2, color=AUBERGINE,
-        ).move_to(UP * 0.48)
-        self.play(Write(eq3), run_time=1.2)
-        self.wait(1.2)
-
-        self.play(FadeOut(step3), FadeOut(eq3), run_time=3)
-
-        # ── Étape 4 : 2e loi de Newton ──
-        step4 = Text("④ Deuxième loi de Newton", font_size=20, color=AUBERGINE, weight=BOLD).move_to(UP * 2.45)
-        self.play(FadeIn(step4), run_time=1.2)
-
-        eq4a = MathTex(
-            r"F = \frac{\mathrm{d}p}{\mathrm{d}t}",
-            font_size=MATH_INLINE_FONT + 2, color=AUBERGINE,
-        ).move_to(UP * 0.58)
-        self.play(Write(eq4a), run_time=1.2)
-
-        eq4b = MathTex(
-            r"\boxed{\,F \;=\; \rho\,A\,v^2\,}",
-            font_size=38, color=GOLD,
-        ).move_to(DOWN * 0.28)
-        self.play(Write(eq4b), run_time=1.2)
-        self.wait(1.2)
-
-        # Fade le schéma pour place à l'insight
-        self.play(
-            FadeOut(foot), FadeOut(a_lab), FadeOut(cyl),
-            FadeOut(v_arrow), FadeOut(v_lab),
-            FadeOut(p_arrow), FadeOut(p_lab),
-            FadeOut(step4), FadeOut(eq4a),
-            run_time=0.5,
-        )
-        self.play(eq4b.animate.move_to(UP * 1.5), run_time=3)
-
-        # ── Insight : pourquoi v² ? ──
-        insight_title = Text("Pourquoi v² ?", font_size=22, color=AUBERGINE, weight=BOLD).move_to(UP * 0.32)
-        self.play(FadeIn(insight_title), run_time=1.2)
-
-        insight = Text(
-            "v apparaît deux fois :\n\n• dans le volume balayé (A·v dt)\n• dans la vitesse donnée à l'eau",
-            font_size=BODY_FONT_SMALL, color=SOFT_BLACK, line_spacing=1.55,
-        ).move_to(DOWN * 0.88)
-        self.play(FadeIn(insight, lag_ratio=0.1), run_time=1.5)
-
-        box = SurroundingRectangle(
-            VGroup(insight_title, insight),
-            color=AUBERGINE, buff=0.2, stroke_width=1.2, corner_radius=0.1,
-        )
-        self.play(Create(box), run_time=1.2)
-
-        concl = Text(
-            "D'où le carré dans F ~ ρ A v².",
-            font_size=BODY_FONT, color=GOLD,
-        ).move_to(DOWN * 2.55)
-        self.play(FadeIn(concl), run_time=1.2)
-
-        self.wait(2.5)
-        self.play(*[FadeOut(m) for m in self.mobjects], run_time=3)
-
 
 # ═══════════════════════════════════════════
 # SCENE 06 : POURQUOI LA MOYENNE ?
@@ -520,7 +385,6 @@ class Scene06_PourquoiMoyenne(Scene):
         expl2 = Tex(r"Il frappe \`a une fr\'equence $f$ :", font_size=BODY_FONT, color=PURPLE).next_to(expl1, DOWN, buff=0.22)
         self.play(FadeIn(expl2), run_time=0.4)
 
-        # Graphe F(t) avec pics
         axes = Axes(
             x_range=[0, 4, 1], y_range=[0, 1.2, 0.5],
             x_length=3.85, y_length=2.25,
@@ -550,10 +414,9 @@ class Scene06_PourquoiMoyenne(Scene):
         )
         f_freq = MathTex(r"f", font_size=18, color=PURPLE).next_to(brace, DOWN, buff=0.08)
         self.play(Create(brace), FadeIn(f_freq), run_time=0.6)
-        self.wait(1)
+        self.wait(2)
         self.play(FadeOut(brace), FadeOut(f_freq), run_time=0.3)
 
-        # Ligne moyenne
         avg_line = DashedLine(
             axes.c2p(0, 0.35), axes.c2p(4, 0.35),
             color=GOLD, stroke_width=2, dash_length=0.08,
@@ -577,16 +440,17 @@ class Scene06_PourquoiMoyenne(Scene):
 
         box = SurroundingRectangle(eq_int, color=GOLD, buff=0.15, stroke_width=1.5, corner_radius=0.08)
         self.play(Write(eq_int), run_time=1.2)
+        self.wait(3)
         self.play(Create(box), run_time=0.4)
 
         note = Tex(r"$f$ = nombre de pas/seconde", font_size=BODY_FONT_SMALL - 2, color=PURPLE).move_to(DOWN * 3.72)
         self.play(FadeIn(note), run_time=0.4)
-        self.wait(3)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 06 : LA CONDITION \rhoAv²f ≥ mg
+# SCENE 07 : LA CONDITION \rhoAv²f ≥ mg
 # ═══════════════════════════════════════════
 class Scene07_Condition(Scene):
     def construct(self):
@@ -607,7 +471,7 @@ class Scene07_Condition(Scene):
         self.play(FadeIn(fait1, shift=UP * 0.15), run_time=0.4)
         self.play(FadeIn(fait2, shift=UP * 0.15), run_time=0.4)
         self.play(FadeIn(fait3, shift=UP * 0.15), run_time=0.4)
-        self.wait(1)
+        self.wait(2)
 
         donc = Tex(r"\textbf{Donc :}", font_size=22, color=AUBERGINE).move_to(UP * 0.48)
         self.play(FadeIn(donc), run_time=0.3)
@@ -620,7 +484,7 @@ class Scene07_Condition(Scene):
             font_size=26, color=AUBERGINE,
         ).move_to(DOWN * 0.28)
         self.play(Write(eq1), run_time=1.5)
-        self.wait(1)
+        self.wait(2)
 
         fleche = MathTex(r"\Downarrow", font_size=28, color=GOLD).move_to(DOWN * 1.3)
         self.play(Write(fleche), run_time=0.3)
@@ -632,6 +496,7 @@ class Scene07_Condition(Scene):
 
         box = SurroundingRectangle(eq_final, color=AUBERGINE, buff=0.18, stroke_width=2, corner_radius=0.1)
         self.play(Write(eq_final), run_time=1)
+        self.wait(3)
         self.play(Create(box), run_time=0.5)
 
         label = TLines(
@@ -640,12 +505,12 @@ class Scene07_Condition(Scene):
             font_size=BODY_FONT_SMALL, color=AUBERGINE, buff=0.1,
         ).next_to(box, DOWN, buff=0.2)
         self.play(FadeIn(label), run_time=0.4)
-        self.wait(3)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 07 : VITESSE HORS D'ATTEINTE
+# SCENE 08 : VITESSE HORS D'ATTEINTE
 # ═══════════════════════════════════════════
 class Scene08_VitesseImpossible(Scene):
     def construct(self):
@@ -666,7 +531,7 @@ class Scene08_VitesseImpossible(Scene):
             font_size=36, color=GOLD,
         ).move_to(UP * 1.15)
         self.play(Write(eq_umin), run_time=1.2)
-        self.wait(0.8)
+        self.wait(2)
 
         intro = Tex(r"Prenons un homme standard :", font_size=BODY_FONT, color=AUBERGINE).move_to(UP * 0.15)
         self.play(FadeIn(intro), run_time=0.4)
@@ -686,7 +551,7 @@ class Scene08_VitesseImpossible(Scene):
 
         for v in vg:
             self.play(FadeIn(v, shift=RIGHT * 0.15), run_time=0.35)
-        self.wait(0.8)
+        self.wait(1)
 
         result = MathTex(
             r"u_{\min} \sim 80 \text{ \`a } 110 \text{ km/h}",
@@ -696,6 +561,7 @@ class Scene08_VitesseImpossible(Scene):
         flash = Rectangle(width=14, height=10, fill_color=WHITE, fill_opacity=0.1, stroke_width=0)
         self.play(FadeIn(flash, run_time=0.1), FadeOut(flash, run_time=0.3))
         self.play(Write(result), run_time=0.8)
+        self.wait(2.5)
 
         box = SurroundingRectangle(result, color=RED, buff=0.15, stroke_width=2, corner_radius=0.1)
         self.play(Create(box), run_time=0.4)
@@ -706,12 +572,12 @@ class Scene08_VitesseImpossible(Scene):
 
         verdict = Tex(r"Impossible pour un humain.", font_size=BODY_FONT + 4, color=RED).move_to(DOWN * 3.42)
         self.play(FadeIn(verdict, shift=UP * 0.15), run_time=0.5)
-        self.wait(2.5)
+        self.wait(3.5)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 08 : RÔLE DE g + GRAPHE
+# SCENE 09 : RÔLE DE g + GRAPHE
 # ═══════════════════════════════════════════
 class Scene09_Gravite(Scene):
     def construct(self):
@@ -722,6 +588,7 @@ class Scene09_Gravite(Scene):
 
         eq = MathTex(r"u_{\min} \propto \sqrt{g}", font_size=38, color=GOLD).move_to(UP * 2.35)
         self.play(Write(eq), run_time=1)
+        self.wait(2)
 
         expl = TLines(
             r"Moins de gravit\'e =",
@@ -769,12 +636,12 @@ class Scene09_Gravite(Scene):
             font_size=BODY_FONT_SMALL, color=GREEN, buff=0.1,
         ).move_to(DOWN * 2.82)
         self.play(FadeIn(concl, shift=UP * 0.15), run_time=0.6)
-        self.wait(3)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 09 : BASILIC
+# SCENE 10 : BASILIC
 # ═══════════════════════════════════════════
 class Scene10_Basilic(Scene):
     def construct(self):
@@ -824,13 +691,14 @@ class Scene10_Basilic(Scene):
         eq = MathTex(r"\rho\,A\,v^2\,f \;\geq\; m\,g \;\checkmark", font_size=MATH_INLINE_FONT + 2, color=GOLD).move_to(DOWN * 2.48)
         note = Tex(r"Aucune violation physique.", font_size=BODY_FONT_SMALL, color=SOFT_BLACK).next_to(eq, DOWN, buff=0.22)
         self.play(Write(eq), run_time=0.8)
+        self.wait(3)
         self.play(FadeIn(note), run_time=0.3)
         self.wait(2.5)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 10 : FORCE DIVINE
+# SCENE 11 : FORCE DIVINE
 # ═══════════════════════════════════════════
 class Scene11_ForceDivine(Scene):
     def construct(self):
@@ -846,11 +714,12 @@ class Scene11_ForceDivine(Scene):
         ).move_to(UP * 2.25)
 
         self.play(Write(eq[:3]), run_time=1)
-        self.wait(0.3)
+        self.wait(1)
 
         eq[4].set_color(GOLD)
         glow = eq[4].copy().set_color(GOLD).set_opacity(0.3).scale(1.4)
         self.play(Write(eq[3:]), FadeIn(glow, scale=1.5), FadeOut(glow, run_time=1.5), run_time=1.2)
+        self.wait(2)
 
         ok = TLines(
             r"Math\'ematiquement :",
@@ -858,11 +727,11 @@ class Scene11_ForceDivine(Scene):
             font_size=BODY_FONT, color=GREEN, buff=0.1,
         ).move_to(UP * 0.68)
         self.play(FadeIn(ok), run_time=0.5)
-        self.wait(0.8)
+        self.wait(1)
 
         mais = Tex(r"Mais\ldots", font_size=28, color=RED).move_to(DOWN * 0.08)
         self.play(FadeIn(mais, scale=1.2), run_time=0.4)
-        self.wait(0.3)
+        self.wait(0.5)
         self.play(FadeOut(mais), FadeOut(ok), run_time=0.3)
 
         abox = RoundedRectangle(
@@ -884,14 +753,14 @@ class Scene11_ForceDivine(Scene):
         self.play(FadeIn(abox), Write(at), Create(sep), run_time=0.8)
         for c in criteria:
             self.play(FadeIn(c, shift=RIGHT * 0.15), run_time=0.25)
-        self.wait(0.6)
+        self.wait(1)
 
         crosses = VGroup()
         for c in criteria:
             x = MathTex(r"\times", font_size=20, color=RED).next_to(c, LEFT, buff=0.12)
             crosses.add(x)
         self.play(FadeIn(crosses, lag_ratio=0.15), run_time=0.8)
-        self.wait(1)
+        self.wait(2)
 
         th = TLines(
             r"Hors du mod\`ele physique.",
@@ -899,12 +768,12 @@ class Scene11_ForceDivine(Scene):
             font_size=BODY_FONT_SMALL, color=GOLD, buff=0.1,
         ).move_to(DOWN * 3.22)
         self.play(FadeIn(th, shift=UP * 0.15), run_time=0.6)
-        self.wait(3)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════
-# SCENE 11 : CONCLUSION
+# SCENE 12 : CONCLUSION
 # ═══════════════════════════════════════════
 class Scene12_Conclusion(Scene):
     def construct(self):
@@ -925,25 +794,22 @@ class Scene12_Conclusion(Scene):
         labels = []
         vals = []
         for label, val, col in items:
-            lbl = Tex(label, font_size=BODY_FONT_SMALL, color=SOFT_BLACK)
-            v = Tex(val, font_size=BODY_FONT_SMALL, color=col)
+            lbl = Tex(label, font_size=20, color=SOFT_BLACK)
+            v = Tex(val, font_size=20, color=col)
             labels.append(lbl)
             vals.append(v)
 
-        lbls_col = VGroup(*labels).arrange(DOWN, buff=0.2, aligned_edge=LEFT)
-        vals_col = VGroup(*vals).arrange(DOWN, buff=0.2)
+        lbls_col = VGroup(*labels).arrange(DOWN, buff=0.35, aligned_edge=LEFT)
+        vals_col = VGroup(*vals).arrange(DOWN, buff=0.35)
 
-        lbls_col.move_to(LEFT * 1.5 + UP * 0.12)
-        vals_col.move_to(RIGHT * 1.5 + UP * 0.12)
-
-        # Aligner verticalement les deux colonnes
-        vals_col.align_to(lbls_col, UP)
+        table = VGroup(lbls_col, vals_col).arrange(RIGHT, buff=0.8, aligned_edge=UP)
+        table.move_to(UP * 0.1)
 
         for lbl, v in zip(labels, vals):
             self.play(FadeIn(VGroup(lbl, v), shift=RIGHT * 0.1), run_time=0.3)
-            self.wait(0.2)
+            self.wait(0.5)
 
-        self.wait(1.5)
+        self.wait(2.5)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.8)
 
         quote = TLines(
@@ -959,12 +825,12 @@ class Scene12_Conclusion(Scene):
         self.play(FadeIn(quote, lag_ratio=0.08), run_time=3)
         box = SurroundingRectangle(quote, color=GOLD, buff=0.2, stroke_width=1.2, corner_radius=0.1)
         self.play(Create(box), run_time=0.8)
-        self.wait(3)
+        self.wait(4)
         self.play(FadeOut(quote), FadeOut(box), run_time=1)
 
 
 # ═══════════════════════════════════════════
-# SCENE 12 : CITATION GOETHE
+# SCENE 13 : CITATION GOETHE
 # ═══════════════════════════════════════════
 class Scene13_Goethe(Scene):
     def construct(self):
@@ -978,7 +844,9 @@ class Scene13_Goethe(Scene):
             font_size=28, color=AUBERGINE, buff=0.18,
         )
         close_q = Tex(r"\guillemotright", font_size=56, color=GOLD)
-        quote_block = VGroup(open_q, quote, close_q).arrange(RIGHT, buff=0.28, aligned_edge=UP)
+        open_q.next_to(quote, LEFT, buff=0.28, aligned_edge=UP)
+        close_q.next_to(quote, RIGHT, buff=0.28, aligned_edge=DOWN)
+        quote_block = VGroup(open_q, quote, close_q)
         quote_block.move_to(UP * 0.55)
         self.play(FadeIn(open_q, scale=1.2), run_time=0.5)
         self.play(FadeIn(quote, lag_ratio=0.1), run_time=2)
@@ -988,19 +856,17 @@ class Scene13_Goethe(Scene):
         sep.next_to(quote_block, DOWN, buff=0.55)
         author = Tex(r"Goethe", font_size=24, color=GOLD).next_to(sep, DOWN, buff=0.22)
         self.play(Create(sep), FadeIn(author), run_time=0.8)
-        self.wait(3)
+        self.wait(4)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=1)
 
 
 # ═══════════════════════════════════════════
-# SCENE 13 : CTA + LOGO
+# SCENE 14 : CTA + LOGO
 # ═══════════════════════════════════════════
 class Scene14_CTA(Scene):
     def construct(self):
         self.camera.background_color = SABLE
 
-        # Logo : le masque Cutout utilise un grand carré — hors du VGroup d'espacement,
-        # sinon la boîte englobante est énorme et le titre est placé trop haut (chevauchement).
         R = 0.52
         logo = ImageMobject("logo.jpg")
         logo.set_width(R * 2)
@@ -1016,7 +882,6 @@ class Scene14_CTA(Scene):
 
         disc_block = Group(logo, border)
 
-        # Titre : tient dans le cadre portrait
         name = Tex(r"\textbf{TERRE MATHEMATIQUES}", font_size=34, color=AUBERGINE)
         max_w = config.frame_width * 0.78
         if name.width > max_w:
@@ -1043,5 +908,5 @@ class Scene14_CTA(Scene):
         for _ in range(3):
             self.play(name.animate.scale(1.03), rate_func=there_and_back, run_time=0.8)
 
-        self.wait(2)
+        self.wait(3)
         self.play(*[FadeOut(m) for m in self.mobjects], run_time=1)
