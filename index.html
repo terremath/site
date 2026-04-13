@@ -1035,10 +1035,17 @@
     aspect-ratio: 16/9;
   }
 
-  .lightbox-inner video {
+  .lightbox-inner.is-short {
+    width: min(50vw, 400px);
+    aspect-ratio: 9/16;
+  }
+
+  .lightbox-inner video,
+  .lightbox-inner iframe {
     width: 100%;
     height: 100%;
     border-radius: 12px;
+    border: none;
   }
 
   .lightbox-close {
@@ -1120,7 +1127,7 @@
     <div class="hero-badge">Bac Éclair: Juin 2026</div>
     <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
     <p class="hero-subtitle">Toujours les mêmes maths</p>
-    <p class="hero-tagline">Ouverture mi-avril. Sois le premier averti.</p>
+    <p class="hero-tagline">Ouverture courant avril. Sois le premier averti.</p>
     <a href="formation-avertir.html" class="hero-cta">
       Je veux être averti
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -1254,8 +1261,8 @@
     <h2 class="section-title">Notre travail</h2>
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carouselTrack">
-        <div class="video-card" data-src="marcher_sur_eau_FINAL.mp4">
-          <video src="marcher_sur_eau_FINAL.mp4" poster="jesus_water.jpg" muted preload="metadata"></video>
+        <div class="video-card" data-youtube="e_zwiAinPAM">
+          <video poster="jesus_water.jpg" muted preload="metadata"></video>
           <div class="video-card-label">Marcher sur l'eau&nbsp;?</div>
           <div class="play-overlay">
             <div class="play-btn">
@@ -1305,9 +1312,10 @@
 
 <!-- Lightbox vidéo -->
 <div class="video-lightbox" id="videoLightbox">
-  <div class="lightbox-inner">
+  <div class="lightbox-inner" id="lightboxInner">
     <button type="button" class="lightbox-close" id="lightboxClose">&#x2715;</button>
     <video id="lightboxVideo" controls></video>
+    <iframe id="lightboxIframe" style="display:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
   </div>
 </div>
 
@@ -1487,7 +1495,9 @@
   // ── Video Carousel ──
   const track = document.getElementById('carouselTrack');
   const lightbox = document.getElementById('videoLightbox');
+  const lightboxInner = document.getElementById('lightboxInner');
   const lightboxVideo = document.getElementById('lightboxVideo');
+  const lightboxIframe = document.getElementById('lightboxIframe');
   const lightboxClose = document.getElementById('lightboxClose');
   const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
 
@@ -1524,9 +1534,19 @@
   document.querySelectorAll('.video-card').forEach(card => {
     card.addEventListener('click', () => {
       if (dragMoved) return;
-      lightboxVideo.src = card.dataset.src;
+      if (card.dataset.youtube) {
+        lightboxVideo.style.display = 'none';
+        lightboxIframe.style.display = 'block';
+        lightboxIframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.youtube}?autoplay=1`;
+        lightboxInner.classList.add('is-short');
+      } else {
+        lightboxIframe.style.display = 'none';
+        lightboxVideo.style.display = '';
+        lightboxVideo.src = card.dataset.src;
+        lightboxInner.classList.remove('is-short');
+        lightboxVideo.play();
+      }
       lightbox.classList.add('active');
-      lightboxVideo.play();
     });
   });
 
@@ -1534,6 +1554,8 @@
     lightbox.classList.remove('active');
     lightboxVideo.pause();
     lightboxVideo.src = '';
+    lightboxIframe.src = '';
+    lightboxInner.classList.remove('is-short');
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
