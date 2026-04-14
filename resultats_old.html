@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tes résultats — Terre Mathématiques</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+  window.MathJax = {
+    tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    svg: { fontCache: 'global' },
+    startup: { typeset: true }
+  };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  <style>
+  :root {
+    --aubergine: #2D1B33;
+    --aubergine-light: #4A2D54;
+    --sable: #F5E6C8;
+    --sable-light: #FBF3E4;
+    --sable-dark: #E8D4A8;
+    --gold: #C9A84C;
+    --gold-light: #DFBF6E;
+    --gold-dark: #A68A3C;
+    --text-dark: #1A1118;
+    --text-muted: #6B5A5E;
+    --correct: #2d6a4f;
+    --incorrect: #8B3A3A;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--sable);
+    color: var(--text-dark);
+    min-height: 100vh;
+    padding: 48px 20px 80px;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+
+  .container { max-width: 680px; margin: 0 auto; }
+
+  /* Header */
+  .page-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--aubergine-light);
+    text-align: center; margin-bottom: 48px;
+  }
+
+  /* Score */
+  .score-block {
+    text-align: center; margin-bottom: 56px;
+    animation: fadeUp 0.7s ease forwards;
+  }
+  .score-circle {
+    display: inline-flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 130px; height: 130px; border-radius: 50%;
+    border: 2px solid var(--aubergine);
+    margin-bottom: 20px;
+  }
+  .score-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 700;
+    color: var(--aubergine); line-height: 1;
+  }
+  .score-denom {
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .score-verdict {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: var(--aubergine); margin-bottom: 6px;
+  }
+  .score-sub { font-size: 0.88rem; color: var(--text-muted); }
+
+  /* Cards */
+  .question-card {
+    background: var(--sable-light);
+    border: 1px solid rgba(45,27,51,0.1);
+    border-left: 4px solid var(--sable-dark);
+    padding: 24px 28px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.5s ease forwards;
+    opacity: 0;
+  }
+  .question-card.correct { border-left-color: var(--correct); }
+  .question-card.incorrect { border-left-color: var(--incorrect); }
+
+  .card-meta {
+    display: flex; align-items: center;
+    gap: 10px; margin-bottom: 14px;
+  }
+  .card-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-muted);
+  }
+  .card-category {
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--gold-dark); background: rgba(201,168,76,0.12);
+    padding: 0.2rem 0.7rem; border-radius: 2px;
+  }
+  .card-status { margin-left: auto; font-size: 1.1rem; }
+
+  .question-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 600;
+    color: var(--aubergine); line-height: 1.55;
+    margin-bottom: 16px;
+  }
+
+  .options-list {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 7px;
+    margin-bottom: 16px;
+  }
+  .option-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid rgba(45,27,51,0.08);
+    font-size: 0.9rem; line-height: 1.5;
+    background: var(--sable);
+  }
+  .option-item.is-correct {
+    border-color: var(--correct);
+    background: rgba(45,106,79,0.07);
+  }
+  .option-item.is-wrong {
+    border-color: var(--incorrect);
+    background: rgba(139,58,58,0.07);
+  }
+  .option-letter {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700; font-size: 1rem;
+    color: var(--aubergine-light); flex-shrink: 0; min-width: 1.2rem;
+  }
+  .option-item.is-correct .option-letter { color: var(--correct); }
+  .option-item.is-wrong .option-letter { color: var(--incorrect); }
+  .option-marker { margin-left: auto; flex-shrink: 0; font-size: 0.9rem; }
+
+  .explanation {
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid rgba(45,27,51,0.08);
+    font-size: 0.9rem; line-height: 1.7; color: #4a3a40;
+  }
+  .explanation-label {
+    font-size: 0.7rem; letter-spacing: 0.15em;
+    text-transform: uppercase; font-weight: 600;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+
+  /* Erreur */
+  .error-block {
+    text-align: center; padding: 80px 20px; color: var(--text-muted);
+  }
+  .error-block a {
+    color: var(--aubergine); text-decoration: underline;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .question-card { padding: 18px 18px; }
+    .score-circle { width: 110px; height: 110px; }
+    .score-num { font-size: 2.5rem; }
+  }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="page-brand">Terre Mathématiques : Corrigé</div>
+  <div id="score-block" class="score-block" style="display:none">
+    <div class="score-circle">
+      <span class="score-num" id="scoreNum">—</span>
+      <span class="score-denom" id="scoreDenom"></span>
+    </div>
+    <div class="score-verdict" id="scoreVerdict"></div>
+    <div class="score-sub" id="scoreSub"></div>
+  </div>
+  <div id="questions-list"></div>
+  <div class="error-block" id="error-block" style="display:none">
+    Aucun résultat trouvé. <a href="qcm.html">Reprendre le QCM</a>
+  </div>
+</div>
+
+<script>
+var QUESTIONS = [
+  {
+    id: "q1",
+    category: "Maths \u00b7 Raisonnement",
+    text: "On montre $P(0)$ et on montre que $P(n) \\Rightarrow P(2n+1)$ pour tout $n \\geq 0$. Qu\u2019a-t-on prouv\u00e9 ?",
+    options: [
+      { letter: "A", text: "$P(n)$ pour tout $n \\in \\mathbb{N}$" },
+      { letter: "B", text: "$P(n)$ pour tout $n$ impair" },
+      { letter: "C", text: "$P(2n+1) \\Rightarrow P(n)$ par descente" },
+      { letter: "D", text: "Aucune des r\u00e9ponses ci-dessus" }
+    ],
+    correct: "D",
+    explanation: "Depuis $P(0)$ on obtient $P(1)$, puis $P(3)$, $P(7)$, etc. : ce sont les entiers de la forme $2^k-1$, pas tous les $\\mathbb{N}$. Les autres formulations ne d\u00e9crivent pas ce que cette r\u00e8gle de r\u00e9currence \u00e9tablit vraiment."
+  },
+  {
+    id: "q2",
+    category: "Maths \u00b7 Raisonnement",
+    text: "Sur une \u00eele, les chevaliers disent toujours la v\u00e9rit\u00e9, les brigands mentent toujours. Un habitant vous dit : \u00ab\u00a0Je suis un menteur.\u00a0\u00bb Que concluez-vous ?",
+    options: [
+      { letter: "A", text: "Il est brigand" },
+      { letter: "B", text: "Il est chevalier" },
+      { letter: "C", text: "La phrase est ind\u00e9cidable dans ce syst\u00e8me" },
+      { letter: "D", text: "Il est l\u2019un ou l\u2019autre, on ne peut simplement pas savoir" }
+    ],
+    correct: "C",
+    explanation: "Ni chevalier ni brigand ne peut dire \u00ab je suis un menteur \u00bb sans contradiction (variante du paradoxe du menteur). La situation n\u2019admet pas de mod\u00e8le coh\u00e9rent : la phrase est ind\u00e9cidable / impossible dans ce cadre."
+  },
+  {
+    id: "q3",
+    category: "Maths \u00b7 Raisonnement",
+    text: "On d\u00e9montre qu\u2019il existe deux irrationnels $a$ et $b$ tels que $a^b$ est rationnel, en consid\u00e9rant $\\sqrt{2}^{\\sqrt{2}}$ : soit c\u2019est rationnel et c\u2019est fini, soit c\u2019est irrationnel et alors $(\\sqrt{2}^{\\sqrt{2}})^{\\sqrt{2}} = 2$. Cette preuve :",
+    options: [
+      { letter: "A", text: "Est parfaitement constructive car on a exhib\u00e9 $a$ et $b$" },
+      { letter: "B", text: "Prouve l\u2019existence sans dire quel cas est le bon car elle utilise le tiers exclu" },
+      { letter: "C", text: "Est fausse car $\\sqrt{2}^{\\sqrt{2}}$ n\u2019est pas bien d\u00e9fini" },
+      { letter: "D", text: "Fonctionne par r\u00e9currence sur les puissances de $\\sqrt{2}$" }
+    ],
+    correct: "B",
+    explanation: "C\u2019est une preuve par cas (rationnel / irrationnel de $\\sqrt{2}^{\\sqrt{2}}$) qui s\u2019appuie sur le tiers exclu : on sait qu\u2019un des deux choix marche, sans identifier lequel. Ce n\u2019est pas une construction explicite de $(a,b)$."
+  },
+  {
+    id: "q4",
+    category: "Maths \u00b7 Analyse",
+    text: "Une voiture roule \u00e0 $99$ km/h pendant une demi-heure, puis \u00e0 $101$ km/h pendant une demi-heure, avec changement instantan\u00e9. Que peut-on affirmer ?",
+    options: [
+      { letter: "A", text: "Elle a forc\u00e9ment roul\u00e9 \u00e0 $100$ km/h \u00e0 un instant" },
+      { letter: "B", text: "Elle a parcouru exactement $100$ km, mais on ne peut pas garantir qu\u2019elle ait eu la vitesse $100$ km/h \u00e0 un instant" },
+      { letter: "C", text: "Elle a parcouru plus de $100$ km" },
+      { letter: "D", text: "Son mouvement est d\u00e9rivable sur tout l\u2019intervalle" }
+    ],
+    correct: "B",
+    explanation: "Distance totale : $99 \\times 0{,}5 + 101 \\times 0{,}5 = 100$ km. Si la vitesse reste exactement $99$ puis exactement $101$ avec saut, le th\u00e9or\u00e8me des valeurs interm\u00e9diaires ne s\u2019applique pas sur tout l\u2019intervalle : on peut ne jamais atteindre $100$ km/h."
+  },
+  {
+    id: "q5",
+    category: "Maths \u00b7 Information",
+    text: "On compare deux messages binaires de longueur $10^6$. Le message $M_1$ est obtenu \u00e0 partir de deux bits initiaux, puis par la r\u00e8gle $u_{n+2} \\equiv u_{n+1} + u_n \\pmod{2}$. Le message $M_2$ contient exactement $500\\,000$ z\u00e9ros et $500\\,000$ uns. Lequel demande, en principe, le moins d\u2019information pour \u00eatre d\u00e9crit exactement ?",
+    options: [
+      { letter: "A", text: "$M_1$" },
+      { letter: "B", text: "$M_2$" },
+      { letter: "C", text: "Les deux demandent le m\u00eame ordre de grandeur d\u2019information" },
+      { letter: "D", text: "On ne peut pas conclure \u00e0 partir des seules donn\u00e9es" }
+    ],
+    correct: "A",
+    explanation: "$M_1$ est engendr\u00e9 par une r\u00e9currence lin\u00e9aire d\u2019ordre $2$ sur $\\mathbb{F}_2$ : la suite est p\u00e9riodique et enti\u00e8rement d\u00e9termin\u00e9e par deux bits. $M_2$ peut \u00eatre presque n\u2019importe quelle s\u00e9quence \u00e9quilibr\u00e9e, ce qui impose en g\u00e9n\u00e9ral beaucoup plus de bits pour la sp\u00e9cifier."
+  },
+  {
+    id: "q6",
+    category: "Maths \u00b7 Mod\u00e9lisation",
+    text: "On mod\u00e9lise un actif par un prix al\u00e9atoire tr\u00e8s irr\u00e9gulier. Une banque vend un produit dont le gain final d\u00e9pend de tout le trajet du prix, par exemple d\u2019une moyenne sur le mois ou du passage sous une barri\u00e8re. Un quant veut savoir si le bruit inject\u00e9 autour d\u2019un instant $t$ influence fortement le gain final. Quelle exp\u00e9rience math\u00e9matique est la seule coh\u00e9rente ?",
+    options: [
+      { letter: "A", text: "Mesurer la pente locale du graphe du prix au temps $t$" },
+      { letter: "B", text: "Lisser artificiellement le graphe puis en calculer la d\u00e9riv\u00e9e ordinaire" },
+      { letter: "C", text: "Prendre le m\u00eame sc\u00e9nario de march\u00e9, y ajouter un tout petit choc autour de $t$, puis comparer le gain final avant et apr\u00e8s" },
+      { letter: "D", text: "Comparer deux journ\u00e9es historiques compl\u00e8tement diff\u00e9rentes" }
+    ],
+    correct: "C",
+    explanation: "Pour une d\u00e9pendance fonctionnelle du chemin (path-dependent), la sensibilit\u00e9 se teste en perturbant la trajectoire au voisinage de $t$ et en mesurant l\u2019effet sur le payoff : c\u2019est l\u2019esprit des d\u00e9riv\u00e9es de Malliavin / sensibilit\u00e9 par rapport au bruit. La d\u00e9riv\u00e9e classique ou un lissage arbitraire ne r\u00e9pond pas \u00e0 la question."
+  },
+  {
+    id: "q7",
+    category: "Maths \u00b7 Probabilit\u00e9s",
+    text: "Peut-on construire un jeu o\u00f9 chaque issue est \u00e9quiprobable et pourtant le joueur perd en esp\u00e9rance ?",
+    options: [
+      { letter: "A", text: "Non, \u00e9quiprobable implique jeu \u00e9quitable" },
+      { letter: "B", text: "Oui, il suffit que les gains et pertes soient asym\u00e9triques" },
+      { letter: "C", text: "Seulement si le nombre d\u2019issues est impair" },
+      { letter: "D", text: "Oui, mais uniquement avec un nombre infini d\u2019issues" }
+    ],
+    correct: "B",
+    explanation: "L\u2019\u00e9quiprobabilit\u00e9 ne fixe que les probabilit\u00e9s des issues, pas les gains. Avec des paiements tr\u00e8s n\u00e9gatifs sur certaines issues et mod\u00e9r\u00e9ment positifs sur d\u2019autres, l\u2019esp\u00e9rance peut \u00eatre n\u00e9gative malgr\u00e9 des issues \u00e9quiprobables."
+  },
+  {
+    id: "q8",
+    category: "Maths \u00b7 Probabilit\u00e9s",
+    text: "Bob et Alice jouent avec une pi\u00e8ce pip\u00e9e (probabilit\u00e9 $p$ inconnue de tomber sur face, $0 < p < 1$). Peuvent-ils r\u00e9aliser une exp\u00e9rience de probabilit\u00e9 exactement $\\dfrac{1}{2}$ ?",
+    options: [
+      { letter: "A", text: "Non, sans conna\u00eetre $p$ c\u2019est impossible" },
+      { letter: "B", text: "Oui, en lan\u00e7ant un tr\u00e8s grand nombre de fois et en comptant" },
+      { letter: "C", text: "Oui, en comparant l\u2019ordre de deux lancers successifs" },
+      { letter: "D", text: "Oui, mais seulement si $p$ est rationnel" }
+    ],
+    correct: "C",
+    explanation: "M\u00e9thode de von Neumann : lancer deux fois ; si Puis-Face, dire \u00ab pile \u00bb ; si Face-Puis, dire \u00ab face \u00bb ; sinon recommencer. Alors $\\mathbb{P}(\\text{Puis-Face}) = \\mathbb{P}(\\text{Face-Puis}) = p(1-p)$, donc conditionnellement \u00e0 un r\u00e9sultat d\u00e9cisif, la probabilit\u00e9 est $\\frac{1}{2}$, sans conna\u00eetre $p$."
+  },
+  {
+    id: "q9",
+    category: "Maths \u00b7 G\u00e9om\u00e9trie",
+    text: "Des rayons lumineux issus d\u2019une m\u00eame source remplissent-ils n\u00e9cessairement l\u2019espace d\u00e8s que les angles entre leurs directions sont tous aigus ?",
+    options: [
+      { letter: "A", text: "Oui" },
+      { letter: "B", text: "Non : il faut en plus qu\u2019ils ne soient pas tous contenus dans un m\u00eame demi-espace" },
+      { letter: "C", text: "Oui, d\u00e8s qu\u2019ils sont suffisamment nombreux" },
+      { letter: "D", text: "Non, sauf s\u2019ils sont orthogonaux" }
+    ],
+    correct: "B",
+    explanation: "Des directions deux \u00e0 deux \u00e0 angle aigu peuvent toutes rester dans un c\u00f4ne tr\u00e8s \u00e9troit : elles ne \u00ab remplissent \u00bb pas l\u2019espace. Il faut une condition g\u00e9om\u00e9trique plus forte (par exemple ne pas \u00eatre toutes dans un m\u00eame demi-espace ouvert pour couvrir suffisamment la sph\u00e8re des directions)."
+  },
+  {
+    id: "q10",
+    category: "Maths \u00b7 Alg\u00e8bre",
+    text: "$f : \\mathbb{Z} \\to \\mathbb{Z}$ v\u00e9rifie $f(a + b) = f(a) + f(b)$ pour tous $a, b \\in \\mathbb{Z}$. Alors n\u00e9cessairement :",
+    options: [
+      { letter: "A", text: "$f(x) = x$ pour tout $x$" },
+      { letter: "B", text: "$f(x) = cx$ pour un certain $c \\in \\mathbb{Z}$" },
+      { letter: "C", text: "$f$ est n\u00e9cessairement bijective" },
+      { letter: "D", text: "$f(0)$ peut valoir n\u2019importe quel entier" }
+    ],
+    correct: "B",
+    explanation: "Par r\u00e9currence, $f(n) = n f(1)$ pour $n \\geq 0$, et $f(-n) = -f(n)$, donc $f(x) = cx$ avec $c = f(1) \\in \\mathbb{Z}$. On n\u2019a pas $c=1$ en g\u00e9n\u00e9ral ; $f(0)=0$ forc\u00e9ment."
+  },
+  {
+    id: "q11",
+    category: "Physique \u00b7 M\u00e9canique",
+    text: "On consid\u00e8re une mini-machine de chiffrement sur l\u2019alphabet $\\{A, B, C, D, E, F\\}$. Elle contient un tableau de connexions (plugboard) qui relie les 6 lettres par 3 c\u00e2bles disjoints, fix\u00e9s une fois pour toutes, puis des rotors dont seul le r\u00e9glage initial est secret. On intercepte un message chiffr\u00e9 et on devine qu\u2019un morceau du texte clair est la s\u00e9quence r\u00e9p\u00e9t\u00e9e $ABACABAB\\ldots$, dont le motif rend le d\u00e9codage particuli\u00e8rement contraint. On teste deux r\u00e9glages possibles des rotors. Pour chacun, en suivant le courant \u00e0 travers les rotors, on obtient des contraintes sur le plugboard. <br><br><strong>R\u00e9glage $R_1$</strong> impose les connexions $A \\leftrightarrow D$, $B \\leftrightarrow F$, $C \\leftrightarrow E$. <br><br><strong>R\u00e9glage $R_2$</strong> impose les connexions $A \\leftrightarrow D$, $B \\leftrightarrow F$, $C \\leftrightarrow E$, ainsi que $D \\leftrightarrow B$, $F \\leftrightarrow C$, $E \\leftrightarrow A$. <br><br>Que faut-il conclure ?",
+    options: [
+      { letter: "A", text: "Les deux r\u00e9glages sont possibles" },
+      { letter: "B", text: "Seul $R_1$ est possible" },
+      { letter: "C", text: "Seul $R_2$ est possible" },
+      { letter: "D", text: "Aucun des deux n\u2019est possible" }
+    ],
+    correct: "B",
+    explanation: "Un plugboard r\u00e9alise une involution sans points fixes : chaque lettre a exactement un partenaire unique. $R_1$ donne trois paires disjointes, c\u2019est coh\u00e9rent. $R_2$ ajoute des contraintes qui forcent par transitivit\u00e9 des cha\u00eenes impossibles (par ex. $A \\leftrightarrow D$ et $D \\leftrightarrow B$ imposeraient $A$ et $B$ mutuellement li\u00e9s de fa\u00e7on incompatible avec les autres paires) : le graphe des connexions ne peut pas \u00eatre une partition en paires."
+  },
+  {
+    id: "q12",
+    category: "Physique \u00b7 M\u00e9canique",
+    text: "Un objet se d\u00e9place en ligne droite \u00e0 vitesse constante dans l\u2019espace, loin de toute masse. Aucune force ne s\u2019exerce sur lui. Que se passe-t-il ?",
+    options: [
+      { letter: "A", text: "Il ralentit progressivement jusqu\u2019\u00e0 s\u2019arr\u00eater" },
+      { letter: "B", text: "Il continue ind\u00e9finiment \u00e0 la m\u00eame vitesse" },
+      { letter: "C", text: "Il acc\u00e9l\u00e8re car rien ne le freine" },
+      { letter: "D", text: "Il finit par s\u2019arr\u00eater \u00e0 cause de l\u2019entropie" }
+    ],
+    correct: "B",
+    explanation: "Premi\u00e8re loi de Newton : en l\u2019absence de force nette, la vitesse (vecteur) reste constante. L\u2019entropie ou \u00ab l\u2019absence de frein \u00bb ne remplace pas une force pour changer la quantit\u00e9 de mouvement dans ce mod\u00e8le galil\u00e9en."
+  },
+  {
+    id: "q13",
+    category: "Physique \u00b7 Logique",
+    text: "Un boulet de canon absolument indestructible frappe un mur absolument in\u00e9branlable. Que se passe-t-il ?",
+    options: [
+      { letter: "A", text: "Le boulet rebondit" },
+      { letter: "B", text: "Le mur finit par c\u00e9der malgr\u00e9 tout" },
+      { letter: "C", text: "Le boulet traverse le mur" },
+      { letter: "D", text: "La situation est logiquement impossible, les deux propri\u00e9t\u00e9s ne peuvent coexister" }
+    ],
+    correct: "D",
+    explanation: "Si le boulet ne peut ni se d\u00e9former ni s\u2019arr\u00eater et le mur ne peut c\u00e9der, la collision parfaite en m\u00e9canique classique n\u2019a pas de issue coh\u00e9rente : ce sont des hypoth\u00e8ses absolues contradictoires avec les lois de la conservation habituelles. C\u2019est un paradoxe logique de mod\u00e9lisation."
+  },
+  {
+    id: "q14",
+    category: "Physique \u00b7 Cosmologie",
+    text: "Si l\u2019univers \u00e9tait infini, statique, \u00e9ternel, et uniform\u00e9ment rempli d\u2019\u00e9toiles, le ciel nocturne devrait \u00eatre :",
+    options: [
+      { letter: "A", text: "Noir, les \u00e9toiles sont trop loin pour nous \u00e9clairer significativement" },
+      { letter: "B", text: "Enti\u00e8rement lumineux, chaque ligne de vue aboutirait \u00e0 une \u00e9toile" },
+      { letter: "C", text: "Sombre avec quelques points lumineux, comme on l\u2019observe" },
+      { letter: "D", text: "Impossible \u00e0 pr\u00e9dire sans conna\u00eetre la densit\u00e9 exacte d\u2019\u00e9toiles" }
+    ],
+    correct: "B",
+    explanation: "Paradoxe d\u2019Olbers : dans un univers statique infini homog\u00e8ne avec \u00e9toiles partout, presque toute direction devrait couper le disque d\u2019une \u00e9toile \u00e0 une distance finie, ce qui saturerait le ciel de lumi\u00e8re. Le ciel r\u00e9el n\u2019est pas ainsi, d\u2019o\u00f9 l\u2019abandon de ce mod\u00e8le (expansion, \u00e2ge fini, etc.)."
+  },
+  {
+    id: "q15",
+    category: "Physique \u00b7 Optique",
+    text: "Peut-on mesurer la distance entre soi et un arc-en-ciel ?",
+    options: [
+      { letter: "A", text: "Oui, par triangulation avec un deuxi\u00e8me observateur" },
+      { letter: "B", text: "Oui, environ $1$ \u00e0 $2$ km en moyenne" },
+      { letter: "C", text: "Non, l\u2019arc-en-ciel n\u2019a pas de position physique, chaque observateur voit le sien" },
+      { letter: "D", text: "Non, car il se d\u00e9place quand on s\u2019en approche" }
+    ],
+    correct: "C",
+    explanation: "L\u2019arc-en-ciel est une construction directionnelle : gouttes \u00e0 $42^\\circ$ autour de l\u2019axe soleil\u2013\u0153il. Chaque observateur a \u00ab son \u00bb arc form\u00e9 par des gouttes diff\u00e9rentes ; il n\u2019y a pas un objet unique \u00e0 une distance bien d\u00e9finie \u00e0 mesurer comme un ballon."
+  },
+  {
+    id: "q16",
+    category: "Physique \u00b7 Relativit\u00e9",
+    text: "L\u2019ombre d\u2019un objet peut-elle se d\u00e9placer plus vite que la lumi\u00e8re ?",
+    options: [
+      { letter: "A", text: "Non, rien ne d\u00e9passe la vitesse de la lumi\u00e8re, c\u2019est un principe absolu" },
+      { letter: "B", text: "Oui, et cela prouve qu\u2019Einstein avait tort sur certains points" },
+      { letter: "C", text: "Oui, car une ombre ne transporte ni mati\u00e8re ni information" },
+      { letter: "D", text: "Seulement dans le vide spatial" }
+    ],
+    correct: "C",
+    explanation: "La limite $c$ concerne la propagation d\u2019information et de causalit\u00e9, pas le d\u00e9placement d\u2019un marqueur g\u00e9om\u00e9trique. L\u2019intersection d\u2019un faisceau avec un \u00e9cran peut se d\u00e9placer plus vite que $c$ sans envoyer de signal plus vite que la lumi\u00e8re."
+  },
+  {
+    id: "q17",
+    category: "Maths \u00b7 G\u00e9om\u00e9trie",
+    text: "Soit $X$ un observateur qui regarde le disque unit\u00e9 trac\u00e9 sur une feuille. Peut-on choisir une g\u00e9om\u00e9trie sur ce disque telle qu\u2019un point puisse \u00eatre aussi proche du bord que l\u2019on veut visuellement, tout en restant \u00e0 distance infinie du bord pour cette g\u00e9om\u00e9trie ?",
+    options: [
+      { letter: "A", text: "Non, car dans une figure born\u00e9e tout bord est toujours \u00e0 distance finie" },
+      { letter: "B", text: "Oui, si la r\u00e8gle de mesure dilate suffisamment les distances pr\u00e8s du bord" },
+      { letter: "C", text: "Non, car le bord est toujours atteint en un nombre fini de pas" },
+      { letter: "D", text: "Oui, mais seulement si le disque est non born\u00e9" }
+    ],
+    correct: "B",
+    explanation: "Le disque de Poincar\u00e9 en g\u00e9om\u00e9trie hyperbolique : m\u00eame ensemble de points \u00ab euclidiens \u00bb, mais la m\u00e9trique fait cro\u00eetre les longueurs pr\u00e8s du cercle visuel ; le bord est \u00e0 distance infinie pour les g\u00e9od\u00e9siques hyperboliques."
+  },
+  {
+    id: "q18",
+    category: "Maths \u00b7 Alg\u00e8bre",
+    text: "On travaille avec la courbe $y^2 + y = x^3 + x + 1$ et une droite $y = ax + b$, avec $a, b \\in \\{0, 1\\}$. On suppose qu\u2019un point $P = (u, v)$ appartient \u00e0 la fois \u00e0 la courbe et \u00e0 la droite, et que les trois abscisses $u$, $u^2$, $u^4$ sont distinctes. Que peut-on conclure ?",
+    options: [
+      { letter: "A", text: "La droite peut couper la courbe en beaucoup plus de trois points" },
+      { letter: "B", text: "Les trois points $(u, v)$, $(u^2, v^2)$, $(u^4, v^4)$ sont trois points d\u2019intersection distincts de la courbe et de la droite" },
+      { letter: "C", text: "Les points $(u^2, v^2)$, $(u^4, v^4)$ ne sont pas forc\u00e9ment sur la m\u00eame droite que $(u, v)$" },
+      { letter: "D", text: "On ne peut rien dire sans conna\u00eetre explicitement $u$ et $v$" }
+    ],
+    correct: "B",
+    explanation: "Sur $\\mathbb{F}_2$, l\u2019endomorphisme de Frobenius $t \\mapsto t^2$ pr\u00e9serve l\u2019\u00e9quation de la courbe et envoie une droite d\u2019\u00e9quation $y = ax+b$ (avec $a,b$ fix\u00e9s dans $\\{0,1\\}$) sur elle-m\u00eame. Si $(u,v)$ est commun aux deux, $(u^{2^k}, v^{2^k})$ aussi ; sous l\u2019hypoth\u00e8se d\u2019abscisses distinctes, on obtient trois intersections distinctes sur la m\u00eame droite."
+  },
+  {
+    id: "q19",
+    category: "Physique \u00b7 Gravitation",
+    text: "L\u2019ISS orbite \u00e0 environ $400$ km d\u2019altitude. La gravit\u00e9 y est :",
+    options: [
+      { letter: "A", text: "Quasi nulle, c\u2019est pour cela que les astronautes flottent" },
+      { letter: "B", text: "Environ $90\\%$ de celle au sol, ils flottent car ils sont en chute libre permanente" },
+      { letter: "C", text: "Exactement z\u00e9ro, ils sont \u00ab\u00a0dans l\u2019espace\u00a0\u00bb" },
+      { letter: "D", text: "Variable selon la position de la Lune" }
+    ],
+    correct: "B",
+    explanation: "\u00c0 $400$ km, $g$ est encore proche de $g_0$ (environ $88$–$90\\%$). L\u2019apesanteur apparente vient du fait que la station et son \u00e9quipage tombent ensemble autour de la Terre : r\u00e9f\u00e9rentiel en chute libre, pas une disparition de la gravitation."
+  },
+  {
+    id: "q20",
+    category: "Physique \u00b7 Relativit\u00e9",
+    text: "Deux jumeaux : l\u2019un reste sur Terre, l\u2019autre voyage \u00e0 $99\\%$ de la vitesse de la lumi\u00e8re pendant $1$ an (mesur\u00e9 par le voyageur). Au retour :",
+    options: [
+      { letter: "A", text: "Ils ont le m\u00eame \u00e2ge car le temps est absolu" },
+      { letter: "B", text: "Le voyageur est plus jeune que le terrien" },
+      { letter: "C", text: "Le terrien est plus jeune que le voyageur" },
+      { letter: "D", text: "Impossible de comparer car r\u00e9f\u00e9rentiels diff\u00e9rents" }
+    ],
+    correct: "B",
+    explanation: "Paradoxe des jumeaux r\u00e9solu : le voyageur subit une acc\u00e9l\u00e9ration et un trajet asym\u00e9trique dans l\u2019espace-temps ; son propre temps total est inf\u00e9rieur \u00e0 celui du jumeau rest\u00e9 au sol. Il revient donc plus jeune."
+  },
+  {
+    id: "q21",
+    category: "Physique \u00b7 Quantique",
+    text: "On admet les r\u00e8gles suivantes. Un photon peut \u00eatre pr\u00e9par\u00e9 dans une superposition de deux chemins $A$ et $B$. Si rien ne perturbe les deux chemins, ils se recombinent \u00e0 la sortie et les interf\u00e9rences font que le photon arrive toujours sur le d\u00e9tecteur OK, jamais sur le d\u00e9tecteur ALARME. On place sur le chemin $A$ une bombe ultra-sensible : si un photon la touche, elle explose ; si elle est d\u00e9fectueuse, elle laisse passer le photon sans effet. On envoie un photon dans l\u2019interf\u00e9rom\u00e8tre. R\u00e9sultat : la bombe n\u2019explose pas, mais le d\u00e9tecteur ALARME s\u2019allume. Que peut-on conclure ?",
+    options: [
+      { letter: "A", text: "Rien de certain : le d\u00e9tecteur ALARME peut s\u2019allumer m\u00eame sans rapport avec la bombe" },
+      { letter: "B", text: "La bombe est d\u00e9fectueuse, puisque rien n\u2019a explos\u00e9" },
+      { letter: "C", text: "La bombe est active avec certitude : la simple possibilit\u00e9 d\u2019une interaction sur le chemin $A$ a suffi \u00e0 d\u00e9truire l\u2019interf\u00e9rence" },
+      { letter: "D", text: "On ne peut rien conclure sur une seule exp\u00e9rience" }
+    ],
+    correct: "C",
+    explanation: "Exp\u00e9rience d\u2019Elitzur\u2013Vaidman : sans bombe (ou bombe d\u00e9fectueuse), pas de mesure sur $A$, l\u2019interf\u00e9rence intacte donne toujours OK. Si ALARME se d\u00e9clenche sans explosion, le chemin $A$ a \u00e9t\u00e9 \u00ab marqu\u00e9 \u00bb par la pr\u00e9sence d\u2019une bombe capable d\u2019absorber le photon : l\u2019information de chemin d\u00e9truit l\u2019interf\u00e9rence, signe d\u2019une bombe fonctionnelle (sc\u00e9nario id\u00e9alis\u00e9 du protocole)."
+  }
+];
+
+function generateCorrectionFromAnswers(answersMap) {
+  var score = 0;
+  var questions = QUESTIONS.map(function(q, i) {
+    var userAnswer = answersMap[q.id] || null;
+    var isCorrect = userAnswer === q.correct;
+    if (isCorrect) score++;
+    return {
+      number: i + 1,
+      category: q.category,
+      text: q.text,
+      options: q.options,
+      correct: isCorrect,
+      userAnswer: userAnswer,
+      correctAnswer: q.correct,
+      explanation: q.explanation
+    };
+  });
+  return { score: score, total: QUESTIONS.length, questions: questions };
+}
+
+function displayResults(data) {
+  var pct = Math.round(data.score / data.total * 100);
+  document.getElementById('scoreNum').textContent = data.score;
+  document.getElementById('scoreDenom').textContent = '/ ' + data.total;
+  document.getElementById('scoreVerdict').textContent =
+    pct >= 80 ? 'Excellent.' :
+    pct >= 60 ? 'Tr\u00e8s bon r\u00e9sultat.' :
+    pct >= 40 ? 'Des points \u00e0 retravailler.' : '\u00c0 revoir.';
+  document.getElementById('scoreSub').textContent =
+    pct >= 60
+      ? 'Tu as un vrai sens du raisonnement math\u00e9matique.'
+      : 'Ces questions touchent \u00e0 des id\u00e9es profondes, elles m\u00e9ritent d\u2019\u00eatre retravill\u00e9es.';
+  document.getElementById('score-block').style.display = 'block';
+
+  var list = document.getElementById('questions-list');
+  data.questions.forEach(function(q, i) {
+    var card = document.createElement('div');
+    card.className = 'question-card ' + (q.correct ? 'correct' : 'incorrect');
+    card.style.animationDelay = (i * 0.08) + 's';
+
+    var optionsHtml = '<ul class="options-list">';
+    q.options.forEach(function(opt) {
+      var isCorrect = opt.letter === q.correctAnswer;
+      var isWrong = opt.letter === q.userAnswer && !q.correct;
+      var cls = isCorrect ? ' is-correct' : isWrong ? ' is-wrong' : '';
+      var marker = isCorrect ? ' <span class="option-marker">\u2713</span>' : isWrong ? ' <span class="option-marker">\u2717</span>' : '';
+      optionsHtml +=
+        '<li class="option-item' + cls + '">' +
+          '<span class="option-letter">' + opt.letter + ')</span>' +
+          '<span>' + opt.text + '</span>' +
+          marker +
+        '</li>';
+    });
+    optionsHtml += '</ul>';
+
+    card.innerHTML =
+      '<div class="card-meta">' +
+        '<span class="card-num">Q' + q.number + '</span>' +
+        '<span class="card-category">' + q.category + '</span>' +
+        '<span class="card-status">' + (q.correct ? '\u2705' : '\u274c') + '</span>' +
+      '</div>' +
+      '<div class="question-text">' + q.text + '</div>' +
+      optionsHtml +
+      '<div class="explanation"><div class="explanation-label">Explication</div>' + q.explanation + '</div>';
+
+    list.appendChild(card);
+  });
+
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    MathJax.typesetPromise([list]).catch(function(e) { console.log(e); });
+  }
+}
+
+// Priorité 1 : lien email avec ?r=DCAB... (réponses encodées, 21 lettres)
+var urlParam = new URLSearchParams(window.location.search).get('r');
+if (urlParam) {
+  var letters = urlParam.toUpperCase().split('');
+  var answersMap = {};
+  QUESTIONS.forEach(function(q, i) {
+    answersMap[q.id] = (letters[i] && letters[i] !== 'X') ? letters[i] : null;
+  });
+  displayResults(generateCorrectionFromAnswers(answersMap));
+} else {
+  // Priorité 2 : sessionStorage (flux direct après QCM)
+  var raw = sessionStorage.getItem('qcm_resultats');
+  if (!raw) {
+    document.getElementById('error-block').style.display = 'block';
+  } else {
+    var data = JSON.parse(raw);
+    sessionStorage.removeItem('qcm_resultats');
+    displayResults(data);
+  }
+}
+</script>
+</body>
+</html>
