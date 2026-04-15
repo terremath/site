@@ -299,6 +299,116 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* ─── QCM POPUP ─── */
+  @keyframes qcmPopupIn {
+    from { opacity: 0; transform: translate(-50%, -46%) scale(0.93); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+
+  .qcm-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 6, 16, 0.72);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9000;
+  }
+  .qcm-popup-overlay.visible { display: block; }
+
+  .qcm-popup {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(520px, 92vw);
+    background: #1a0d22;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 16px;
+    padding: 2.8rem 2.4rem 2.2rem;
+    text-align: center;
+    z-index: 9001;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.08);
+    animation: qcmPopupIn 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  .qcm-popup-close {
+    position: absolute;
+    top: 1rem; right: 1.1rem;
+    background: none; border: none; cursor: pointer;
+    color: rgba(200,185,164,0.45);
+    font-size: 1.4rem; line-height: 1;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .qcm-popup-close:hover { color: #c9a84c; }
+
+  .qcm-popup-icon {
+    font-size: 2.2rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .qcm-popup-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: #c9a84c; margin-bottom: 1rem;
+  }
+
+  .qcm-popup-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 400; color: #f5ead6;
+    line-height: 1.25; margin-bottom: 0.9rem;
+  }
+  .qcm-popup-title em { font-style: italic; color: #e0c878; }
+
+  .qcm-popup-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem; color: #c8bba8;
+    line-height: 1.65; margin-bottom: 1.8rem;
+    max-width: 380px; margin-left: auto; margin-right: auto;
+  }
+
+  .qcm-popup-chips {
+    display: flex; gap: 0.6rem; justify-content: center;
+    flex-wrap: wrap; margin-bottom: 1.8rem;
+  }
+  .qcm-popup-chip {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem; letter-spacing: 0.04em;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 100px; color: #d4be94;
+    background: rgba(201,168,76,0.06);
+  }
+
+  .qcm-popup-cta {
+    display: inline-block;
+    padding: 0.9rem 2.6rem;
+    background: linear-gradient(135deg, #c9a84c, #e0c878);
+    color: #2a0a2e;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    text-decoration: none; border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 24px rgba(201,168,76,0.25);
+    margin-bottom: 1rem;
+  }
+  .qcm-popup-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(201,168,76,0.35);
+  }
+
+  .qcm-popup-skip {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; color: rgba(200,185,164,0.4);
+    cursor: pointer; border: none; background: none;
+    text-decoration: underline; text-underline-offset: 3px;
+    transition: color 0.2s; margin: 0 auto;
+  }
+  .qcm-popup-skip:hover { color: rgba(200,185,164,0.7); }
+
   /* ─── SECTION GLOBAL ─── */
   section {
     padding: 100px 24px;
@@ -1142,6 +1252,19 @@
 
 </section>
 
+<!-- ═══════════════ QCM POPUP ═══════════════ -->
+<div class="qcm-popup-overlay" id="qcmPopupOverlay">
+  <div class="qcm-popup" role="dialog" aria-modal="true" aria-labelledby="qcmPopupTitle">
+    <button class="qcm-popup-close" id="qcmPopupClose" aria-label="Fermer">&times;</button>
+    <div class="qcm-popup-icon"><img src="logo.jpg" alt="Terre Mathématiques" style="width:64px;height:64px;object-fit:cover;border-radius:50%;border:2px solid rgba(201,168,76,0.4);"></div>
+    <div class="qcm-popup-label">Test gratuit &middot; Sans inscription</div>
+    <h2 class="qcm-popup-title" id="qcmPopupTitle">Teste-toi en <em>maths</em><br> et en <em>physique</em></h2>
+    <p class="qcm-popup-desc">21 questions folles pour un petit g&eacute;nie&hellip;</p>
+    <a href="qcm.html" class="qcm-popup-cta">Commencer le test &rarr;</a>
+    <button class="qcm-popup-skip" id="qcmPopupSkip">Non merci, pas maintenant</button>
+  </div>
+</div>
+
 <!-- ═══════════════ OBJECTIFS ═══════════════ -->
 <!--
 <section class="targets section--light">
@@ -1572,6 +1695,21 @@
       item.classList.toggle('open');
     });
   });
+
+  // ── QCM Popup ──
+  (function() {
+    if (sessionStorage.getItem('qcmPopupDismissed')) return;
+    const overlay = document.getElementById('qcmPopupOverlay');
+    function closePopup() {
+      overlay.classList.remove('visible');
+      sessionStorage.setItem('qcmPopupDismissed', '1');
+    }
+    document.getElementById('qcmPopupClose').addEventListener('click', closePopup);
+    document.getElementById('qcmPopupSkip').addEventListener('click', closePopup);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+    setTimeout(function() { overlay.classList.add('visible'); }, 4000);
+  })();
 
   // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
