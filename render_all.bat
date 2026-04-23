@@ -90,3 +90,5 @@ echo ======================================
 echo   OK - !OUTNAME!
 echo   Scenes individuelles : !OUTDIR!\
 echo ======================================
+
+start "" "!OUTNAME!"

@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/1962287071_3186683278_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_3190059653_3084681112.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_1170330886_455491487.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_171603689_3043102208.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_211155767_755849573.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_3564856602_755849573.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_3564856602_755849573.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_147282372_1918031017.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene06_CTA/3295965713_354712571_1805172581.mp4'

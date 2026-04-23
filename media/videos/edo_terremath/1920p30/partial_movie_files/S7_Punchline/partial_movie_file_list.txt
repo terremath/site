@@ -1,0 +1,8 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/2734559603_3322705112_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_3216900004_3747123575.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_807188262_1143533793.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_2661861478_2365628187.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_3201849554_2899127272.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_3928248766_1622362812.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S7_Punchline/1865893126_1218579536_3465098790.mp4'

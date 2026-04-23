@@ -1,0 +1,11 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/1904248797_1809372434_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_2187113447_913714336.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_324853610_3114172322.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_1734327179_47501870.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_3633694640_2710578160.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_3751361896_2312444288.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_1734327179_732850703.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_503260297_4242676984.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_2666197528_2847698292.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene03_TotalGrains/601603905_2107884019_2188331145.mp4'

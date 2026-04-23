@@ -1,0 +1,12 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/1904248797_480583338_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_130184824_4262995981.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_225740298_1627155657.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_804442464_3416112488.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_15066744_1700744507.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_1664514123_3763591391.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_1262236800_3342276612.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_1734327179_2874972743.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_1251288390_3559936408.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_2666197528_2920761500.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene04_MasseRiz/601603905_3865282010_1065234995.mp4'

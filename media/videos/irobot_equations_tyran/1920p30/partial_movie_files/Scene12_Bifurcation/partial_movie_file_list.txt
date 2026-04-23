@@ -1,0 +1,13 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/1904248797_3621720696_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_111204741_2542619659.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_2636314005_744504922.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_3542102470_3107240257.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_253910536_3388383325.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_2930956567_4083744107.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_1754310298_3906482307.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_756477234_3457712703.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_2704686740_327048633.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_535226270_2817936947.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_2666197528_1529518902.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene12_Bifurcation/601603905_2380337507_769865526.mp4'

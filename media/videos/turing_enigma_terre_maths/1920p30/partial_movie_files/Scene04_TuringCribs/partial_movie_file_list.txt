@@ -1,0 +1,12 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/1962287071_3029673898_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_88903060_3109110361.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_3951710261_1741960005.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_3835371600_3558211294.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_1746708735_2480761261.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_2969141519_4157801492.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_2843093682_1287243462.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_35035347_2824221233.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_1948184405_3888626909.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_3649603042_887493200.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene04_TuringCribs/3295965713_1075649614_1421224706.mp4'

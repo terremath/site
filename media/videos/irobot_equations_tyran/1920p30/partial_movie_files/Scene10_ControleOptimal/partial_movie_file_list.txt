@@ -1,0 +1,12 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/1904248797_3463194619_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_1046191059_997577589.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_2700304537_1734992687.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_1218579536_4112822950.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_567679953_538986553.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_4191535789_1598116975.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_1218579536_1551968289.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_790467389_794106601.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_1787758702_445479153.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_147282372_485591280.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene10_ControleOptimal/601603905_1803434528_2874858977.mp4'

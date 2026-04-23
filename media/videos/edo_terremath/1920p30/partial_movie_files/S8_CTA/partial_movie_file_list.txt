@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/2734559603_2271312355_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_1936472067_1338062203.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_3001187716_4243224247.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_1738792674_551275305.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_3878344829_4235916625.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_3633281146_4235916625.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_3633281146_4235916625.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_1734327179_2116448718.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/edo_terremath/1920p30/partial_movie_files/S8_CTA/1865893126_3131194887_205986586.mp4'

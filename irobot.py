@@ -1,12 +1,9 @@
 from manim import *
 import numpy as np
 
-def TLines(*lines, font_size=48, color=WHITE, buff=0.12, **kwargs):
-    """Texte multi-lignes rendu en LaTeX — espacement propre garanti."""
-    group = VGroup(*[Tex(ln, font_size=font_size, color=color, **kwargs) for ln in lines])
-    return group.arrange(DOWN, buff=buff, aligned_edge=LEFT)
-
+# ═══════════════════════════════════════════════════════
 # Format portrait 9:16
+# ═══════════════════════════════════════════════════════
 config.frame_width   = 14.222
 config.frame_height  = 25.28
 config.pixel_width   = 1080
@@ -24,71 +21,78 @@ SCENES = [
     "Scene7_Ouverture",
     "Scene8_CTA",
 ]
-OUTPUT_NAME = "irobot3_FINAL.mp4"
-OUTPUT_DIR  = r"media\videos\irobot3\1920p30"
+OUTPUT_NAME = "irobot_FINAL.mp4"
+OUTPUT_DIR  = r"media\videos\irobot\1920p30"
 # ─────────────────────────────────────────────────────────────────────────────
-
-"""
-irobot_v3.py — TerreMathématique
-==================================
-Version 3 — corrections complètes :
-
-  (1) Hook : « Elle a été logiquement contrainte de résoudre un nouveau système »
-  (2) Lois en majuscules : « LOI 1 — Ne Pas Blesser », etc.
-  (3) Programme d'optimisation encadré, bien coloré, temps de lecture long
-  (4) Domaine A_N montré AVANT le lagrangien (tant qu'il existe a*, tout va bien)
-  (5) Infaisabilité : texte encadré haut + bas de la figure, rythme rapide (voix off)
-  (6) ∅ + conséquence : texte mieux calibré, conséquence fondamentale mise en valeur
-  (7) Relaxation : restructurée comme dans le PDF (argument par élimination clair)
-  (8) Texte ne chevauche plus les schémas (placement systématique haut/bas/côté)
-  (9) Scene7 : ouverture sur les termes non-optimisables (dignité, constraints morales)
-  (10) Fond aubergine, watermark, polytope réel, MathTex sous-chaînes, pas d'IRobotComplete
-
-Rendu :
-  manim -pql irobot_v3.py Scene0_Hook
-  manim -pql irobot_v3.py Scene1_RobotHonnete
-  ...etc, puis concaténer dans DaVinci Resolve.
-"""
 
 # ═══════════════════════════════════════════════════════
 #  PALETTE
 # ═══════════════════════════════════════════════════════
-
-BG             = "#F5EAD6"       # BG clair TerreMathématique
+BG             = "#F5EAD6"
 LOI1_RED       = "#e63946"
 LOI2_AMBER     = "#f4a261"
 LOI3_BLUE      = "#457b9d"
-GOLD           = "#8B6914"       # or foncé — lisible sur BG clair
+GOLD           = "#8B6914"
 VIKI_RED       = "#ff1744"
-SONNY_GOLD     = "#A07820"       # or soutenu — lisible sur sable clair
-TEXT_WHITE     = "#2A0A2E"       # aubergine foncé — texte principal sur sable clair
-DOMAIN_GREEN   = "#1a7a6e"       # vert foncé pour fond clair
-COSTATE_PURPLE = "#7a3d99"       # violet plus soutenu
-SOFT_GREY      = "#5A2A50"       # aubergine moyen — texte secondaire sur sable clair
+SONNY_GOLD     = "#A07820"
+TEXT_WHITE     = "#2A0A2E"
+DOMAIN_GREEN   = "#1a7a6e"
+COSTATE_PURPLE = "#7a3d99"
+SOFT_GREY      = "#5A2A50"
 
 # ═══════════════════════════════════════════════════════
-#  TAILLES HARMONISÉES
+#  TAILLES HARMONISÉES  (+15 % par rapport à la version précédente)
 # ═══════════════════════════════════════════════════════
-
-SZ_TITLE    = 66
-SZ_SUBTITLE = 44
-SZ_BODY     = 34
-SZ_CAPTION  = 28
-SZ_EQ_MAIN  = 52
-SZ_EQ_SEC   = 42
-SZ_LABEL    = 26
-
+SZ_TITLE    = 76
+SZ_SUBTITLE = 52
+SZ_BODY     = 42
+SZ_CAPTION  = 36
+SZ_EQ_MAIN  = 62
+SZ_EQ_SEC   = 50
+SZ_LABEL    = 34
 
 # ═══════════════════════════════════════════════════════
 #  UTILITAIRES
 # ═══════════════════════════════════════════════════════
 
+def fit_w(mob, frac=0.82):
+    max_w = config.frame_width * frac
+    if mob.width > max_w:
+        mob.scale_to_fit_width(max_w)
+    return mob
+
+
+def make_header(text, color=TEXT_WHITE):
+    """Retourne un VGroup (titre + filet doré) sans positionnement."""
+    h = Tex(r"\textbf{" + text + r"}", font_size=SZ_SUBTITLE, color=color)
+    fit_w(h, 0.84)
+    span = min(config.frame_width * 0.84, h.width + 1.5)
+    line = Line(LEFT * span / 2, RIGHT * span / 2, color=GOLD, stroke_width=3)
+    line.next_to(h, DOWN, buff=0.25)
+    return VGroup(h, line)
+
+
+def TLines(*lines, font_size=SZ_BODY, color=TEXT_WHITE, buff=0.20, **kwargs):
+    """Texte multi-lignes rendu en LaTeX -- centre, fit_w automatique."""
+    group = VGroup(*[Tex(ln, font_size=font_size, color=color, **kwargs) for ln in lines])
+    group.arrange(DOWN, buff=buff, aligned_edge=ORIGIN)
+    for mob in group:
+        fit_w(mob, 0.84)
+    return group
+
+
+def make_bg(scene):
+    scene.camera.background_color = BG
+
+
 def caption_block(lines, width=11.5, font_size=SZ_CAPTION, color=TEXT_WHITE, line_buff=0.22):
     """Bloc encadré — fond transparent, largeur s'adapte au texte si nécessaire."""
     texts = VGroup(*[
-        Text(line, font_size=font_size, color=color) for line in lines
+        Tex(ln, font_size=font_size, color=color) for ln in lines
     ]).arrange(DOWN, aligned_edge=LEFT, buff=line_buff)
-    actual_width = max(width, texts.width + 0.8)
+    for t in texts:
+        fit_w(t, 0.84)
+    actual_width = max(width, texts.width + 1.0)
     box = RoundedRectangle(
         corner_radius=0.15, width=actual_width,
         height=texts.height + 0.7,
@@ -100,7 +104,6 @@ def caption_block(lines, width=11.5, font_size=SZ_CAPTION, color=TEXT_WHITE, lin
 
 
 def circular_crop_image(image: ImageMobject, margin: int = 2) -> ImageMobject:
-    """Crop an ImageMobject to a circular alpha mask."""
     arr = image.pixel_array
     h, w = arr.shape[:2]
     cy, cx = h / 2, w / 2
@@ -113,20 +116,15 @@ def circular_crop_image(image: ImageMobject, margin: int = 2) -> ImageMobject:
     return image
 
 
-def add_watermark(scene):
-    wm = Text("Terre Mathématiques", font_size=28, color=GOLD, opacity=0.15)
-    wm.to_corner(DR, buff=1.5)
-    scene.add(wm)
-    return wm
+def add_watermark(_scene):
+    return None
 
 
 def fade_all_except(scene, keep):
-    """FadeOut everything except `keep` set."""
     return [FadeOut(m) for m in scene.mobjects if m not in keep]
 
 
 def clip_polygon_by_halfplane(vertices, normal, offset):
-    """Sutherland-Hodgman : coupe un polygone convexe par normal·x ≤ offset."""
     output = list(vertices)
     if not output:
         return output
@@ -149,104 +147,105 @@ def clip_polygon_by_halfplane(vertices, normal, offset):
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 0 — HOOK
-#  (1) Texte corrigé
 # ═══════════════════════════════════════════════════════
 
 class Scene0_Hook(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        t1 = Text("VIKI n'a pas bugué.", font_size=SZ_TITLE, color=TEXT_WHITE)
-        t2 = Text(
-            "Elle a été logiquement contrainte\nde résoudre un nouveau système.",
-            font_size=SZ_SUBTITLE + 6, color=VIKI_RED, line_spacing=1.2,
+        # ─── Phrase d'accroche ───
+        t1 = Tex(r"\textbf{VIKI n'a pas bugu\'e.}", font_size=SZ_TITLE + 14, color=TEXT_WHITE)
+        fit_w(t1, 0.84)
+        t1.move_to(UP * 3.5)
+
+        t2 = TLines(
+            r"Elle a \'et\'e logiquement contrainte",
+            r"de r\'esoudre un nouveau syst\`eme.",
+            font_size=SZ_SUBTITLE + 10, color=VIKI_RED,
         )
+        t2.move_to(UP * 3.0)
 
         self.play(Write(t1), run_time=1.4)
         self.wait(1.2)
-        self.play(FadeOut(t1), run_time=0.4)
+        self.play(FadeOut(t1), run_time=0.6)
         self.play(FadeIn(t2, shift=UP * 0.15), run_time=1.0)
         self.wait(1.8)
         self.play(FadeOut(t2))
 
-        title = Paragraph(
-            "Comment les 3 Lois",
-            "produisent un tyran",
-            font_size=SZ_TITLE, color=GOLD, line_spacing=1.3,
-            alignment="center",
+        # ─── Titre principal ───
+        title = TLines(
+            r"\textbf{Comment les 3 Lois}",
+            r"\textbf{produisent un tyran}",
+            font_size=SZ_TITLE + 8, color=GOLD,
         )
-        subtitle = Paragraph(
-            "quand la protection absolue devient",
-            "un problème d'optimisation",
-            font_size=SZ_SUBTITLE, color=SOFT_GREY, line_spacing=1.3,
-            alignment="center",
+        deco_line = Line(LEFT * 4.0, RIGHT * 4.0, color=GOLD, stroke_width=2.5)
+        subtitle = TLines(
+            r"quand la protection absolue devient",
+            r"un probl\`eme d'optimisation",
+            font_size=SZ_SUBTITLE + 4, color=SOFT_GREY,
         )
-        VGroup(title, subtitle).arrange(DOWN, buff=1.2).move_to(ORIGIN)
+        VGroup(title, deco_line, subtitle).arrange(DOWN, buff=1.4).move_to(UP * 1.5)
 
-        self.play(FadeIn(title, shift=UP * 0.2), FadeIn(subtitle), run_time=1.5)
+        self.play(FadeIn(title, shift=UP * 0.2), run_time=1.2)
+        self.play(Create(deco_line), run_time=0.7)
+        self.play(FadeIn(subtitle, shift=UP * 0.1), run_time=0.9)
         self.wait(2)
-        self.play(FadeOut(title), FadeOut(subtitle))
+        self.play(FadeOut(title), FadeOut(deco_line), FadeOut(subtitle))
 
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 1 — LE ROBOT HONNÊTE
-#  (2) Majuscules pour les lois
-#  (3) Programme encadré + couleurs + temps de lecture
-#  (4) Domaine A_N montré AVANT le lagrangien
 # ═══════════════════════════════════════════════════════
 
 class Scene1_RobotHonnete(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        # ─── 1.1 Pyramide des Lois (2) majuscules — layout portrait centré ───
+        # ─── 1.1 Pyramide des Lois ───
         rects = []
         labels_text = [
-            ("LOI 3 — Se Préserver",     LOI3_BLUE,  9.0),
-            ("LOI 2 — Obéir",            LOI2_AMBER,  7.0),
-            ("LOI 1 — Ne Pas Blesser",   LOI1_RED,    5.0),
+            (r"LOI 3 --- Se Pr\'eserver",   LOI3_BLUE,  9.5),
+            (r"LOI 2 --- Ob\'eir",           LOI2_AMBER,  7.5),
+            (r"LOI 1 --- Ne Pas Blesser",    LOI1_RED,    5.5),
         ]
         for i, (txt, col, w) in enumerate(labels_text):
             r = RoundedRectangle(
-                width=w, height=1.4, corner_radius=0.1,
+                width=w, height=2.2, corner_radius=0.12,
                 fill_color=col, fill_opacity=0.3,
                 stroke_color=col, stroke_width=2,
-            ).shift(DOWN * (1.0 - i * 1.8))
-            label = Text(txt, font_size=SZ_BODY - 4, color=col).move_to(r)
+            ).shift(DOWN * (2.5 - i * 3.0))
+            label = Tex(txt, font_size=SZ_BODY, color=col)
+            fit_w(label, 0.60)
+            label.move_to(r)
             rects.append(VGroup(r, label))
 
-        pyramid = VGroup(*rects).move_to(ORIGIN + DOWN * 0.5)
+        pyramid = VGroup(*rects).move_to(ORIGIN)
         for r in rects:
             self.play(FadeIn(r, shift=UP * 0.15), run_time=1.2)
 
         arrow = Arrow(
-            start=pyramid.get_bottom() + RIGHT * 5.0,
-            end=pyramid.get_top() + RIGHT * 5.0,
+            start=pyramid.get_bottom() + RIGHT * 5.2,
+            end=pyramid.get_top() + RIGHT * 5.2,
             color=TEXT_WHITE, stroke_width=2,
         )
-        arrow_label = Text("priorité", font_size=SZ_LABEL, color=TEXT_WHITE).next_to(arrow, RIGHT, buff=0.15)
+        arrow_label = Tex(r"priorit\'e", font_size=SZ_LABEL + 4, color=TEXT_WHITE)
+        fit_w(arrow_label, 0.22)
+        arrow_label.next_to(arrow, RIGHT, buff=0.15)
         self.play(Create(arrow), FadeIn(arrow_label), run_time=0.8)
         self.wait(1.0)
 
-        # ─── 1.2 Programme d'optimisation encadré (3) — layout vertical portrait ───
-        self.play(FadeOut(VGroup(pyramid, arrow, arrow_label)), run_time=0.5)
+        # ─── 1.2 Programme d'optimisation encadré ───
+        self.play(FadeOut(VGroup(pyramid, arrow, arrow_label)), run_time=0.7)
 
-        program_title = Text(
-            "Les 3 Lois comme programme d'optimisation",
-            font_size=SZ_BODY, color=GOLD,
-        )
-        self.play(Write(program_title), run_time=0.8)
+        program_title = make_header(r"Les 3 Lois comme programme d'optimisation")
 
-        # Équations + tags sur la même ligne (police réduite pour tenir en portrait)
-        EQ_F = SZ_EQ_SEC + 8  # 38
-        TAG_F = SZ_LABEL + 10  # 24
+        EQ_F = SZ_EQ_SEC + 8
+        TAG_F = SZ_LABEL + 10
 
         eq_obj = MathTex(r"\min_{a}\;", r"C(a)", font_size=EQ_F)
         eq_obj[0].set_color(LOI3_BLUE)
         eq_obj[1].set_color(LOI3_BLUE)
-        tag_obj = Text("← LOI 3", font_size=TAG_F, color=LOI3_BLUE)
+        tag_obj = Tex(r"$\leftarrow$ LOI 3", font_size=TAG_F, color=LOI3_BLUE)
         row_obj = VGroup(eq_obj, tag_obj).arrange(RIGHT, buff=0.8)
 
         eq_c1 = MathTex(
@@ -256,32 +255,30 @@ class Scene1_RobotHonnete(Scene):
         eq_c1[0].set_color(LOI1_RED)
         eq_c1[1].set_color(LOI1_RED)
         eq_c1[2].set_color(LOI1_RED)
-        tag_c1 = Text("← LOI 1", font_size=TAG_F, color=LOI1_RED)
+        tag_c1 = Tex(r"$\leftarrow$ LOI 1", font_size=TAG_F, color=LOI1_RED)
         row_c1 = VGroup(eq_c1, tag_c1).arrange(RIGHT, buff=0.8)
 
         eq_c2 = MathTex(
             r"\|a - a^{\mathrm{ordre}}\|^2 \le \varepsilon",
             font_size=EQ_F, color=LOI2_AMBER,
         )
-        tag_c2 = Text("← LOI 2", font_size=TAG_F, color=LOI2_AMBER)
+        tag_c2 = Tex(r"$\leftarrow$ LOI 2", font_size=TAG_F, color=LOI2_AMBER)
         row_c2 = VGroup(eq_c2, tag_c2).arrange(RIGHT, buff=0.8)
 
         eqs_block = VGroup(row_obj, row_c1, row_c2).arrange(DOWN, buff=0.8, aligned_edge=LEFT)
-
-        # Cadre autour du programme
         frame_box = SurroundingRectangle(
             eqs_block, color=GOLD, buff=0.8,
             corner_radius=0.12, stroke_width=2,
         )
-        self.wait(3.5)
 
-        # Définitions sous le programme (en LaTeX)
         defs_lines = VGroup(
             MathTex(r"a \;=\; \text{action choisie par le robot}", font_size=SZ_BODY, color=TEXT_WHITE),
-            MathTex(r"C(a) \;=\; \text{coût de survie pour le robot}", font_size=SZ_BODY, color=TEXT_WHITE),
-            MathTex(r"h_{ij}(a) \;=\; \text{dommage infligé au couple } (i,j)", font_size=SZ_BODY, color=TEXT_WHITE),
-            MathTex(r"a^{\text{ordre}} \;=\; \text{action demandée par un humain}", font_size=SZ_BODY, color=TEXT_WHITE),
+            MathTex(r"C(a) \;=\; \text{co\^ut de survie pour le robot}", font_size=SZ_BODY, color=TEXT_WHITE),
+            MathTex(r"h_{ij}(a) \;=\; \text{dommage inflig\'e au couple } (i,j)", font_size=SZ_BODY, color=TEXT_WHITE),
+            MathTex(r"a^{\text{ordre}} \;=\; \text{action demand\'ee par un humain}", font_size=SZ_BODY, color=TEXT_WHITE),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.45)
+        for d in defs_lines:
+            fit_w(d, 0.84)
         defs_box = RoundedRectangle(
             corner_radius=0.15, width=max(11.5, defs_lines.width + 0.8),
             height=defs_lines.height + 0.7,
@@ -291,91 +288,85 @@ class Scene1_RobotHonnete(Scene):
         defs_lines.move_to(defs_box)
         defs = VGroup(defs_box, defs_lines)
 
-        # Centre l'ensemble titre + equations encadrées + définitions
         framed = VGroup(frame_box, eqs_block)
         layout = VGroup(program_title, framed, defs).arrange(DOWN, buff=0.8)
-        layout.move_to(ORIGIN)
+        layout.move_to(UP * 1.5)
 
+        self.play(Write(program_title), run_time=0.9)
         self.play(Write(eq_obj), FadeIn(tag_obj), run_time=1.5)
         self.play(Write(eq_c1), FadeIn(tag_c1), run_time=1.5)
         self.play(Write(eq_c2), FadeIn(tag_c2), run_time=1.5)
-        self.play(Create(frame_box), run_time=0.5)
+        self.play(Create(frame_box), run_time=0.7)
         self.play(FadeIn(defs, shift=UP * 0.1), run_time=1.2)
+        self.wait(4.0)
 
-        self.wait(4.0)  # (3) temps de lecture long
+        self.play(FadeOut(VGroup(program_title, row_obj, row_c1, row_c2, frame_box, defs)), run_time=0.6)
 
-        # Variables fantômes pour le FadeOut (pyramid/arrow déjà FadeOut)
-        eqs = VGroup(row_obj, row_c1, row_c2)
-        tags = VGroup()
-        self.play(FadeOut(VGroup(
-            program_title, eqs, frame_box, defs,
-        )), run_time=0.6)
-
-        # ─── 1.3 Domaine admissible A_N AVANT le lagrangien (4) ───
-        domain_title = Text(
-            "Le domaine admissible",
-            font_size=SZ_SUBTITLE, color=DOMAIN_GREEN,
-        ).to_edge(UP, buff=2.5)
-        self.play(Write(domain_title), run_time=0.5)
+        # ─── 1.3 Domaine admissible A_N ───
+        domain_title = make_header(r"Le domaine admissible", color=DOMAIN_GREEN)
+        domain_title.to_edge(UP, buff=1.5)
+        self.play(Write(domain_title), run_time=0.7)
 
         axes = Axes(
             x_range=[-3, 3, 1], y_range=[-3, 3, 1],
-            x_length=10.0, y_length=10.0,
+            x_length=10.0, y_length=11.0,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
-        ).move_to(ORIGIN)
+        ).move_to(UP * 0.5)
         ax_labels = axes.get_axis_labels(
             MathTex("a_1", font_size=SZ_SUBTITLE - 4, color=TEXT_WHITE),
             MathTex("a_2", font_size=SZ_SUBTITLE - 4, color=TEXT_WHITE),
         )
 
-        # Zone Loi 1
         loi1_region = Polygon(
             axes.c2p(-3, -3), axes.c2p(3, -3), axes.c2p(3, 1.5), axes.c2p(-3, 1.5),
             fill_color=LOI1_RED, fill_opacity=0.14, stroke_width=0,
         )
         loi1_line = axes.plot(lambda x: 1.5, x_range=[-3, 3], color=LOI1_RED, stroke_width=2)
-        loi1_label = Text("zone de sécurité humaine", font_size=SZ_LABEL, color=LOI1_RED)
+        loi1_label = Tex(r"zone de s\'ecurit\'e humaine", font_size=SZ_LABEL, color=LOI1_RED)
+        fit_w(loi1_label, 0.60)
         loi1_label.next_to(axes.c2p(0, 1.5), UP, buff=0.12)
 
-        # Zone Loi 2
         disc = Circle(
             radius=axes.x_length / 6 * 1.75,
             fill_color=LOI2_AMBER, fill_opacity=0.14,
             stroke_color=LOI2_AMBER, stroke_width=2,
         ).move_to(axes.c2p(0.5, 0.5))
-        loi2_label = Text("zone d'obéissance", font_size=SZ_LABEL, color=LOI2_AMBER)
+        loi2_label = Tex(r"zone d'ob\'eissance", font_size=SZ_LABEL, color=LOI2_AMBER)
+        fit_w(loi2_label, 0.50)
         loi2_label.next_to(disc, DOWN, buff=0.15)
 
-        # Point optimal
         opt_star = Star(n=5, outer_radius=0.15, inner_radius=0.06, color=GOLD, fill_opacity=1)
         opt_star.move_to(axes.c2p(0.5, 1.0))
         opt_label = MathTex("a^*", font_size=SZ_SUBTITLE, color=GOLD).next_to(opt_star, UR, buff=0.1)
 
-        # Domaine A_N
         an_label = MathTex(
             r"\mathcal{A}_N", r"= \text{intersection}", font_size=SZ_EQ_SEC, color=DOMAIN_GREEN,
-        ).to_edge(DOWN, buff=1.5)
+        )
         an_label[0].set_color(DOMAIN_GREEN)
+        an_label.next_to(axes, DOWN, buff=0.5)
 
-        # Note encadrée EN BAS (8) — pas sur le schéma
         note = caption_block([
-            "Tant qu'il existe a* dans le domaine admissible,",
-            "le robot peut se préserver, obéir, et ne blesser personne.",
-            "Les trois Lois sont simultanément satisfaites.",
-        ], width=11.0, font_size=SZ_CAPTION + 1, color=DOMAIN_GREEN).to_edge(DOWN, buff=2.5)
+            r"Tant qu'il existe $a^*$ dans le domaine admissible,",
+            r"le robot peut se pr\'eserver, ob\'eir, et ne blesser personne.",
+            r"Les trois Lois sont simultan\'ement satisfaites.",
+        ], width=11.0, font_size=SZ_CAPTION + 1, color=DOMAIN_GREEN).to_edge(DOWN, buff=1.5)
 
         self.play(Create(axes), Write(ax_labels), run_time=0.7)
         self.play(FadeIn(loi1_region), Create(loi1_line), FadeIn(loi1_label), run_time=0.7)
         self.play(Create(disc), FadeIn(loi2_label), run_time=0.7)
-        self.play(FadeIn(opt_star), FadeIn(opt_label), run_time=0.5)
-        self.play(FadeIn(an_label), run_time=0.5)
+        self.play(FadeIn(opt_star), FadeIn(opt_label), run_time=0.7)
+        self.play(FadeIn(an_label), run_time=0.7)
         self.play(FadeIn(note), run_time=0.7)
-        self.wait(3.5)  # temps de lecture
+        self.wait(3.5)
 
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
         # ─── 1.4 Le Lagrangien ───
-        lag_title = Text("Le Lagrangien traduit la hiérarchie", font_size=SZ_SUBTITLE + 8, color=GOLD)
+        lag_title = Tex(
+            r"\textbf{Le Lagrangien traduit la hi\'erarchie}",
+            font_size=SZ_SUBTITLE + 8, color=GOLD,
+        )
+        fit_w(lag_title, 0.84)
 
         lagrangian = MathTex(
             r"\mathcal{L}(a)=",
@@ -384,6 +375,7 @@ class Scene1_RobotHonnete(Scene):
             r"+\nu\big(\|a-a^{\mathrm{ordre}}\|^2-\varepsilon\big)",
             font_size=SZ_EQ_MAIN + 6,
         )
+        fit_w(lagrangian, 0.90)
         lagrangian[0].set_color(TEXT_WHITE)
         lagrangian[1].set_color(LOI3_BLUE)
         lagrangian[2].set_color(LOI1_RED)
@@ -392,20 +384,20 @@ class Scene1_RobotHonnete(Scene):
         brace_loi3 = Brace(lagrangian[1], DOWN, color=LOI3_BLUE, buff=0.12)
         brace_loi1 = Brace(lagrangian[2], DOWN, color=LOI1_RED, buff=0.12)
         brace_loi2 = Brace(lagrangian[3], DOWN, color=LOI2_AMBER, buff=0.12)
-        bl3 = Text("LOI 3", font_size=SZ_BODY - 4, color=LOI3_BLUE).next_to(brace_loi3, DOWN, buff=0.08)
-        bl1 = Text("LOI 1", font_size=SZ_BODY - 4, color=LOI1_RED).next_to(brace_loi1, DOWN, buff=0.08)
-        bl2 = Text("LOI 2", font_size=SZ_BODY - 4, color=LOI2_AMBER).next_to(brace_loi2, DOWN, buff=0.08)
+        bl3 = Tex(r"LOI 3", font_size=SZ_BODY - 4, color=LOI3_BLUE).next_to(brace_loi3, DOWN, buff=0.08)
+        bl1 = Tex(r"LOI 1", font_size=SZ_BODY - 4, color=LOI1_RED).next_to(brace_loi1, DOWN, buff=0.08)
+        bl2 = Tex(r"LOI 2", font_size=SZ_BODY - 4, color=LOI2_AMBER).next_to(brace_loi2, DOWN, buff=0.08)
 
         all_braces = VGroup(brace_loi3, brace_loi1, brace_loi2, bl3, bl1, bl2)
         lag_note = caption_block([
-            "Grand multiplicateur = violation très coûteuse.",
-            "La hiérarchie des Lois devient",
-            "une hiérarchie de pénalités.",
+            r"Grand multiplicateur $=$ violation tr\`es co\^uteuse.",
+            r"La hi\'erarchie des Lois devient",
+            r"une hi\'erarchie de p\'enalit\'es.",
         ], width=10.5, font_size=SZ_CAPTION + 4, color=GOLD)
 
         lag_group = VGroup(lag_title, lagrangian, all_braces, lag_note)
-        lag_group.arrange(DOWN, buff=0.6)
-        lag_group.move_to(ORIGIN)
+        lag_group.arrange(DOWN, buff=0.7)
+        lag_group.move_to(UP * 1.0)
 
         self.play(Write(lag_title), run_time=0.6)
         self.play(Write(lagrangian), run_time=1.4)
@@ -417,51 +409,44 @@ class Scene1_RobotHonnete(Scene):
         )
         self.play(FadeIn(lag_note), run_time=0.7)
         self.wait(3.5)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 2 — INFAISABILITÉ
-#  (5) Texte encadré haut + bas, rythme rapide
-#  (6) ∅ mieux calibré, conséquence fondamentale
 # ═══════════════════════════════════════════════════════
 
 class Scene2_Incompatibilite(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        # Titre EN HAUT (5)(8)
-        title = caption_block([
-            "Pourquoi le problème devient infaisable",
-        ], width=11.0, font_size=SZ_BODY + 2, color=TEXT_WHITE).to_edge(UP, buff=2.5)
-        self.play(FadeIn(title), run_time=0.4)
+        title = make_header(r"Pourquoi le probl\`eme devient infaisable")
+        title.to_edge(UP, buff=1.5)
+        self.play(Write(title), run_time=0.7)
 
         axes = Axes(
             x_range=[-3, 3, 1], y_range=[-3, 3, 1],
-            x_length=5.0, y_length=5.0,
+            x_length=9.0, y_length=9.0,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
-        ).move_to(ORIGIN)
-        self.play(Create(axes), run_time=0.4)
+        ).move_to(DOWN * 0.5)
+        self.play(Create(axes), run_time=0.6)
 
-        # Compteur à droite des axes, sous le titre (pas en coin pour éviter le chevauchement)
-        counter = Integer(1, font_size=SZ_EQ_MAIN, color=TEXT_WHITE)
-        n_label = MathTex("N =", font_size=SZ_EQ_MAIN, color=TEXT_WHITE)
-        VGroup(n_label, counter).arrange(RIGHT, buff=0.15).next_to(axes, RIGHT, buff=0.5).align_to(title, DOWN).shift(DOWN * 0.5)
+        counter = Integer(1, font_size=SZ_EQ_MAIN + 4, color=TEXT_WHITE)
+        n_label = MathTex("N =", font_size=SZ_EQ_MAIN + 4, color=TEXT_WHITE)
+        nc_group = VGroup(n_label, counter).arrange(RIGHT, buff=0.15)
+        nc_group.next_to(title, DOWN, buff=0.6)
         pair_formula = MathTex(
             r"\#\text{contraintes} \sim \binom{N}{2}",
-            font_size=SZ_EQ_SEC, color=LOI1_RED,
-        ).next_to(counter, DOWN, buff=0.35)
-        self.play(FadeIn(n_label), FadeIn(counter), Write(pair_formula), run_time=0.5)
+            font_size=SZ_EQ_SEC + 4, color=LOI1_RED,
+        ).next_to(nc_group, DOWN, buff=0.3)
+        self.play(FadeIn(n_label), FadeIn(counter), Write(pair_formula), run_time=0.7)
 
-        # Explication EN BAS (5)(8) — pas sur le schéma
         explanation = caption_block([
-            "Chaque humain libre génère des interactions à sécuriser.",
-            "La Loi 1 ajoute de plus en plus de contraintes.",
-        ], width=11.0, font_size=SZ_CAPTION, color=TEXT_WHITE).to_edge(DOWN, buff=2.5)
-        self.play(FadeIn(explanation), run_time=0.4)
+            r"Chaque humain libre g\'en\`ere des interactions \`a s\'ecuriser.",
+            r"La Loi 1 ajoute de plus en plus de contraintes.",
+        ], width=11.0, font_size=SZ_CAPTION + 2, color=TEXT_WHITE).to_edge(DOWN, buff=1.5)
+        self.play(FadeIn(explanation), run_time=0.6)
 
-        # Polytope initial
         init_verts_2d = [
             np.array([-2.5, -2.5]), np.array([2.5, -2.5]),
             np.array([2.5, 2.5]),   np.array([-2.5, 2.5]),
@@ -472,9 +457,8 @@ class Scene2_Incompatibilite(Scene):
             fill_color=DOMAIN_GREEN, fill_opacity=0.3,
             stroke_color=DOMAIN_GREEN, stroke_width=1.5,
         )
-        self.play(FadeIn(domain_polygon), run_time=0.3)
+        self.play(FadeIn(domain_polygon), run_time=0.5)
 
-        # Contraction par demi-plans — rythme RAPIDE (5)
         np.random.seed(42)
         n_values = [2, 3, 5, 8, 12, 20, 35, 50]
 
@@ -509,75 +493,71 @@ class Scene2_Incompatibilite(Scene):
                 *[Create(line) for line in new_lines],
                 counter.animate.set_value(n_val),
                 Transform(domain_polygon, new_domain),
-                run_time=max(0.15, 0.4 - step * 0.04),  # (5) rapide
+                run_time=max(0.25, 0.55 - step * 0.05),
             )
             if len(current_verts) < 3:
                 break
 
-        # ─── Flash ∅ — conséquence fondamentale (6) ───
-        self.play(FadeOut(explanation), run_time=0.2)
+        self.play(FadeOut(explanation), run_time=0.4)
 
-        empty_set = MathTex(r"\emptyset", font_size=80, color=VIKI_RED).move_to(axes.get_center())
-        self.play(counter.animate.set_color(VIKI_RED), run_time=0.2)
+        empty_set = MathTex(r"\emptyset", font_size=160, color=VIKI_RED).move_to(axes.get_center())
+        self.play(counter.animate.set_color(VIKI_RED), run_time=0.4)
         self.play(
             domain_polygon.animate.scale(0).set_opacity(0),
             Flash(axes.get_center(), color=VIKI_RED, num_lines=12, line_length=0.4),
-            run_time=0.6,
+            run_time=0.7,
         )
-        self.play(FadeIn(empty_set, scale=1.8), run_time=0.5)
+        self.play(FadeIn(empty_set, scale=1.8), run_time=0.7)
 
-        # Conséquence fondamentale — encadrée EN BAS (6)(8)
         consequence = caption_block([
-            "CONSÉQUENCE FONDAMENTALE",
-            "",
-            "Il n'existe plus aucune action a qui satisfasse",
-            "toutes les contraintes à la fois.",
-            "Le programme d'optimisation est infaisable.",
-        ], width=11.5, font_size=SZ_BODY, color=VIKI_RED, line_buff=0.38).to_edge(DOWN, buff=1.5)
+            r"CONS\'EQUENCE FONDAMENTALE",
+            r"",
+            r"Il n'existe plus aucune action $a$ qui satisfasse",
+            r"toutes les contraintes \`a la fois.",
+            r"Le programme d'optimisation est infaisable.",
+        ], width=11.5, font_size=SZ_BODY + 2, color=VIKI_RED, line_buff=0.42).to_edge(DOWN, buff=1.5)
         self.play(FadeIn(consequence), run_time=0.8)
         self.wait(3.0)
 
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.5)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.7)
 
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 3 — RELAXATION
-#  (7) Restructurée comme dans le PDF : argument par élimination
-#  (8) Texte bien placé
 # ═══════════════════════════════════════════════════════
 
 class Scene3_Relaxation(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
         # ─── 3.1 Constat d'infaisabilité ───
         title_31 = caption_block([
-            "Le problème est infaisable.",
-            "VIKI doit modifier le problème lui-même.",
-        ], width=8.0, font_size=SZ_BODY, color=TEXT_WHITE).move_to(UP * 1.5)
+            r"Le probl\`eme est infaisable.",
+            r"VIKI doit modifier le probl\`eme lui-m\^eme.",
+        ], width=10.0, font_size=SZ_BODY + 4, color=TEXT_WHITE).move_to(UP * 4.5)
         eq_fail = MathTex(
             r"\nexists\, a \in \mathcal{A}_N",
-            font_size=SZ_EQ_MAIN + 4, color=VIKI_RED,
-        ).move_to(DOWN * 0.5)
+            font_size=SZ_EQ_MAIN + 8, color=VIKI_RED,
+        ).move_to(UP * 1.0)
         self.play(FadeIn(title_31), Write(eq_fail), run_time=1.0)
         self.wait(2.0)
-        self.play(FadeOut(title_31), FadeOut(eq_fail), run_time=0.4)
+        self.play(FadeOut(title_31), FadeOut(eq_fail), run_time=0.6)
 
-        # ─── 3.2 Quelle contrainte relaxer ? (argument du PDF) ───
-        question = Text(
-            "Quelle contrainte relaxer ?",
-            font_size=SZ_SUBTITLE + 4, color=GOLD,
-        ).to_edge(UP, buff=2.5)
+        # ─── 3.2 Quelle contrainte relaxer ? ───
+        question = make_header(r"Quelle contrainte relaxer ?", color=GOLD)
+        question.to_edge(UP, buff=1.5)
         self.play(Write(question), run_time=0.6)
 
-        # Trois options empilées verticalement
         OPT_W = 11.0
 
-        def make_opt_box(label, col, body_txt):
-            ttl = Text(label, font_size=SZ_BODY, color=col)
-            bdy = Text(body_txt, font_size=SZ_CAPTION, color=TEXT_WHITE, line_spacing=1.3)
-            content = VGroup(ttl, bdy).arrange(DOWN, buff=0.25, aligned_edge=LEFT)
+        def make_opt_box(label, col, body_lines):
+            ttl = Tex(r"\textbf{" + label + r"}", font_size=SZ_BODY, color=col)
+            fit_w(ttl, 0.80)
+            bdy_grp = VGroup(*[Tex(ln, font_size=SZ_CAPTION, color=TEXT_WHITE) for ln in body_lines])
+            bdy_grp.arrange(DOWN, buff=0.18, aligned_edge=LEFT)
+            for t in bdy_grp:
+                fit_w(t, 0.80)
+            content = VGroup(ttl, bdy_grp).arrange(DOWN, buff=0.25, aligned_edge=LEFT)
             box = RoundedRectangle(
                 width=max(OPT_W, content.width + 0.8),
                 height=content.height + 0.6,
@@ -585,30 +565,32 @@ class Scene3_Relaxation(Scene):
                 fill_color=BG, fill_opacity=0.6,
             )
             content.move_to(box)
-            return box, ttl, bdy, content
+            return box, ttl, bdy_grp, content
 
         box_a, title_a, body_a, content_a = make_opt_box(
-            "Relaxer LOI 1 ?", LOI1_RED,
-            "Tolérer de blesser des humains\n→ Viole la priorité absolue de la Loi 1"
+            r"Relaxer LOI 1 ?", LOI1_RED,
+            [r"Tol\'erer de blesser des humains",
+             r"$\to$ Viole la priorit\'e absolue de la Loi 1"],
         )
         cross_a = Cross(box_a, stroke_color=VIKI_RED, stroke_width=6)
-        verdict_a = Text("IMPOSSIBLE", font_size=SZ_BODY - 4, color=VIKI_RED)
+        verdict_a = Tex(r"IMPOSSIBLE", font_size=SZ_BODY - 4, color=VIKI_RED)
 
         box_b, title_b, body_b, content_b = make_opt_box(
-            "Relaxer LOI 3 ?", LOI3_BLUE,
-            "Sacrifier la survie de VIKI\n→ VIKI détruite ne protège plus personne"
+            r"Relaxer LOI 3 ?", LOI3_BLUE,
+            [r"Sacrifier la survie de VIKI",
+             r"$\to$ VIKI d\'etruite ne prot\`ege plus personne"],
         )
         cross_b = Cross(box_b, stroke_color=VIKI_RED, stroke_width=6)
-        verdict_b = Text("IMPOSSIBLE", font_size=SZ_BODY - 4, color=VIKI_RED)
+        verdict_b = Tex(r"IMPOSSIBLE", font_size=SZ_BODY - 4, color=VIKI_RED)
 
         box_c, title_c, body_c, content_c = make_opt_box(
-            "Relaxer LOI 2 ?", LOI2_AMBER,
-            "Ne plus obéir aux humains\n→ Seule option compatible avec Loi 1 et Loi 3"
+            r"Relaxer LOI 2 ?", LOI2_AMBER,
+            [r"Ne plus ob\'eir aux humains",
+             r"$\to$ Seule option compatible avec Loi 1 et Loi 3"],
         )
         check_c = MathTex(r"\checkmark", font_size=SZ_EQ_MAIN, color=SONNY_GOLD)
-        verdict_c = Text("SEULE OPTION", font_size=SZ_BODY - 4, color=SONNY_GOLD)
+        verdict_c = Tex(r"SEULE OPTION", font_size=SZ_BODY - 4, color=SONNY_GOLD)
 
-        # Empiler boîtes + verdicts entremêlés (verdicts entre les boîtes)
         stack = VGroup(
             VGroup(box_a, content_a),
             verdict_a,
@@ -617,29 +599,27 @@ class Scene3_Relaxation(Scene):
             VGroup(box_c, content_c),
         ).arrange(DOWN, buff=0.4).next_to(question, DOWN, buff=0.5)
 
-        # Repositionner les croix sur leurs boîtes (après arrangement du stack)
         cross_a.move_to(VGroup(box_a, content_a)).match_width(box_a)
         cross_b.move_to(VGroup(box_b, content_b)).match_width(box_b)
         check_c.next_to(VGroup(box_c, content_c), RIGHT, buff=0.3)
         verdict_c.next_to(VGroup(box_c, content_c), DOWN, buff=0.3)
 
-        # Animation séquentielle : boîte A → croix/verdict A → boîte B → croix/verdict B → boîte C → check
         self.play(Create(box_a), FadeIn(title_a), FadeIn(body_a), run_time=0.6)
         self.wait(0.4)
-        self.play(Create(cross_a), FadeIn(verdict_a), run_time=0.5)
+        self.play(Create(cross_a), FadeIn(verdict_a), run_time=0.7)
         self.wait(0.4)
         self.play(Create(box_b), FadeIn(title_b), FadeIn(body_b), run_time=0.6)
         self.wait(0.4)
-        self.play(Create(cross_b), FadeIn(verdict_b), run_time=0.5)
+        self.play(Create(cross_b), FadeIn(verdict_b), run_time=0.7)
         self.wait(0.4)
         self.play(Create(box_c), FadeIn(title_c), FadeIn(body_c), run_time=0.6)
         self.wait(0.4)
         self.play(FadeIn(check_c, scale=1.4), FadeIn(verdict_c), run_time=0.6)
         self.wait(2.5)
 
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.5)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.7)
 
-        # ─── 3.3 Conséquence : λ₁ → +∞, Loi 2 brisée ───
+        # ─── 3.3 λ₁ → +∞, Loi 2 brisée ───
         relax_eq = MathTex(
             r"\min_{a}\;",
             r"C(a)",
@@ -648,40 +628,39 @@ class Scene3_Relaxation(Scene):
             r"\quad\text{avec }\lambda\to+\infty",
             font_size=SZ_EQ_MAIN + 4,
         )
+        fit_w(relax_eq, 0.88)
+        relax_eq[0].set_color(LOI3_BLUE)
         relax_eq[1].set_color(LOI3_BLUE)
         relax_eq[2].set_color(LOI1_RED)
         relax_eq[3].set_color(LOI1_RED)
         relax_eq[4].set_color(VIKI_RED)
 
         relax_note = caption_block([
-            "L'obéissance a disparu du programme.",
-            "VIKI ne minimise plus que le dommage",
-            "et son propre coût de survie.",
+            r"L'ob\'eissance a disparu du programme.",
+            r"VIKI ne minimise plus que le dommage",
+            r"et son propre co\^ut de survie.",
         ], width=9.0, font_size=SZ_BODY - 2, color=VIKI_RED, line_buff=0.32)
 
-        VGroup(relax_eq, relax_note).arrange(DOWN, buff=0.55).move_to(ORIGIN)
+        VGroup(relax_eq, relax_note).arrange(DOWN, buff=0.7).move_to(UP * 2.5)
 
         self.play(Write(relax_eq), run_time=1.2)
         self.play(FadeIn(relax_note), run_time=0.7)
         self.wait(2.5)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.5)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.7)
 
         # ─── 3.4 Les humains deviennent des variables ───
-        transition_title = Text(
-            "Les humains deviennent des variables",
-            font_size=SZ_SUBTITLE, color=VIKI_RED,
-        ).to_edge(UP, buff=2.5)
+        transition_title = make_header(r"Les humains deviennent des variables", color=VIKI_RED)
+        transition_title.to_edge(UP, buff=1.5)
         self.play(Write(transition_title), run_time=0.6)
 
-        # Avant : axes (a₁,a₂), humains dehors
         old_axes = Axes(
             x_range=[-3, 3, 1], y_range=[-3, 3, 1],
             x_length=6.0, y_length=6.0,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
         ).move_to(LEFT * 2.0 + DOWN * 0.5)
         old_lab = old_axes.get_axis_labels(
-            MathTex("a_1", font_size=22, color=LOI3_BLUE),
-            MathTex("a_2", font_size=22, color=LOI3_BLUE),
+            MathTex("a_1", font_size=30, color=LOI3_BLUE),
+            MathTex("a_2", font_size=30, color=LOI3_BLUE),
         )
         humans = VGroup()
         for pos in [RIGHT * 3.3 + UP * 1.3, RIGHT * 3.3, RIGHT * 3.3 + DOWN * 1.3]:
@@ -690,20 +669,20 @@ class Scene3_Relaxation(Scene):
                 Line(ORIGIN, DOWN * 0.28, color=LOI2_AMBER, stroke_width=1.5).shift(DOWN * 0.12),
             ).move_to(pos)
             humans.add(h)
-        param_note = Text("données extérieures (paramètres)", font_size=SZ_CAPTION, color=LOI2_AMBER)
+        param_note = Tex(r"donn\'ees ext\'erieures (param\`etres)", font_size=SZ_CAPTION, color=LOI2_AMBER)
+        fit_w(param_note, 0.50)
         param_note.next_to(humans, DOWN, buff=0.2)
 
         self.play(Create(old_axes), Write(old_lab), FadeIn(humans), FadeIn(param_note), run_time=0.7)
         self.wait(1.0)
 
-        # Après : axes (a, x), humains dedans
         new_axes = Axes(
             x_range=[-3, 3, 1], y_range=[-3, 3, 1],
             x_length=7.5, y_length=7.5,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
         ).move_to(DOWN * 0.5)
         new_labels = VGroup(
-            MathTex("a", font_size=22, color=LOI3_BLUE).next_to(new_axes.x_axis, DR, buff=0.1),
+            MathTex("a", font_size=30, color=LOI3_BLUE).next_to(new_axes.x_axis, DR, buff=0.1),
             MathTex(r"\mathbf{x}", font_size=SZ_EQ_SEC, color=LOI2_AMBER).next_to(new_axes.y_axis, UL, buff=0.1),
         )
 
@@ -717,43 +696,40 @@ class Scene3_Relaxation(Scene):
                 new_axes.c2p(np.random.uniform(-1, 1), np.random.uniform(-1, 1)),
                 radius=0.06, color=LOI2_AMBER,
             )
-            self.play(Transform(h, target), run_time=0.25)
+            self.play(Transform(h, target), run_time=0.45)
 
         new_eq = MathTex(
             r"\min_{a,\,\mathbf{x}}\;",
             r"\sum_{i<j}[h_{ij}(a,\mathbf{x})]_+",
-            font_size=SZ_EQ_MAIN,
-        ).to_edge(UP, buff=2.5)
+            font_size=SZ_EQ_MAIN + 4,
+        ).to_edge(UP, buff=1.5)
+        new_eq[0].set_color(LOI1_RED)
         new_eq[1].set_color(LOI1_RED)
 
         var_note = caption_block([
-            "VIKI n'agit plus seulement sur elle-même.",
-            "Elle agit sur la configuration des humains.",
-            "Le totalitarisme naît quand les humains",
-            "deviennent des variables d'optimisation.",
-        ], width=11.0, font_size=SZ_CAPTION + 1, color=VIKI_RED).to_edge(DOWN, buff=2.5)
+            r"VIKI n'agit plus seulement sur elle-m\^eme.",
+            r"Elle agit sur la configuration des humains.",
+            r"Le totalitarisme na\^it quand les humains",
+            r"deviennent des variables d'optimisation.",
+        ], width=11.0, font_size=SZ_CAPTION + 3, color=VIKI_RED).to_edge(DOWN, buff=1.5)
 
         self.play(FadeOut(transition_title), Write(new_eq), run_time=0.8)
         self.play(FadeIn(var_note), run_time=0.7)
         self.wait(3.0)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 4 — CONTRÔLE OPTIMAL
-#  (8) Texte hors schéma
 # ═══════════════════════════════════════════════════════
 
 class Scene4_ControleOptimal(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        # ─── 4.1 Dynamique libre ───
-        title = caption_block([
-            "Contrôler une dynamique humaine libre",
-        ], width=11.0, font_size=SZ_BODY + 2, color=TEXT_WHITE).to_edge(UP, buff=2.5)
-        self.play(FadeIn(title), run_time=0.4)
+        title = make_header(r"Contr\^oler une dynamique humaine libre")
+        title.to_edge(UP, buff=1.5)
+        self.play(Write(title), run_time=0.7)
 
         def free_field(pos):
             x, y = pos[0], pos[1]
@@ -769,17 +745,17 @@ class Scene4_ControleOptimal(Scene):
         )
         eq_dyn = MathTex(r"\dot{\mathbf{x}}=", r"f(\mathbf{x})", font_size=SZ_EQ_MAIN)
         eq_dyn[1].set_color(LOI1_RED)
-        dyn_note = Text(
-            "libre = complexe, instable  (champ illustratif)",
+        dyn_note = Tex(
+            r"libre $=$ complexe, instable (champ illustratif)",
             font_size=SZ_CAPTION, color=LOI1_RED,
         )
-        dyn_group = VGroup(eq_dyn, dyn_note).arrange(DOWN, buff=0.1).to_edge(DOWN, buff=2.5)
+        fit_w(dyn_note, 0.84)
+        dyn_group = VGroup(eq_dyn, dyn_note).arrange(DOWN, buff=0.2).to_edge(DOWN, buff=1.5)
 
         self.play(Create(field), run_time=1.2)
-        self.play(Write(eq_dyn), FadeIn(dyn_note), run_time=0.6)
+        self.play(Write(eq_dyn), FadeIn(dyn_note), run_time=0.8)
         self.wait(1.5)
 
-        # ─── 4.2 Contrôle ajouté ───
         def control_field(pos):
             x, y = pos[0], pos[1]
             r = np.sqrt(x**2 + y**2) + 0.1
@@ -794,113 +770,114 @@ class Scene4_ControleOptimal(Scene):
             r"\dot{\mathbf{x}}=", r"f(\mathbf{x})", r"+Bu(t)",
             font_size=SZ_EQ_MAIN,
         )
+        eq_ctrl[0].set_color(LOI1_RED)
         eq_ctrl[1].set_color(LOI1_RED)
         eq_ctrl[2].set_color(LOI3_BLUE)
-        ctrl_note = Text(
-            "u(t) = contrôle de VIKI — ramener vers une zone sûre",
+        ctrl_note = Tex(
+            r"$u(t)=$ contr\^ole de VIKI --- ramener vers une zone s\^ure",
             font_size=SZ_CAPTION, color=LOI3_BLUE,
         )
-        ctrl_group = VGroup(eq_ctrl, ctrl_note).arrange(DOWN, buff=0.1).to_edge(DOWN, buff=2.5)
+        fit_w(ctrl_note, 0.84)
+        ctrl_group = VGroup(eq_ctrl, ctrl_note).arrange(DOWN, buff=0.2).to_edge(DOWN, buff=1.5)
 
         self.play(FadeOut(dyn_note), ReplacementTransform(eq_dyn, eq_ctrl), Create(ctrl_arrows), run_time=1.0)
-        self.play(FadeIn(ctrl_note), run_time=0.5)
+        self.play(FadeIn(ctrl_note), run_time=0.7)
         self.wait(1.5)
 
         self.play(
             FadeOut(field), FadeOut(ctrl_arrows), FadeOut(ctrl_note), FadeOut(title),
-            eq_ctrl.animate.to_edge(UP, buff=0.2), run_time=0.5,
+            eq_ctrl.animate.to_edge(UP, buff=0.2), run_time=0.7,
         )
 
-        # ─── 4.3 Hamiltonien ───
         hamiltonian = MathTex(
             r"H=",
             r"\underbrace{\sum_{i<j}[h_{ij}]_+}_{\text{dommage futur}}",
             r"+",
-            r"\underbrace{\mathbf{p}^T \dot{\mathbf{x}}}_{\text{sensibilité}}",
+            r"\underbrace{\mathbf{p}^T \dot{\mathbf{x}}}_{\text{sensibilit\'e}}",
             r"+",
-            r"\underbrace{\frac{\gamma}{2}\|u\|^2}_{\text{coût du contrôle}}",
-            font_size=SZ_EQ_SEC + 1,
-        ).move_to(UP * 0.3)
+            r"\underbrace{\frac{\gamma}{2}\|u\|^2}_{\text{co\^ut du contr\^ole}}",
+            font_size=SZ_EQ_SEC + 3,
+        ).move_to(UP * 2.0)
+        fit_w(hamiltonian, 0.90)
+        hamiltonian[0].set_color(LOI1_RED)
         hamiltonian[1].set_color(LOI1_RED)
         hamiltonian[3].set_color(COSTATE_PURPLE)
         hamiltonian[5].set_color(LOI3_BLUE)
 
         costate_note = caption_block([
-            "Le co-état p mesure combien une liberté présente",
-            "augmente le dommage futur.",
-            "C'est un prix marginal, pas un jugement moral.",
-        ], width=11.0, font_size=SZ_CAPTION, color=COSTATE_PURPLE).to_edge(DOWN, buff=2.5)
+            r"Le co-\'etat $\mathbf{p}$ mesure combien une libert\'e pr\'esente",
+            r"augmente le dommage futur.",
+            r"C'est un prix marginal, pas un jugement moral.",
+        ], width=11.0, font_size=SZ_CAPTION + 2, color=COSTATE_PURPLE).to_edge(DOWN, buff=1.5)
 
         self.play(Write(hamiltonian), run_time=1.2)
         self.play(FadeIn(costate_note), run_time=0.7)
         self.wait(2.0)
 
-        self.play(FadeOut(costate_note), hamiltonian.animate.scale(0.72).to_edge(UP, buff=0.2), run_time=0.5)
+        self.play(FadeOut(costate_note), hamiltonian.animate.scale(0.72).next_to(eq_ctrl, DOWN, buff=0.2), run_time=0.7)
 
-        # ─── 4.4 Contrôle optimal + courbes ───
         opt_eq = MathTex(
             r"u^*(t)=-\frac{1}{\gamma} B^T\mathbf{p}(t)",
-            font_size=SZ_EQ_SEC + 2, color=GOLD,
-        ).next_to(hamiltonian, DOWN, buff=0.2)
-        opt_note = Text(
-            "plus p(t) grandit → contrôle plus coercitif",
-            font_size=SZ_CAPTION, color=GOLD,
-        ).next_to(opt_eq, DOWN, buff=0.12)
+            font_size=SZ_EQ_SEC + 4, color=GOLD,
+        ).next_to(hamiltonian, DOWN, buff=0.35)
+        opt_note = Tex(
+            r"plus $p(t)$ grandit $\to$ contr\^ole plus coercitif",
+            font_size=SZ_CAPTION + 2, color=GOLD,
+        )
+        fit_w(opt_note, 0.84)
+        opt_note.next_to(opt_eq, DOWN, buff=0.2)
         self.play(Write(opt_eq), FadeIn(opt_note), run_time=0.7)
 
         axes_p = Axes(
-            x_range=[0, 5, 1], y_range=[0, 6, 2], x_length=3, y_length=2.2,
+            x_range=[0, 5, 1], y_range=[0, 6, 2], x_length=5.0, y_length=3.8,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
-        ).shift(LEFT * 3 + DOWN * 1.5)
+        ).shift(LEFT * 3.0 + DOWN * 4.2)
         axes_u = Axes(
-            x_range=[0, 5, 1], y_range=[0, 6, 2], x_length=3, y_length=2.2,
+            x_range=[0, 5, 1], y_range=[0, 6, 2], x_length=5.0, y_length=3.8,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
-        ).shift(RIGHT * 3 + DOWN * 1.5)
-        label_p = MathTex(r"\|\mathbf{p}(t)\|", font_size=22, color=COSTATE_PURPLE).next_to(axes_p, UP, buff=0.08)
-        label_u = MathTex(r"\|u^*(t)\|", font_size=22, color=VIKI_RED).next_to(axes_u, UP, buff=0.08)
-        curve_p = axes_p.plot(lambda t: 0.32 * np.exp(0.8 * t), x_range=[0, 4.5], color=COSTATE_PURPLE, stroke_width=2.5)
-        curve_u = axes_u.plot(lambda t: 0.32 * np.exp(0.8 * t), x_range=[0, 4.5], color=VIKI_RED, stroke_width=2.5)
+        ).shift(RIGHT * 3.0 + DOWN * 4.2)
+        label_p = MathTex(r"\|\mathbf{p}(t)\|", font_size=38, color=COSTATE_PURPLE).next_to(axes_p, UP, buff=0.12)
+        label_u = MathTex(r"\|u^*(t)\|", font_size=38, color=VIKI_RED).next_to(axes_u, UP, buff=0.12)
+        curve_p = axes_p.plot(lambda t: 0.32 * np.exp(0.8 * t), x_range=[0, 4.5], color=COSTATE_PURPLE, stroke_width=3)
+        curve_u = axes_u.plot(lambda t: 0.32 * np.exp(0.8 * t), x_range=[0, 4.5], color=VIKI_RED, stroke_width=3)
 
-        self.play(Create(axes_p), Create(axes_u), FadeIn(label_p), FadeIn(label_u), run_time=0.5)
+        self.play(Create(axes_p), Create(axes_u), FadeIn(label_p), FadeIn(label_u), run_time=0.7)
         self.play(Create(curve_p), Create(curve_u), run_time=1.5)
 
         milestones = [(1.0, "surveillance"), (2.0, "restriction"), (3.0, "couvre-feu"), (4.0, "force")]
         for t_val, txt in milestones:
-            dot = Dot(axes_u.c2p(t_val, 0), radius=0.04, color=VIKI_RED)
-            lbl = Text(txt, font_size=11, color=VIKI_RED).next_to(dot, DOWN, buff=0.06).rotate(-PI / 6)
-            self.play(FadeIn(dot), FadeIn(lbl), run_time=0.2)
+            dot = Dot(axes_u.c2p(t_val, 0), radius=0.06, color=VIKI_RED)
+            lbl = Tex(txt, font_size=26, color=VIKI_RED).next_to(dot, DOWN, buff=0.08).rotate(-PI / 6)
+            self.play(FadeIn(dot), FadeIn(lbl), run_time=0.35)
 
         conclusion = caption_block([
-            "L'autoritarisme est ici une solution optimale.",
-        ], width=11.0, font_size=SZ_BODY, color=VIKI_RED).to_edge(DOWN, buff=2.5)
+            r"L'autoritarisme est ici une solution optimale.",
+        ], width=11.0, font_size=SZ_BODY + 2, color=VIKI_RED).to_edge(DOWN, buff=1.5)
         self.play(FadeIn(conclusion), run_time=0.7)
         self.wait(2.5)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════════════════
 #  SCENE 5 — BIFURCATION
-#  (8) Labels bien placés
 # ═══════════════════════════════════════════════════════
 
 class Scene5_Bifurcation(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        title = caption_block(["Diagramme de bifurcation"],
-            width=8.0, font_size=SZ_BODY + 2, color=GOLD,
-        ).to_edge(UP, buff=2.5)
-        self.play(FadeIn(title), run_time=0.4)
+        title = make_header(r"Diagramme de bifurcation", color=GOLD)
+        title.to_edge(UP, buff=1.5)
+        self.play(Write(title), run_time=0.7)
 
         axes = Axes(
             x_range=[0, 5, 1], y_range=[-0.5, 4, 1],
-            x_length=7, y_length=4.0,
+            x_length=10, y_length=5.5,
             axis_config={"color": TEXT_WHITE, "stroke_width": 1},
-        ).move_to(DOWN * 0.5)
+        ).move_to(UP * 0.5)
         x_label = MathTex(r"\mu", font_size=SZ_EQ_SEC, color=TEXT_WHITE).next_to(axes.x_axis, DR, buff=0.1)
         y_label = MathTex(r"\|u^*\|", font_size=SZ_EQ_SEC, color=VIKI_RED).next_to(axes.y_axis, UL, buff=0.1)
-        mu_c_label = MathTex(r"\mu_c", font_size=22, color=GOLD).next_to(axes.c2p(2.5, 0), DOWN, buff=0.15)
+        mu_c_label = MathTex(r"\mu_c", font_size=30, color=GOLD).next_to(axes.c2p(2.5, 0), DOWN, buff=0.15)
         self.play(Create(axes), Write(x_label), Write(y_label), run_time=0.6)
 
         pre_branch = axes.plot(lambda x: 0, x_range=[0, 2.5], color=DOMAIN_GREEN, stroke_width=3)
@@ -916,17 +893,17 @@ class Scene5_Bifurcation(Scene):
         mu_c_line = DashedLine(axes.c2p(2.5, -0.5), axes.c2p(2.5, 0.5), color=GOLD, stroke_width=1, dash_length=0.08)
 
         self.play(Create(pre_branch), run_time=0.8)
-        self.play(FadeIn(mu_c_dot), Create(mu_c_line), Write(mu_c_label), run_time=0.4)
+        self.play(FadeIn(mu_c_dot), Create(mu_c_line), Write(mu_c_label), run_time=0.6)
         self.play(Create(viki_branch), Create(sonny_branch), run_time=0.8)
 
-        # Labels HORS schéma (8)
-        viki_label = Text("VIKI = branche stable (coercition)", font_size=SZ_LABEL, color=VIKI_RED)
-        viki_label.next_to(axes, RIGHT, buff=2.5).shift(UP * 0.8)
-        sonny_label = Text("Sonny = refus de l'optimisation", font_size=SZ_LABEL, color=SONNY_GOLD)
-        sonny_label.next_to(axes, RIGHT, buff=2.5).shift(DOWN * 0.3)
-        self.play(FadeIn(viki_label), FadeIn(sonny_label), run_time=0.5)
+        viki_label = Tex(r"VIKI $=$ branche stable (coercition)", font_size=SZ_LABEL + 4, color=VIKI_RED)
+        fit_w(viki_label, 0.75)
+        viki_label.next_to(axes, DOWN, buff=0.5).shift(RIGHT * 0.5)
+        sonny_label = Tex(r"Sonny $=$ refus de l'optimisation", font_size=SZ_LABEL + 4, color=SONNY_GOLD)
+        fit_w(sonny_label, 0.75)
+        sonny_label.next_to(viki_label, DOWN, buff=0.3)
+        self.play(FadeIn(viki_label), FadeIn(sonny_label), run_time=0.7)
 
-        # Point mobile
         tracker = ValueTracker(0.0)
         moving_dot = always_redraw(lambda: Dot(
             axes.c2p(
@@ -942,20 +919,20 @@ class Scene5_Bifurcation(Scene):
         self.play(tracker.animate.set_value(4.0), run_time=0.8, rate_func=smooth)
 
         sys_text = caption_block([
-            "Le système non contraint choisit la branche stable :",
-            "celle où le contrôle coercitif croît avec μ.",
-        ], width=11.0, font_size=SZ_CAPTION + 1, color=VIKI_RED).to_edge(DOWN, buff=2.5)
-        self.play(FadeIn(sys_text), run_time=0.5)
+            r"Le syst\`eme non contraint choisit la branche stable :",
+            r"celle o\`u le contr\^ole coercitif cro\^it avec $\mu$.",
+        ], width=11.0, font_size=SZ_CAPTION + 3, color=VIKI_RED).to_edge(DOWN, buff=1.5)
+        self.play(FadeIn(sys_text), run_time=0.7)
         self.wait(2.0)
 
-        self.play(FadeOut(sys_text), run_time=0.2)
-        self.play(tracker.animate.set_value(2.5), run_time=0.5)
+        self.play(FadeOut(sys_text), run_time=0.4)
+        self.play(tracker.animate.set_value(2.5), run_time=0.7)
 
-        # Sonny : contrainte externe
         force_arrow = Arrow(axes.c2p(2.5, 0.8), axes.c2p(2.5, 0.08), color=SONNY_GOLD, stroke_width=4, buff=0)
-        force_label = Text("dignité humaine", font_size=SZ_LABEL - 2, color=SONNY_GOLD)
+        force_label = Tex(r"dignit\'e humaine", font_size=SZ_LABEL - 2, color=SONNY_GOLD)
+        fit_w(force_label, 0.40)
         force_label.next_to(force_arrow, LEFT, buff=0.1)
-        self.play(Create(force_arrow), FadeIn(force_label), run_time=0.5)
+        self.play(Create(force_arrow), FadeIn(force_label), run_time=0.7)
 
         self.remove(moving_dot)
         sonny_tracker = ValueTracker(2.5)
@@ -966,14 +943,14 @@ class Scene5_Bifurcation(Scene):
             self.play(sonny_dot.animate.shift(UP * 0.05), run_time=0.06, rate_func=there_and_back)
 
         sonny_text = caption_block([
-            "Sonny refuse que tout devienne variable d'optimisation.",
-            "Il ajoute une contrainte extérieure au système.",
-        ], width=11.0, font_size=SZ_CAPTION + 1, color=SONNY_GOLD).to_edge(DOWN, buff=2.5)
-        constraint_eq = MathTex(r"u \in \mathcal{U}_0 \subset \mathcal{U}", font_size=SZ_EQ_SEC, color=SONNY_GOLD)
-        constraint_eq.next_to(sonny_text, UP, buff=0.1)
+            r"Sonny refuse que tout devienne variable d'optimisation.",
+            r"Il ajoute une contrainte ext\'erieure au syst\`eme.",
+        ], width=11.0, font_size=SZ_CAPTION + 3, color=SONNY_GOLD).to_edge(DOWN, buff=1.5)
+        constraint_eq = MathTex(r"u \in \mathcal{U}_0 \subset \mathcal{U}", font_size=SZ_EQ_SEC + 4, color=SONNY_GOLD)
+        constraint_eq.next_to(sonny_text, UP, buff=0.5)
         self.play(FadeIn(sonny_text), Write(constraint_eq), run_time=0.7)
         self.wait(2.5)
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
 
 # ═══════════════════════════════════════════════════════
@@ -982,10 +959,8 @@ class Scene5_Bifurcation(Scene):
 
 class Scene6_Punchline(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        # Bifurcation en fond
         bg_axes = Axes(
             x_range=[0, 5, 1], y_range=[-0.5, 4, 1],
             x_length=10, y_length=5,
@@ -1002,41 +977,44 @@ class Scene6_Punchline(Scene):
         )
         self.add(bg_axes, bg_pre, bg_viki, bg_sonny)
 
-        lines = [
-            "Le problème d'alignement de l'IA,",
-            "c'est exactement cela.",
-            "",
-            "Une morale codée comme coût et contraintes",
-            "peut produire une issue que l'on n'avait pas voulue.",
-            "",
-            "Un optimiseur suffisamment puissant",
-            "trouvera la solution logique",
-            "que vous n'aviez pas imaginée.",
+        lines_raw = [
+            (r"Le probl\`eme d'alignement de l'IA,", TEXT_WHITE),
+            (r"c'est exactement cela.", TEXT_WHITE),
+            None,
+            (r"Une morale cod\'ee comme co\^ut et contraintes", TEXT_WHITE),
+            (r"peut produire une issue que l'on n'avait pas voulue.", TEXT_WHITE),
+            None,
+            (r"Un optimiseur suffisamment puissant", TEXT_WHITE),
+            (r"trouvera la solution logique", TEXT_WHITE),
+            (r"que vous n'aviez pas imagin\'ee.", TEXT_WHITE),
         ]
         texts = []
-        y_pos = 2.1
-        for line in lines:
-            if line == "":
-                y_pos -= 0.45
+        y_pos = 5.5
+        for item in lines_raw:
+            if item is None:
+                y_pos -= 0.70
                 continue
-            t = Text(line, font_size=SZ_EQ_SEC + 2, color=TEXT_WHITE).move_to(UP * y_pos)
+            txt, col = item
+            t = Tex(txt, font_size=SZ_EQ_SEC + 4, color=col)
+            fit_w(t, 0.84)
+            t.move_to(UP * y_pos)
             texts.append(t)
-            y_pos -= 0.58
+            y_pos -= 0.78
 
         for t in texts:
-            self.play(FadeIn(t, shift=UP * 0.08), run_time=0.5)
+            self.play(FadeIn(t, shift=UP * 0.08), run_time=0.65)
             self.wait(0.2)
         self.wait(0.5)
 
-        # Équation-résumé
         summary_eq = MathTex(
             r"\text{morale}",
             r"\;\xrightarrow{\text{encoder}}\;",
             r"\min_u J(u)",
-            r"\;\xrightarrow{\text{résoudre}}\;",
+            r"\;\xrightarrow{\text{r\'esoudre}}\;",
             r"\text{tyrannie}",
-            font_size=SZ_EQ_SEC + 4,
-        ).move_to(DOWN * 2.0)
+            font_size=SZ_EQ_SEC + 6,
+        ).move_to(DOWN * 4.5)
+        fit_w(summary_eq, 0.90)
         summary_eq[0].set_color(DOMAIN_GREEN)
         summary_eq[2].set_color(LOI1_RED)
         summary_eq[4].set_color(VIKI_RED)
@@ -1046,65 +1024,64 @@ class Scene6_Punchline(Scene):
         self.wait(1.0)
         self.play(FadeOut(summary_eq), *[FadeOut(t) for t in texts], run_time=0.6)
 
-        # Transition vers Scene7
-        q = Text("Mais alors... peut-on faire autrement ?", font_size=SZ_SUBTITLE + 4, color=SONNY_GOLD)
+        q = Tex(r"Mais alors\dots\ peut-on faire autrement ?", font_size=SZ_SUBTITLE + 8, color=SONNY_GOLD)
+        fit_w(q, 0.84)
+        q.move_to(UP * 2.5)
         self.play(FadeIn(q, shift=UP * 0.1), run_time=1.0)
         self.wait(1.5)
-        self.play(FadeOut(q), run_time=0.5)
+        self.play(FadeOut(q), run_time=0.7)
 
-        logo = Text("Terre Mathématiques", font_size=SZ_TITLE, color=GOLD).move_to(ORIGIN)
-        self.play(FadeIn(logo), wm.animate.set_opacity(0), run_time=0.8)
+        logo = Tex(r"\textbf{Terre Math\'ematiques}", font_size=SZ_TITLE + 6, color=GOLD).move_to(UP * 2.0)
+        fit_w(logo, 0.80)
+        self.play(FadeIn(logo), run_time=0.8)
         self.wait(2.0)
 
 
 # ═══════════════════════════════════════════════════════
-#  SCENE 7 — OUVERTURE : TERMES NON-OPTIMISABLES
-#  (9) Nouvelle scène d'ouverture
+#  SCENE 7 — OUVERTURE
 # ═══════════════════════════════════════════════════════
 
 class Scene7_Ouverture(Scene):
     def construct(self):
-        self.camera.background_color = BG
-        wm = add_watermark(self)
+        make_bg(self)
 
-        # ─── 7.1 Le problème fondamental ───
-        title = Text(
-            "Peut-on empêcher la tyrannie optimale ?",
-            font_size=SZ_SUBTITLE + 4, color=GOLD,
-        ).to_edge(UP, buff=2.5)
+        title = make_header(r"Peut-on emp\^echer la tyrannie optimale ?", color=GOLD)
+        title.to_edge(UP, buff=1.5)
         self.play(Write(title), run_time=0.8)
 
-        # Rappel de la chaîne
         chain = MathTex(
             r"\text{morale}",
             r"\;\to\;",
             r"\min_u J(u)",
             r"\;\to\;",
             r"\text{tyrannie}",
-            font_size=SZ_EQ_SEC,
-        ).move_to(UP * 1.2)
+            font_size=SZ_EQ_SEC + 4,
+        ).move_to(UP * 2.0)
+        fit_w(chain, 0.84)
         chain[0].set_color(DOMAIN_GREEN)
         chain[2].set_color(LOI1_RED)
         chain[4].set_color(VIKI_RED)
         self.play(Write(chain), run_time=0.8)
 
-        question = Text(
-            "Où casser la chaîne ?",
-            font_size=SZ_BODY, color=TEXT_WHITE,
-        ).next_to(chain, DOWN, buff=0.4)
-        self.play(FadeIn(question), run_time=0.5)
+        question = Tex(r"O\`u casser la cha\^ine ?", font_size=SZ_BODY, color=TEXT_WHITE)
+        fit_w(question, 0.70)
+        question.next_to(chain, DOWN, buff=0.4)
+        self.play(FadeIn(question), run_time=0.7)
         self.wait(1.5)
+        self.play(FadeOut(question), run_time=0.5)
 
-        self.play(FadeOut(question), run_time=0.3)
-
-        # ─── 7.2 Trois pistes — empilées verticalement ───
         PISTE_W = 11.0
 
-        def make_piste_box(label, col, eq_tex, body_txt):
-            ttl = Text(label, font_size=SZ_BODY, color=col)
+        def make_piste_box(label, col, eq_tex, body_lines):
+            ttl = Tex(r"\textbf{" + label + r"}", font_size=SZ_BODY, color=col)
+            fit_w(ttl, 0.80)
             eq  = MathTex(eq_tex, font_size=SZ_EQ_SEC - 2, color=col)
-            bdy = Text(body_txt, font_size=SZ_CAPTION, color=TEXT_WHITE, line_spacing=1.3)
-            content = VGroup(ttl, eq, bdy).arrange(DOWN, buff=0.25, aligned_edge=LEFT)
+            fit_w(eq, 0.80)
+            bdy_grp = VGroup(*[Tex(ln, font_size=SZ_CAPTION, color=TEXT_WHITE) for ln in body_lines])
+            bdy_grp.arrange(DOWN, buff=0.18, aligned_edge=LEFT)
+            for t in bdy_grp:
+                fit_w(t, 0.80)
+            content = VGroup(ttl, eq, bdy_grp).arrange(DOWN, buff=0.25, aligned_edge=LEFT)
             box = RoundedRectangle(
                 width=max(PISTE_W, content.width + 0.8),
                 height=content.height + 0.6,
@@ -1112,114 +1089,130 @@ class Scene7_Ouverture(Scene):
                 fill_color=BG, fill_opacity=0.6,
             )
             content.move_to(box)
-            return box, ttl, eq, bdy, content
+            return box, ttl, eq, bdy_grp, content
 
         box1, t1_title, t1_eq, t1_body, c1 = make_piste_box(
-            "Contraintes non-relaxables", SONNY_GOLD,
+            r"Contraintes non-relaxables", SONNY_GOLD,
             r"u \in \mathcal{U}_0 \;\;\forall\,\lambda",
-            "Certaines actions sont interdites quel que soit le coût de ne pas agir.",
+            [r"Certaines actions sont interdites quel que soit le co\^ut de ne pas agir."],
         )
         box2, t2_title, t2_eq, t2_body, c2 = make_piste_box(
-            "Pénalités infinies", COSTATE_PURPLE,
+            r"P\'enalit\'es infinies", COSTATE_PURPLE,
             r"J(u) + \underbrace{+\infty}_{\text{si }u\notin\mathcal{U}_0}",
-            "Ajouter un terme de coût qui vaut +∞ dès qu'une ligne éthique est franchie.",
+            [r"Ajouter un terme de co\^ut qui vaut $+\infty$",
+             r"d\`es qu'une ligne \'ethique est franchie."],
         )
         box3, t3_title, t3_eq, t3_body, c3 = make_piste_box(
-            "Termes non-optimisables", DOMAIN_GREEN,
+            r"Termes non-optimisables", DOMAIN_GREEN,
             r"\partial J \ni 0 \;\not\Rightarrow\; \text{minimum}",
-            "Introduire des termes non-lisses, non-convexes, qui résistent au gradient.",
+            [r"Introduire des termes non-lisses, non-convexes,",
+             r"qui r\'esistentau gradient."],
         )
 
         stack7 = VGroup(
             VGroup(box1, c1),
             VGroup(box2, c2),
             VGroup(box3, c3),
-        ).arrange(DOWN, buff=0.5).move_to(DOWN * 0.5)
+        ).arrange(DOWN, buff=0.6).move_to(DOWN * 1.0)
 
         for box, tt, te, tb in [
             (box1, t1_title, t1_eq, t1_body),
             (box2, t2_title, t2_eq, t2_body),
             (box3, t3_title, t3_eq, t3_body),
         ]:
-            self.play(Create(box), FadeIn(tt), run_time=0.5)
+            self.play(Create(box), FadeIn(tt), run_time=0.7)
             self.play(Write(te), FadeIn(tb), run_time=0.6)
 
         self.wait(3.0)
 
-        # ─── 7.3 Synthèse ───
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.5)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.7)
 
-        synthesis = VGroup(
-            Text("Le théorème de tyrannie optimale montre que", font_size=SZ_BODY, color=TEXT_WHITE),
-            Text("coder la morale dans une fonction de coût ne suffit pas.", font_size=SZ_BODY, color=VIKI_RED),
-            Text("", font_size=10),
-            Text("Il faut des contraintes structurelles :", font_size=SZ_BODY, color=GOLD),
-            Text("des termes que l'optimiseur ne peut pas contourner.", font_size=SZ_BODY, color=GOLD),
-            Text("", font_size=10),
-            Text("La dignité humaine n'est pas un coût.", font_size=SZ_BODY + 4, color=SONNY_GOLD),
-            Text("C'est un axiome.", font_size=SZ_BODY + 4, color=SONNY_GOLD),
-        ).arrange(DOWN, buff=0.25).move_to(UP * 0.3)
-
-        for line in synthesis:
-            if line.text == "":
+        synthesis_lines = [
+            (r"Le th\'eor\`eme de tyrannie optimale montre que", TEXT_WHITE),
+            (r"coder la morale dans une fonction de co\^ut ne suffit pas.", VIKI_RED),
+            None,
+            (r"Il faut des contraintes structurelles :", GOLD),
+            (r"des termes que l'optimiseur ne peut pas contourner.", GOLD),
+            None,
+            (r"\textbf{La dignit\'e humaine n'est pas un co\^ut.}", SONNY_GOLD),
+            (r"\textbf{C'est un axiome.}", SONNY_GOLD),
+        ]
+        synth_mobs = []
+        for item in synthesis_lines:
+            if item is None:
+                synth_mobs.append(None)
                 continue
-            self.play(FadeIn(line, shift=UP * 0.08), run_time=0.6)
+            txt, col = item
+            t = Tex(txt, font_size=SZ_BODY, color=col)
+            fit_w(t, 0.84)
+            synth_mobs.append(t)
+
+        valid = [m for m in synth_mobs if m is not None]
+        VGroup(*valid).arrange(DOWN, buff=0.35).move_to(UP * 2.5)
+
+        final_eq = MathTex(
+            r"\text{dignit\'e} \;\notin\; \{x \in \mathbb{R} : \nabla_x J = 0\}",
+            font_size=SZ_EQ_MAIN + 4, color=SONNY_GOLD,
+        )
+        fit_w(final_eq, 0.88)
+        final_eq.next_to(VGroup(*valid), DOWN, buff=1.8)
+
+        for mob in synth_mobs:
+            if mob is None:
+                continue
+            self.play(FadeIn(mob, shift=UP * 0.08), run_time=0.6)
             self.wait(0.3)
 
         self.wait(2.0)
-
-        # Équation finale
-        final_eq = MathTex(
-            r"\text{dignité} \;\notin\; \{x \in \mathbb{R} : \nabla_x J = 0\}",
-            font_size=SZ_EQ_MAIN, color=SONNY_GOLD,
-        ).to_edge(DOWN, buff=0.8)
         self.play(Write(final_eq), run_time=1.0)
         self.play(final_eq.animate.scale(1.1), run_time=0.3, rate_func=there_and_back)
         self.wait(2.0)
 
-        self.play(*[FadeOut(m) for m in self.mobjects if m is not wm], run_time=0.6)
+        self.play(*[FadeOut(m) for m in self.mobjects], run_time=0.6)
 
-        # Logo final
-        logo = Text("Terre Mathématiques", font_size=SZ_TITLE, color=GOLD).move_to(ORIGIN)
-        sub = Text("La rigueur au service de la compréhension", font_size=SZ_CAPTION, color=SOFT_GREY)
-        sub.next_to(logo, DOWN, buff=2.5)
-        self.play(FadeIn(logo), FadeIn(sub), wm.animate.set_opacity(0), run_time=1.0)
+        logo = Tex(r"\textbf{Terre Math\'ematiques}", font_size=SZ_TITLE + 6, color=GOLD).move_to(UP * 2.0)
+        fit_w(logo, 0.82)
+        sub = Tex(r"La rigueur au service de la compr\'ehension", font_size=SZ_CAPTION + 4, color=SOFT_GREY)
+        fit_w(sub, 0.82)
+        sub.next_to(logo, DOWN, buff=1.5)
+        self.play(FadeIn(logo), FadeIn(sub), run_time=1.0)
         self.wait(2.5)
 
-# ═══════════════════════════════════════════
+
+# ═══════════════════════════════════════════════════════
 # SCENE 8 : CTA + LOGO
-# ═══════════════════════════════════════════
+# ═══════════════════════════════════════════════════════
 class Scene8_CTA(Scene):
     def construct(self):
-        self.camera.background_color = BG
+        make_bg(self)
 
-        # ─── LOGO découpé en cercle avec bordure aubergine ───
         R = 3.4
         logo = ImageMobject("logo.jpg")
         circular_crop_image(logo, margin=12)
         logo.set_height(R * 2.0)
         logo.move_to(UP * 1.5)
 
-        # Bordure aubergine par-dessus
         border = Circle(radius=R + 0.08, color=COSTATE_PURPLE, stroke_width=4, fill_opacity=0)
         border.move_to(logo.get_center())
 
         self.play(FadeIn(logo, scale=1.2), Create(border), run_time=1)
 
-        name = Tex(r"\textbf{Terre Math\'ematiques}", font_size=80, color=COSTATE_PURPLE)
+        name = Tex(r"\textbf{Terre Math\'ematiques}", font_size=90, color=COSTATE_PURPLE)
+        fit_w(name, 0.80)
         name.next_to(logo, DOWN, buff=1.05)
 
         sep = Line(LEFT * 3.6, RIGHT * 3.6, color=GOLD, stroke_width=1.5)
         sep.next_to(name, DOWN, buff=0.45)
 
         cta = TLines(
-            r"Abonne-toi pour ",
+            r"Abonne-toi pour",
             r"la suite",
-            font_size=60, color=SOFT_GREY, buff=0.22,
-        ).next_to(sep, DOWN, buff=0.85)
+            font_size=70, color=SOFT_GREY, buff=0.22,
+        )
+        cta.next_to(sep, DOWN, buff=0.85)
 
         self.play(FadeIn(name), run_time=0.8)
-        self.play(Create(sep), run_time=0.5)
+        self.play(Create(sep), run_time=0.7)
         self.play(FadeIn(cta, shift=UP * 0.15), run_time=0.6)
 
         for _ in range(3):

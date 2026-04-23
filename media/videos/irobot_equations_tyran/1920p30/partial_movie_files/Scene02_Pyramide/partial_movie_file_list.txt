@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/1904248797_387962813_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_3446448116_2946340083.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_1275619279_3080278834.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_2712521325_3449151868.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_349681047_2734765274.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_2300885727_2675117235.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_1464625686_3920790539.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/irobot_equations_tyran/1920p30/partial_movie_files/Scene02_Pyramide/601603905_4261984410_971822394.mp4'

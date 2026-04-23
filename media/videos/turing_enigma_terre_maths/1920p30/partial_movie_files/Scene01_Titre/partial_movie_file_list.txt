@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/1962287071_85088981_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/3295965713_1987865751_3324683142.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/3295965713_4050851486_109299939.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/3295965713_2587228903_3664873530.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/3295965713_2615095941_1999536594.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/turing_enigma_terre_maths/1920p30/partial_movie_files/Scene01_Titre/3295965713_2746527928_1250206757.mp4'

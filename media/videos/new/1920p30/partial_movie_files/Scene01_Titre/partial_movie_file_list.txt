@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/1904248797_3346590593_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/601603905_3191945792_3928416275.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/601603905_2044064888_1332813293.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/601603905_1750144850_1602900801.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/601603905_2666197528_3911651685.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/new/1920p30/partial_movie_files/Scene01_Titre/601603905_3285634862_1382721371.mp4'
