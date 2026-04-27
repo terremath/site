@@ -1314,7 +1314,8 @@
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
     /* height:auto : le hero suit la hauteur du slide actif */
-    .hero { height: auto; }
+    /* padding:0 : supprime les 20px latéraux hérités de section{} */
+    .hero { height: auto; padding: 0; }
 
     .hero-slide {
       grid-template-columns: 1fr;
@@ -1328,17 +1329,25 @@
     /* QCM : plein écran (enfant iframe en position:absolute) */
     .hero-slide--qcm { height: 100svh; min-height: 500px; }
 
-    /* QCM : centrer le contenu, bouton sans décrochage excessif */
+    /* QCM : centrer le contenu — !important obligatoire car margin-top:auto écrase justify-content */
     .hero-slide--qcm .hero-slide-content {
-      justify-content: center;
-      gap: 1.2rem;
-      padding: 3rem 1.5rem 3rem;
+      justify-content: center !important;
+      padding: 2rem 1.5rem !important;
+      gap: 1rem !important;
     }
     .hero-slide--qcm .qcm-btn {
-      margin-top: 2rem;
-      margin-bottom: 0;
-      align-self: center;
-      padding: 0.9rem 2rem;
+      margin-top: 1.5rem !important;
+      margin-bottom: 0 !important;
+      align-self: center !important;
+    }
+    .qcm-title {
+      font-size: clamp(3rem, 14vw, 6rem) !important;
+      margin-bottom: 0 !important;
+    }
+    .qcm-subtitle {
+      font-size: clamp(0.8rem, 3.5vw, 1rem) !important;
+      margin-bottom: 0 !important;
+      letter-spacing: 0.05em !important;
     }
 
     /* OJA : image pleine largeur, ratio naturel (le texte est dans l'image) */
