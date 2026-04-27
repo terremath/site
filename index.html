@@ -21,19 +21,16 @@
   /* ─── HERO ─── */
   .hero {
     position: relative;
-    height: 90vh;
+    height: 100vh;
     overflow: hidden;
   }
 
+  /* Split layout: photo gauche / texte droite */
   .hero-slide {
     position: absolute;
     inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 80px 24px 130px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     opacity: 0;
     transition: opacity 0.9s ease;
     pointer-events: none;
@@ -44,11 +41,75 @@
     pointer-events: auto;
   }
 
-  .hero-slide:nth-child(1) { background: #2a0a2e; }
+  .hero-slide:nth-child(1) { background: #2a0a2e; grid-template-columns: 38% 62%; }
   .hero-slide:nth-child(2) {
     background:
-      radial-gradient(ellipse 60% 50% at 50% 45%, rgba(212,164,120,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 75% 45%, rgba(212,164,120,0.12) 0%, transparent 70%),
       #130E1C;
+  }
+
+  /* ── Photo half ── */
+  .hero-slide-photo {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .hero-slide-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transform: scale(1.04);
+    transition: transform 0.9s ease;
+  }
+  .hero-slide.active .hero-slide-photo img {
+    transform: scale(1);
+  }
+  /* Coin arrondi bas-droite de la photo */
+  .hero-slide-photo::after {
+    content: '';
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 56px; height: 56px;
+    border-top-left-radius: 56px;
+    pointer-events: none;
+  }
+  .hero-slide:nth-child(1) .hero-slide-photo::after { background: #2a0a2e; }
+  .hero-slide:nth-child(2) .hero-slide-photo::after { background: #130E1C; }
+  /* BAC : image entière, pas de crop */
+  .hero-slide:nth-child(2) .hero-slide-photo {
+    background: #130E1C;
+  }
+  .hero-slide:nth-child(2) .hero-slide-photo img {
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+
+  /* ── Content half ── */
+  .hero-slide-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 56px 80px 52px;
+    position: relative;
+    z-index: 1;
+    text-align: left;
+    transform: translateX(18px);
+    transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hero-slide.active .hero-slide-content {
+    transform: translateX(0);
+  }
+  /* Séparateur subtil */
+  .hero-slide-content::after {
+    content: '';
+    position: absolute;
+    top: 12%; left: 0;
+    height: 76%; width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(212,164,120,0.22), transparent);
+    pointer-events: none;
   }
 
   /* ── BAC slide styles ── */
@@ -81,8 +142,24 @@
     font-size: clamp(1rem, 2vw, 1.25rem);
     color: var(--text);
     max-width: 550px;
-    margin: 0 auto 3rem;
+    margin: 0 0 3rem;
     font-weight: 300;
+  }
+
+  /* ── OJA slide : pleine photo, pas de grille ── */
+  .hero-slide--oja {
+    display: block;
+  }
+  .hero-slide--oja .hero-slide-photo {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-slide--oja .hero-slide-photo::after { display: none; }
+  .hero-slide--oja .hero-slide-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
   }
 
   /* ── QCM slide styles ── */
@@ -94,19 +171,42 @@
     0%   { transform: translate(0, 0) scale(1); }
     100% { transform: translate(-3%, 2%) scale(1.05); }
   }
-  .hero-slide--qcm { font-family: 'DM Sans', sans-serif; }
-  .hero-slide--qcm::before {
-    content: '';
+  .hero-slide--qcm { display: block; font-family: 'DM Sans', sans-serif; }
+  .hero-slide--qcm::before { display: none; }
+  .qcm-bg {
     position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(ellipse at 30% 50%, rgba(107,45,91,0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.08) 0%, transparent 40%),
-                radial-gradient(ellipse at 50% 80%, rgba(142,69,120,0.2) 0%, transparent 50%);
-    animation: qcmHeroShift 20s ease-in-out infinite alternate;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .qcm-bg iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
     pointer-events: none;
   }
-  .hero-slide--qcm > * { position: relative; z-index: 1; }
+  .qcm-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(19, 14, 28, 0.48);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-slide--qcm .hero-slide-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    padding: 5vh 2rem 0;
+    transform: none !important;
+    transition: none;
+  }
+  .hero-slide--qcm .hero-slide-content::after { display: none; }
+  .hero-slide--qcm .qcm-btn { align-self: center; margin-top: auto; margin-bottom: 11vh; }
   .qcm-brand-mark {
     font-family: 'Cormorant Garamond', serif;
     font-size: 0.85rem; letter-spacing: 0.35em; text-transform: uppercase;
@@ -120,10 +220,22 @@
     opacity: 0; animation: qcmFadeUp 0.8s ease forwards 0.4s;
   }
   .hero-slide--qcm h1 em { font-style: italic; color: #e0c878; font-weight: 400; }
+  .qcm-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(5rem, 13vw, 10rem); font-weight: 700; font-style: normal;
+    color: #e8c970 !important; line-height: 1; margin: 0 0 1.2rem;
+    letter-spacing: 0.04em;
+    text-shadow: 0 4px 40px rgba(10,5,18,0.9);
+    opacity: 0; animation: qcmFadeUp 0.8s ease forwards 0.3s;
+  }
   .qcm-subtitle {
-    font-size: 1.05rem; color: #d4be94;
-    max-width: 480px; line-height: 1.7; margin-bottom: 3rem;
-    opacity: 0; animation: qcmFadeUp 0.8s ease forwards 0.6s;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 1.8vw, 1.4rem); font-style: normal; font-weight: 400;
+    color: #d4be94;
+    max-width: 680px; line-height: 1.5; margin-bottom: 0;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-shadow: 0 2px 20px rgba(10,5,18,0.8);
+    opacity: 0; animation: qcmFadeUp 0.8s ease forwards 0.5s;
   }
   .qcm-meta {
     display: flex; gap: 2rem; margin-bottom: 3rem;
@@ -139,17 +251,24 @@
   }
   .qcm-btn {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
-    padding: 1rem 3rem;
-    background: linear-gradient(135deg, #c9a84c, #e0c878); color: #2a0a2e;
-    border: none; cursor: pointer; text-decoration: none; display: inline-block;
-    border-radius: 8px;
+    font-size: 0.88rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase;
+    padding: 1rem 3.5rem;
+    background: transparent;
+    color: #e8c970;
+    border: 1.5px solid rgba(232,201,112,0.7);
+    cursor: pointer; text-decoration: none; display: inline-block;
+    border-radius: 4px;
+    align-self: flex-start;
     transition: all 0.4s ease;
+    box-shadow: 0 0 20px rgba(212,164,76,0.12), inset 0 0 20px rgba(212,164,76,0.04);
     opacity: 0; animation: qcmFadeUp 0.8s ease forwards 0.8s;
   }
   .qcm-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 40px rgba(201,168,76,0.3);
+    background: rgba(232,201,112,0.1);
+    border-color: #e8c970;
+    box-shadow: 0 8px 40px rgba(212,164,76,0.35), inset 0 0 30px rgba(212,164,76,0.08);
+    color: #f5d888;
   }
   @media (max-width: 600px) {
     .qcm-meta { flex-direction: column; gap: 0.8rem; }
@@ -195,6 +314,7 @@
     margin-bottom: 40px;
     background: rgba(var(--accent-rgb),0.05);
     animation: fadeDown 0.8s ease-out;
+    align-self: flex-start;
   }
 
   .hero-badge::before {
@@ -216,7 +336,7 @@
     font-size: clamp(2.8rem, 6vw, 5rem);
     font-weight: 800;
     line-height: 1.1;
-    max-width: 800px;
+    max-width: 520px;
     margin-bottom: 28px;
     color: var(--heading);
     animation: fadeUp 0.8s ease-out 0.1s both;
@@ -255,6 +375,7 @@
     transition: all 0.4s ease;
     animation: fadeUp 0.8s ease-out 0.3s both;
     box-shadow: 0 4px 30px rgba(201,168,76,0.2);
+    align-self: flex-start;
   }
 
   .hero-cta:hover {
@@ -1192,6 +1313,28 @@
 
   /* ─── RESPONSIVE ─── */
   @media (max-width: 768px) {
+    .hero { height: auto; min-height: unset; }
+
+    .hero-slide {
+      grid-template-columns: 1fr;
+      grid-template-rows: 52vw auto;
+      position: relative;
+    }
+    /* cacher les slides inactifs en mobile (position: relative ne superpose pas) */
+    .hero-slide:not(.active) { display: none; }
+
+    .hero-slide-photo::after { display: none; }
+
+    .hero-slide-content {
+      padding: 40px 24px 64px;
+      transform: none;
+    }
+    .hero-slide.active .hero-slide-content { transform: none; }
+
+    .hero-slide-content::after { display: none; }
+
+    .hero-badge { font-size: 0.72rem; padding: 6px 14px; }
+
     .hero-stats {
       gap: 28px;
       flex-wrap: wrap;
@@ -1215,39 +1358,53 @@
 
 <tm-header></tm-header>
 
+<div style="height:4px; background: linear-gradient(to right, var(--bg-alt), var(--bg-light), var(--bg-alt));"></div>
+
 <!-- ═══════════════ HERO CAROUSEL ═══════════════ -->
 <section class="hero">
 
   <!-- ── Slide 1 : QCM ── -->
   <div class="hero-slide active hero-slide--qcm">
-    <div class="hero-badge">QCM pour tous: Amateurs ou confirmés</div>
-    <h1>Veux-tu <em>tester</em> tes<br>connaissances sur la Science?<br></h1>
-    <p class="qcm-subtitle">21 questions de raisonnement math&eacute;matique et physique. 
-      Pas de formules &agrave; r&eacute;citer, ici c'est comme le dit le grand math&eacute;matician Alain Connes : &laquo;&nbsp;La pens&eacute;e en mouvement.&nbsp;&raquo;</p>
-`    <!--<div class="qcm-meta">
-      <span>21 questions</span>
-      <span>~12 minutes</span>
-      <span>Niveau lyc&eacute;e +</span>
-    </div>-->
-    <a href="qcm.html" class="qcm-btn">Commencer le test &rarr;</a>
+    <div class="qcm-bg">
+      <iframe src="qcm_proto3d_spheres.html" title="Animation 3D sphères"></iframe>
+    </div>
+    <div class="qcm-bg-overlay"></div>
+    <div class="hero-slide-content">
+      <h1 class="qcm-title">TESTE-TOI</h1>
+      <p class="qcm-subtitle">QCM original et cr&eacute;atif</p>
+      <a href="qcm.html" class="qcm-btn">Commencer le test &rarr;</a>
+    </div>
   </div>
 
   <!-- ── Slide 2 : BAC ── -->
   <div class="hero-slide hero-slide--bac">
-    <div class="hero-badge">Bac Éclair: Juin 2026</div>
-    <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
-    <p class="hero-subtitle">Toujours les mêmes maths</p>
-    <p class="hero-tagline">Ouverture courant avril. Sois le premier averti.</p>
-    <a href="formation-avertir.html" class="hero-cta">
-      Je veux être averti
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-    </a>
+    <div class="hero-slide-photo">
+      <img src="baceclair.png" alt="">
+    </div>
+    <div class="hero-slide-content">
+      <div class="hero-badge">Bac Éclair: Juin 2026</div>
+      <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
+      <p class="hero-subtitle">Toujours les mêmes maths</p>
+      <p class="hero-tagline">Ouverture courant avril. Sois le premier averti.</p>
+      <a href="formation-avertir.html" class="hero-cta">
+        Je veux être averti
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Slide 3 : OJA ── -->
+  <div class="hero-slide hero-slide--oja">
+    <div class="hero-slide-photo">
+      <img src="OJA.png" alt="">
+    </div>
   </div>
 
   <!-- Indicateurs -->
   <div class="hero-dots">
     <button type="button" class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
     <button type="button" class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
+    <button type="button" class="hero-dot" data-index="2" aria-label="Diapositive 3"></button>
   </div>
 
 </section>
@@ -1708,7 +1865,7 @@
     document.getElementById('qcmPopupSkip').addEventListener('click', closePopup);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
-    setTimeout(function() { overlay.classList.add('visible'); }, 4000);
+    // setTimeout(function() { overlay.classList.add('visible'); }, 4000);
   })();
 
   // Smooth scroll

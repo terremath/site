@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototype 3D — Sphères TerreMathématique</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --aubergine: #2D1B33;
+  --aubergine-light: #4A2D54;
+  --sable: #F5E6C8;
+  --sable-light: #FBF3E4;
+  --sable-dark: #E8D0A0;
+  --gold: #C9A84C;
+  --gold-light: #DFBF6E;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 220, 150, 0.35) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 60%, var(--sable-light) 0%, var(--sable) 55%, var(--sable-dark) 100%);
+  font-family: 'DM Sans', sans-serif;
+}
+canvas { display: block; }
+
+/* Texture noise */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+/* Vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(45, 27, 51, 0.22) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+#three-container {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+}
+
+.overlay {
+  position: fixed;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeIn 1.5s ease 0.5s forwards;
+}
+@keyframes fadeIn { to { opacity: 1; } }
+
+.top-brand {
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+.top-brand .label {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  font-size: clamp(0.7rem, 0.95vw, 1rem);
+  color: var(--aubergine);
+  font-weight: 600;
+}
+.top-brand .accent {
+  width: 60px;
+  height: 1px;
+  background: var(--gold);
+  margin: 8px auto 0;
+  opacity: 0.8;
+}
+
+.proto-tag {
+  top: 4.5%;
+  right: 4%;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--aubergine-light);
+  letter-spacing: 0.18em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+}
+.proto-tag::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold-light);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.labels-row {
+  bottom: 14%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 0 8%;
+}
+.labels-row .label-block {
+  text-align: center;
+}
+.labels-row .label-block .name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1rem, 1.3vw, 1.4rem);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--aubergine);
+  font-weight: 600;
+}
+.labels-row .label-block .accent {
+  width: 30px;
+  height: 1px;
+  background: var(--gold);
+  margin: 6px auto;
+  opacity: 0.6;
+}
+.labels-row .label-block .desc {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.75rem, 0.85vw, 0.95rem);
+  color: var(--aubergine-light);
+  opacity: 0.75;
+}
+
+.bottom-info {
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.8rem, 0.95vw, 1.05rem);
+  color: var(--aubergine-light);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+.bottom-info .hint {
+  margin-top: 4px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aubergine);
+  opacity: 0.6;
+  font-style: normal;
+}
+
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+
+<div id="three-container"></div>
+
+<div class="overlay top-brand">
+  <!--<div class="label">Terre Mathématique</div>-->
+  <div class="accent"></div>
+</div>
+
+<!--<div class="overlay proto-tag">Prototype 3D</div> -->
+
+<div class="overlay labels-row">
+  <div class="label-block">
+    <div class="name">Atlas</div>
+    <div class="accent"></div>
+    <div class="desc">le monde porté</div>
+  </div>
+  <div class="label-block">
+    <div class="name">Le Penseur</div>
+    <div class="accent"></div>
+    <div class="desc">le monde pensé</div>
+  </div>
+</div>
+
+<div class="overlay bottom-info">
+ <!-- Es-tu fait pour les maths&nbsp;? 
+  <div class="hint">— bouge la souris pour explorer —</div>-->
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+// ===== SCENE SETUP =====
+const container = document.getElementById('three-container');
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 0, 7.5);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setClearColor(0x0E0A15, 1);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+// ===== LIGHTS =====
+scene.add(new THREE.AmbientLight(0xfff0d0, 0.45));
+
+const keyLight = new THREE.DirectionalLight(0xffe0a0, 1.6);
+keyLight.position.set(2, 5, 5);
+scene.add(keyLight);
+
+const rimLight = new THREE.DirectionalLight(0xc9a84c, 0.6);
+rimLight.position.set(-3, 2, -3);
+scene.add(rimLight);
+
+const fillLight = new THREE.DirectionalLight(0xfbf3e4, 0.3);
+fillLight.position.set(0, -3, 4);
+scene.add(fillLight);
+
+// ============================================================
+// ATLAS SPHERE — opaque, equations etched in gold
+// ============================================================
+function createAtlasTexture() {
+  const c = document.createElement('canvas');
+  c.width = 2048; c.height = 1024;
+  const ctx = c.getContext('2d');
+
+  // Fond aubergine avec gradient subtil (donne un peu de profondeur)
+  const grad = ctx.createRadialGradient(c.width/2, c.height/2, 100, c.width/2, c.height/2, c.width*0.6);
+  grad.addColorStop(0, '#3A2440');
+  grad.addColorStop(0.5, '#2D1B33');
+  grad.addColorStop(1, '#1A1118');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  // Texture noise discret
+  for (let i = 0; i < 400; i++) {
+    ctx.fillStyle = `rgba(74, 45, 84, ${0.05 + Math.random() * 0.1})`;
+    ctx.fillRect(Math.random() * c.width, Math.random() * c.height, 2, 2);
+  }
+
+  // Méridiens / parallèles très discrets (en or sombre)
+  ctx.strokeStyle = 'rgba(201, 168, 76, 0.07)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < 16; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, c.height * i / 16);
+    ctx.lineTo(c.width, c.height * i / 16);
+    ctx.stroke();
+  }
+  for (let i = 1; i < 32; i++) {
+    ctx.beginPath();
+    ctx.moveTo(c.width * i / 32, 0);
+    ctx.lineTo(c.width * i / 32, c.height);
+    ctx.stroke();
+  }
+
+  // Equator plus marqué
+  ctx.strokeStyle = 'rgba(201, 168, 76, 0.20)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, c.height/2);
+  ctx.lineTo(c.width, c.height/2);
+  ctx.stroke();
+
+  // ===== Equations physiques (le monde porté) =====
+  // Reparties à différentes latitudes, plusieurs occurrences pour densité
+  const equations = [
+    { text: 'F = dA + gA ∧ A',                size: 72, y: 0.30, weight: '400' },
+    { text: 'Δt\' = Δt / √(1 - v²/c²)',         size: 88, y: 0.42, weight: '400' },
+    { text: 'R_μν - ½ g_μν R = 8πG T_μν',     size: 100, y: 0.50, weight: '600' },
+    { text: 'E = mc²',                         size: 84, y: 0.58, weight: '600' },
+    { text: 'm d²x/dt² = -∇V',                size: 70, y: 0.68, weight: '400' },
+    { text: '∮ B · dl = μ₀ I',                size: 76, y: 0.36, weight: '400' },
+    { text: 'v_ombre = v · tan θ',            size: 60, y: 0.74, weight: '400' },
+    { text: 'g(ISS) ≈ 0.9 g₀',                size: 64, y: 0.26, weight: '400' },
+    { text: 'F = dA + gA ∧ A',                size: 70, y: 0.64, weight: '400' },
+    { text: 'E = mc²',                         size: 76, y: 0.34, weight: '400' },
+    { text: 'Δt\' = Δt / √(1 - v²/c²)',         size: 78, y: 0.56, weight: '400' },
+    { text: '∮ B · dl = μ₀ I',                size: 68, y: 0.72, weight: '400' },
+    { text: 'm d²x/dt² = -∇V',                size: 64, y: 0.44, weight: '400' },
+    { text: 'R_μν - ½ g_μν R = 8πG T_μν',     size: 92, y: 0.50, weight: '600' },
+    { text: 'g(ISS) ≈ 0.9 g₀',                size: 60, y: 0.78, weight: '400' },
+    { text: 'v_ombre = v · tan θ',            size: 58, y: 0.22, weight: '400' },
+  ];
+
+  equations.forEach((eq, i) => {
+    ctx.shadowColor = '#DFBF6E';
+    ctx.shadowBlur = 14;
+
+    ctx.fillStyle = '#C9A84C';
+    ctx.font = `${eq.weight} italic ${eq.size}px "Cormorant Garamond", Georgia, serif`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+
+    // Spread equations in X direction with golden ratio offset for non-repetitive distribution
+    const xPos = ((i * 0.617 + 0.1) % 1) * c.width;
+    const yPos = eq.y * c.height;
+
+    ctx.fillText(eq.text, xPos, yPos);
+    // Wrap copies for seamless rotation
+    ctx.fillText(eq.text, xPos - c.width, yPos);
+    if (xPos + ctx.measureText(eq.text).width > c.width) {
+      ctx.fillText(eq.text, xPos - c.width, yPos);
+    }
+  });
+  ctx.shadowBlur = 0;
+
+  const texture = new THREE.CanvasTexture(c);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  return texture;
+}
+
+const atlasGeo = new THREE.SphereGeometry(1.4, 64, 64);
+const atlasMat = new THREE.MeshStandardMaterial({
+  color: new THREE.Color(0x2D1B33),
+  roughness: 0.5,
+  metalness: 0.2,
+  emissive: new THREE.Color(0x1A1118),
+  emissiveIntensity: 0.15,
+});
+// Defer texture creation after first frame so scene appears instantly
+setTimeout(() => {
+  const atlasTexture = createAtlasTexture();
+  atlasMat.map = atlasTexture;
+  atlasMat.needsUpdate = true;
+}, 0);
+const atlasSphere = new THREE.Mesh(atlasGeo, atlasMat);
+atlasSphere.position.x = -2.6;
+atlasSphere.rotation.z = -0.05;
+scene.add(atlasSphere);
+
+// Atmosphere/glow around Atlas
+const atlasGlowGeo = new THREE.SphereGeometry(1.5, 48, 48);
+const atlasGlowMat = new THREE.ShaderMaterial({
+  uniforms: {
+    color: { value: new THREE.Color(0xC9A84C) },
+  },
+  vertexShader: `
+    varying vec3 vNormal;
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  fragmentShader: `
+    uniform vec3 color;
+    varying vec3 vNormal;
+    void main() {
+      float intensity = pow(0.7 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 3.0);
+      gl_FragColor = vec4(color, 1.0) * intensity * 0.6;
+    }
+  `,
+  side: THREE.BackSide,
+  blending: THREE.AdditiveBlending,
+  transparent: true,
+});
+const atlasGlow = new THREE.Mesh(atlasGlowGeo, atlasGlowMat);
+atlasGlow.position.copy(atlasSphere.position);
+scene.add(atlasGlow);
+
+// ============================================================
+// PENSEUR SPHERE — wireframe, equations orbiting
+// ============================================================
+const penseurGroup = new THREE.Group();
+penseurGroup.position.x = 2.6;
+scene.add(penseurGroup);
+
+// Main wireframe (medium density)
+const penseurWireGeo = new THREE.SphereGeometry(1.3, 24, 16);
+const penseurWireMat = new THREE.MeshBasicMaterial({
+  color: 0xC9A84C,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.55,
+});
+const penseurWire = new THREE.Mesh(penseurWireGeo, penseurWireMat);
+penseurGroup.add(penseurWire);
+
+// Sparser inner outline
+const penseurInnerGeo = new THREE.SphereGeometry(1.28, 12, 8);
+const penseurInnerMat = new THREE.MeshBasicMaterial({
+  color: 0xDFBF6E,
+  wireframe: true,
+  transparent: true,
+  opacity: 0.35,
+});
+penseurGroup.add(new THREE.Mesh(penseurInnerGeo, penseurInnerMat));
+
+// Equator ring (more visible)
+const equatorGeo = new THREE.TorusGeometry(1.3, 0.005, 8, 64);
+const equatorMat = new THREE.MeshBasicMaterial({ color: 0xDFBF6E, transparent: true, opacity: 0.7 });
+const equator = new THREE.Mesh(equatorGeo, equatorMat);
+equator.rotation.x = Math.PI / 2;
+penseurGroup.add(equator);
+
+// Vertical axis ring
+const axisRing = new THREE.Mesh(equatorGeo, equatorMat.clone());
+penseurGroup.add(axisRing);
+
+// Diagonal rings
+const diagRing1 = new THREE.Mesh(equatorGeo, new THREE.MeshBasicMaterial({ color: 0xC9A84C, transparent: true, opacity: 0.4 }));
+diagRing1.rotation.x = Math.PI / 4;
+penseurGroup.add(diagRing1);
+
+const diagRing2 = new THREE.Mesh(equatorGeo, new THREE.MeshBasicMaterial({ color: 0xC9A84C, transparent: true, opacity: 0.4 }));
+diagRing2.rotation.x = -Math.PI / 4;
+penseurGroup.add(diagRing2);
+
+// Center star
+const centerStar = new THREE.Mesh(
+  new THREE.SphereGeometry(0.06, 16, 16),
+  new THREE.MeshBasicMaterial({ color: 0xF0D078 })
+);
+penseurGroup.add(centerStar);
+
+// Pole markers
+const poleGeo = new THREE.SphereGeometry(0.04, 12, 12);
+const poleMat = new THREE.MeshBasicMaterial({ color: 0xDFBF6E });
+const polTop = new THREE.Mesh(poleGeo, poleMat);
+polTop.position.y = 1.3;
+penseurGroup.add(polTop);
+const polBot = new THREE.Mesh(poleGeo, poleMat.clone());
+polBot.position.y = -1.3;
+polBot.material.opacity = 0.6;
+polBot.material.transparent = true;
+penseurGroup.add(polBot);
+
+// ===== Floating equations around Penseur =====
+function createTextSprite(text, size = 56, weight = '400') {
+  const c = document.createElement('canvas');
+  c.width = 2048;
+  c.height = 256;
+  const ctx = c.getContext('2d');
+
+  ctx.font = `${weight} italic ${size}px "Cormorant Garamond", Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Glow
+  ctx.shadowColor = '#DFBF6E';
+  ctx.shadowBlur = 24;
+  ctx.fillStyle = '#DFBF6E';
+  ctx.fillText(text, c.width / 2, c.height / 2);
+  ctx.shadowBlur = 12;
+  ctx.fillText(text, c.width / 2, c.height / 2);
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#F0D078';
+  ctx.fillText(text, c.width / 2, c.height / 2);
+
+  const texture = new THREE.CanvasTexture(c);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  const mat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0, blending: THREE.NormalBlending });
+  const sprite = new THREE.Sprite(mat);
+  sprite.scale.set(3, 0.375, 1);
+  return sprite;
+}
+
+const penseurEquations = [
+  { text: 'T ⊢ G  ⟺  T ⊢ ¬Prov_T(⌜G⌝)', size: 60, weight: '400' },
+  { text: 'e^{iπ} + 1 = 0',               size: 76, weight: '600' },
+  { text: 'y² + y = x³ + x + 1',           size: 60, weight: '400' },
+  { text: '∑ 1/n² = π²/6',                 size: 70, weight: '600' },
+  { text: 'f(a+b) = f(a) + f(b)',          size: 60, weight: '400' },
+  { text: '« Je suis un menteur. »',       size: 64, weight: '600' },
+  { text: 'u_{n+2} ≡ u_{n+1} + u_n (mod 2)', size: 56, weight: '400' },
+  { text: '√2^√2  ∈  ℚ ?',                 size: 70, weight: '600' },
+];
+
+const penseurSprites = [];
+penseurEquations.forEach((eq, i) => {
+  const sprite = createTextSprite(eq.text, eq.size, eq.weight);
+  const angle = (i / penseurEquations.length) * Math.PI * 2;
+  sprite.userData = {
+    baseAngle: angle,
+    radius: 2.2,
+    fadeOffset: i * (12 / penseurEquations.length),
+  };
+  penseurGroup.add(sprite);
+  penseurSprites.push(sprite);
+});
+
+// ============================================================
+// PARTICLES (golden specks rising)
+// ============================================================
+const particleCount = 120;
+const particleGeo = new THREE.BufferGeometry();
+const particlePositions = new Float32Array(particleCount * 3);
+const particleVelocities = [];
+
+for (let i = 0; i < particleCount; i++) {
+  particlePositions[i * 3]     = (Math.random() - 0.5) * 14;
+  particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+  particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 4 - 1;
+  particleVelocities.push({
+    y: 0.004 + Math.random() * 0.012,
+    x: (Math.random() - 0.5) * 0.002,
+    z: (Math.random() - 0.5) * 0.001,
+  });
+}
+particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+
+// Particle texture (round glow)
+function createParticleTexture() {
+  const c = document.createElement('canvas');
+  c.width = 64; c.height = 64;
+  const ctx = c.getContext('2d');
+  const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grad.addColorStop(0, 'rgba(240, 208, 120, 1)');
+  grad.addColorStop(0.3, 'rgba(201, 168, 76, 0.8)');
+  grad.addColorStop(1, 'rgba(201, 168, 76, 0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 64, 64);
+  return new THREE.CanvasTexture(c);
+}
+
+const particleMat = new THREE.PointsMaterial({
+  size: 0.06,
+  map: createParticleTexture(),
+  transparent: true,
+  opacity: 0.85,
+  sizeAttenuation: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+const particles = new THREE.Points(particleGeo, particleMat);
+scene.add(particles);
+
+// ============================================================
+// CONNECTING FILAMENT (subtle line between spheres)
+// ============================================================
+const filamentGeo = new THREE.BufferGeometry().setFromPoints([
+  new THREE.Vector3(-1.2, 0, 0),
+  new THREE.Vector3(1.2, 0, 0),
+]);
+const filamentMat = new THREE.LineDashedMaterial({
+  color: 0xC9A84C,
+  transparent: true,
+  opacity: 0.25,
+  dashSize: 0.05,
+  gapSize: 0.15,
+});
+const filament = new THREE.Line(filamentGeo, filamentMat);
+filament.computeLineDistances();
+scene.add(filament);
+
+
+// ============================================================
+// MOUSE INTERACTION
+// ============================================================
+let mouseX = 0, mouseY = 0;
+let targetRotX = 0, targetRotY = 0;
+
+window.addEventListener('mousemove', (e) => {
+  mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+});
+window.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 0) {
+    mouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
+    mouseY = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
+  }
+});
+
+// ============================================================
+// RESIZE
+// ============================================================
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ============================================================
+// ANIMATION LOOP
+// ============================================================
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+
+  // Atlas: rotate slowly on Y, very slight wobble
+  atlasSphere.rotation.y += 0.0035;
+  atlasGlow.rotation.y = atlasSphere.rotation.y;
+  atlasSphere.position.y = Math.sin(t * 0.4) * 0.04;
+  atlasGlow.position.y = atlasSphere.position.y;
+
+  // Penseur: counter-rotate, gentle tilt
+  penseurGroup.rotation.y -= 0.0025;
+  penseurGroup.rotation.x = Math.sin(t * 0.3) * 0.08;
+  penseurGroup.position.y = Math.sin(t * 0.5 + Math.PI) * 0.03;
+  centerStar.scale.setScalar(0.9 + Math.sin(t * 2) * 0.15);
+
+  // Mouse parallax
+  targetRotX += (mouseY * 0.12 - targetRotX) * 0.04;
+  targetRotY += (mouseX * 0.18 - targetRotY) * 0.04;
+  scene.rotation.x = targetRotX;
+  scene.rotation.y = targetRotY * 0.4;
+
+  // Penseur orbital sprites (orbit + fade cycle)
+  // Sprites are children of penseurGroup, so their positions are local
+  penseurSprites.forEach((sprite, i) => {
+    const data = sprite.userData;
+    const angle = data.baseAngle + t * 0.1;
+    sprite.position.x = Math.cos(angle) * data.radius;
+    sprite.position.y = Math.sin(angle) * data.radius * 0.6;
+    sprite.position.z = Math.sin(angle * 0.5) * 0.5;
+
+    // Fade cycle: 12s total (1.5s in, 7.5s hold, 2s out, 1s gap)
+    const fadeT = (t + data.fadeOffset) % 12;
+    let alpha;
+    if (fadeT < 1.5) alpha = fadeT / 1.5;
+    else if (fadeT < 9) alpha = 1;
+    else if (fadeT < 11) alpha = 1 - (fadeT - 9) / 2;
+    else alpha = 0;
+    sprite.material.opacity = alpha * 0.95;
+  });
+
+  // Particles update
+  const positions = particleGeo.attributes.position.array;
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3 + 1] += particleVelocities[i].y;
+    positions[i * 3]     += particleVelocities[i].x;
+    positions[i * 3 + 2] += particleVelocities[i].z;
+    if (positions[i * 3 + 1] > 5) {
+      positions[i * 3 + 1] = -5;
+      positions[i * 3]     = (Math.random() - 0.5) * 14;
+    }
+  }
+  particleGeo.attributes.position.needsUpdate = true;
+
+  renderer.render(scene, camera);
+}
+
+animate();
+
+
+</script>
+</body>
+</html>
