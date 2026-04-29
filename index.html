@@ -41,11 +41,17 @@
     pointer-events: auto;
   }
 
-  .hero-slide:nth-child(1) { background: #2a0a2e; grid-template-columns: 38% 62%; }
-  .hero-slide:nth-child(2) {
-    background:
-      radial-gradient(ellipse 60% 50% at 75% 45%, rgba(212,164,120,0.12) 0%, transparent 70%),
-      #130E1C;
+  /* ── BAC slide : pleine photo ── */
+  .hero-slide--bac {
+    display: block;
+  }
+  .hero-slide--bac::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(19,14,28,0.52) 0%, rgba(19,14,28,0.15) 45%, rgba(19,14,28,0.48) 100%);
+    z-index: 1;
+    pointer-events: none;
   }
 
   /* ── Photo half ── */
@@ -75,16 +81,19 @@
     border-top-left-radius: 56px;
     pointer-events: none;
   }
-  .hero-slide:nth-child(1) .hero-slide-photo::after { background: #2a0a2e; }
-  .hero-slide:nth-child(2) .hero-slide-photo::after { background: #130E1C; }
-  /* BAC : image entière, pas de crop */
-  .hero-slide:nth-child(2) .hero-slide-photo {
+  .hero-slide--bac .hero-slide-photo {
+    position: absolute;
+    inset: 0;
     background: #130E1C;
   }
-  .hero-slide:nth-child(2) .hero-slide-photo img {
-    object-fit: contain;
-    object-position: center bottom;
+  .hero-slide--bac .hero-slide-photo::after { display: none; }
+  .hero-slide--bac .hero-slide-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
   }
+
 
 
   /* ── Content half ── */
@@ -112,38 +121,55 @@
     pointer-events: none;
   }
 
-  /* ── BAC slide styles ── */
-  .hero-slide--bac .hero-title {
+  /* ── BAC overlay ── */
+  .bac-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 52px 40px 72px;
+    text-align: center;
+  }
+  .bac-label {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(2rem, 6vw, 5rem);
-    font-weight: 300;
-    white-space: nowrap;
-    line-height: 0.95;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.3em;
-    color: var(--heading);
+    font-size: clamp(0.82rem, 1.4vw, 1rem);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #e8c970;
+    border: 1px solid rgba(232,201,112,0.55);
+    padding: 11px 32px;
+    border-radius: 100px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(19,14,28,0.35);
+    margin: 0;
   }
-  .hero-slide--bac .hero-title span {
-    display: block;
-    color: var(--accent);
-    font-style: italic;
-    font-weight: 300;
+  .bac-cta {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+    background: rgba(19,14,28,0.45);
+    color: #e8c970;
+    border: 1.5px solid rgba(232,201,112,0.65);
+    box-shadow: 0 4px 24px rgba(10,5,18,0.25);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 0.35s ease;
   }
-  .hero-slide--bac .hero-subtitle {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.05rem;
-    color: #d4be94;
-    max-width: 480px;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-  }
-  .hero-slide--bac .hero-tagline {
-    font-family: 'DM Sans', sans-serif;
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--text);
-    max-width: 550px;
-    margin: 0 0 3rem;
-    font-weight: 300;
+  .bac-cta:hover {
+    background: rgba(232,201,112,0.12);
+    border-color: #e8c970;
+    box-shadow: 0 8px 36px rgba(201,168,76,0.3);
+    transform: translateY(-2px);
   }
 
   /* ── OJA slide : pleine photo, pas de grille ── */
@@ -1429,14 +1455,6 @@
       letter-spacing: 0.14em;
     }
 
-    /* BAC : image pleine largeur à ratio naturel, texte en dessous */
-    .hero-slide--bac .hero-slide-photo { height: auto; }
-    .hero-slide--bac .hero-slide-photo img {
-      width: 100%;
-      height: auto;
-      transform: none !important;
-    }
-
     .hero-slide-photo::after { display: none; }
 
     .hero-slide-content {
@@ -1446,11 +1464,9 @@
     .hero-slide.active .hero-slide-content { transform: none; }
     .hero-slide-content::after { display: none; }
 
-    /* Titre BAC : supprimer le nowrap */
-    .hero-slide--bac .hero-title {
-      white-space: normal;
-      font-size: clamp(1.8rem, 7vw, 2.6rem) !important;
-    }
+    .bac-overlay { padding: 32px 16px 48px; }
+    .bac-label { font-size: 0.72rem; padding: 8px 18px; letter-spacing: 0.2em; }
+    .bac-cta { font-size: 0.78rem; padding: 0.75rem 1.8rem; letter-spacing: 0.16em; }
 
     .hero-badge { font-size: 0.72rem; padding: 6px 14px; margin-bottom: 20px; }
 
@@ -1482,8 +1498,19 @@
 <!-- ═══════════════ HERO CAROUSEL ═══════════════ -->
 <section class="hero">
 
-  <!-- ── Slide 1 : QCM ── -->
-  <div class="hero-slide active hero-slide--qcm">
+  <!-- ── Slide 1 : BAC ÉCLAIR ── -->
+  <div class="hero-slide active hero-slide--bac">
+    <div class="hero-slide-photo">
+      <img src="bac.png" alt="Bac Éclair">
+    </div>
+    <div class="bac-overlay">
+      <p class="bac-label">BAC &Eacute;CLAIR 2026 &mdash; EN LIGNE</p>
+      <a href="bac.html#programme" class="bac-cta">Voir le programme</a>
+    </div>
+  </div>
+
+  <!-- ── Slide 2 : QCM ── -->
+  <div class="hero-slide hero-slide--qcm">
     <div class="qcm-bg">
       <iframe src="qcm_proto3d_spheres.html" title="Animation 3D sphères"></iframe>
     </div>
@@ -1492,23 +1519,6 @@
       <h1 class="qcm-title">TESTE-TOI</h1>
       <p class="qcm-subtitle">QCM original et cr&eacute;atif</p>
       <a href="qcm.html" class="qcm-btn">Commencer le test &rarr;</a>
-    </div>
-  </div>
-
-  <!-- ── Slide 2 : BAC ── -->
-  <div class="hero-slide hero-slide--bac">
-    <div class="hero-slide-photo">
-      <img src="baceclair.png" alt="">
-    </div>
-    <div class="hero-slide-content">
-      <div class="hero-badge">Bac Éclair: Juin 2026</div>
-      <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
-      <p class="hero-subtitle">Toujours les mêmes maths</p>
-      <p class="hero-tagline">Ouverture courant avril. Sois le premier averti.</p>
-      <a href="formation-avertir.html" class="hero-cta">
-        Je veux être averti
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-      </a>
     </div>
   </div>
 
@@ -1542,6 +1552,19 @@
     <p class="qcm-popup-desc">21 questions folles pour un petit g&eacute;nie&hellip;</p>
     <a href="qcm.html" class="qcm-popup-cta">Commencer le test &rarr;</a>
     <button class="qcm-popup-skip" id="qcmPopupSkip">Non merci, pas maintenant</button>
+  </div>
+</div>
+
+<!-- ═══════════════ BAC ÉCLAIR POPUP ═══════════════ -->
+<div class="qcm-popup-overlay" id="bacPopupOverlay">
+  <div class="qcm-popup" role="dialog" aria-modal="true" aria-labelledby="bacPopupTitle">
+    <button class="qcm-popup-close" id="bacPopupClose" aria-label="Fermer">&times;</button>
+    <div class="qcm-popup-icon">⚡</div>
+    <div class="qcm-popup-label">Lancement officiel &middot; Maintenant disponible</div>
+    <h2 class="qcm-popup-title" id="bacPopupTitle">Bac <em>&Eacute;clair</em><br>est en ligne&nbsp;!</h2>
+    <p class="qcm-popup-desc">La formation qui fait la diff&eacute;rence est maintenant disponible. Rejoins les premiers inscrits.</p>
+    <a href="bac.html" class="qcm-popup-cta">Rejoindre maintenant &rarr;</a>
+    <button class="qcm-popup-skip" id="bacPopupSkip">Plus tard</button>
   </div>
 </div>
 
@@ -1989,6 +2012,23 @@
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
     // setTimeout(function() { overlay.classList.add('visible'); }, 4000);
+  })();
+
+  // ── Bac Éclair Popup ──
+  (function() {
+    const KEY = 'bacPopupDismissed';
+    const ts = localStorage.getItem(KEY);
+    if (ts && Date.now() - parseInt(ts) < 3 * 24 * 60 * 60 * 1000) return;
+    const overlay = document.getElementById('bacPopupOverlay');
+    function closePopup() {
+      overlay.classList.remove('visible');
+      localStorage.setItem(KEY, Date.now().toString());
+    }
+    document.getElementById('bacPopupClose').addEventListener('click', closePopup);
+    document.getElementById('bacPopupSkip').addEventListener('click', closePopup);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+    setTimeout(function() { overlay.classList.add('visible'); }, 3000);
   })();
 
   // Smooth scroll

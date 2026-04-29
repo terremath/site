@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terre Math&eacute;matiques - Bac Éclair</title>
+<script src="colors.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 45%, var(--accent-soft) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--accent-rgb),0.3), transparent);
+  }
+
+  .hero-badge {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(var(--accent-rgb),0.3);
+    padding: 0.5rem 1.5rem;
+    border-radius: 100px;
+    margin-bottom: 3rem;
+    background: var(--accent-soft);
+    animation: fadeDown 1s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    margin-bottom: 0.3em;
+    color: var(--heading);
+    animation: fadeDown 1s 0.15s ease both;
+  }
+
+  .hero-title span {
+    display: block;
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero-subtitle {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    color: #d4be94;
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    animation: fadeDown 1s 0.3s ease both;
+  }
+
+  .hero-tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--text);
+    max-width: 550px;
+    margin: 1.5rem auto 3rem;
+    font-weight: 300;
+    animation: fadeDown 1s 0.45s ease both;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #c9a84c, #e0c878);
+    color: #2a0a2e;
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 30px rgba(201,168,76,0.2);
+    animation: fadeDown 1s 0.6s ease both;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(201,168,76,0.3);
+  }
+
+  .hero-cta svg { transition: transform 0.3s ease; }
+  .hero-cta:hover svg { transform: translateX(4px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    animation: fadeDown 1s 0.9s ease both;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── PROMISE SECTION ── */
+  .promise {
+    padding: 8rem 2rem;
+    text-align: center;
+    background: var(--bg-light);
+  }
+
+  .promise-quote {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.4rem, 3.5vw, 2.4rem);
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    color: var(--heading);
+  }
+
+  .promise-quote em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .promise-sub {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    max-width: 200px;
+    margin: 0 auto;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+  }
+
+  /* ── SECTION STYLES ── */
+  section {
+    padding: 6rem 2rem;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-number {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    color: var(--heading);
+  }
+
+  .section-desc {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+
+  /* ── PARTIE CARDS ── */
+  .partie {
+    position: relative;
+    padding: 6rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .partie:nth-child(odd) {
+    background: var(--bg-light);
+    --heading: #2A0A2E;
+    --heading-soft: #6B2D5B;
+    --text: #5A2A50;
+    --text-muted: rgba(74, 25, 66, 0.55);
+    --border: rgba(74, 25, 66, 0.15);
+  }
+
+  .partie:nth-child(even) {
+    background: var(--bg);
+  }
+
+  .partie-percent {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 800;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    opacity: 0.06;
+    line-height: 1;
+    color: var(--accent);
+    pointer-events: none;
+  }
+
+  .partie-insight {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    font-size: 1.05rem;
+    color: var(--text);
+    border-radius: 0 8px 8px 0;
+    max-width: 700px;
+  }
+
+  .partie-insight em { color: var(--heading); font-style: normal; font-weight: 600; }
+
+  /* ── PDF LIST ── */
+  .pdf-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 2rem 0;
+    max-width: 700px;
+  }
+
+  .pdf-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+
+  .pdf-item:hover {
+    background: var(--border);
+    border-color: rgba(var(--accent-rgb),0.2);
+    transform: translateX(6px);
+  }
+
+  .pdf-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .pdf-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: var(--bg-alt);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .pdf-item span {
+    font-size: 0.95rem;
+    color: var(--text);
+  }
+
+  /* ── EXERCISE TYPES ── */
+  .exercise-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .exercise-tag {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.5rem 1rem;
+    background: var(--accent-soft);
+    border: 1px solid rgba(var(--accent-rgb),0.2);
+    border-radius: 100px;
+    color: var(--accent);
+    transition: all 0.3s ease;
+  }
+
+  .exercise-tag:hover {
+    background: rgba(var(--accent-rgb),0.14);
+    transform: scale(1.05);
+  }
+
+  /* ── STRUCTURES GRID (inside Partie III) ── */
+  .structures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.75rem;
+    margin-top: 2rem;
+    max-width: 700px;
+  }
+
+  .structure-card {
+    padding: 1.25rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .structure-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .structure-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent-rgb),0.25);
+    box-shadow: 0 8px 30px rgba(var(--accent-rgb),0.08);
+  }
+
+  .structure-card:hover::before { opacity: 1; }
+
+  .structure-num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: rgba(var(--accent-rgb),0.25);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .structure-name {
+    font-family: 'Fraunces', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--heading);
+  }
+
+  /* ── BONUS ── */
+  .bonus-section {
+    background: var(--bg-light);
+  }
+
+  .bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .bonus-card {
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: all 0.4s ease;
+  }
+
+  .bonus-card:hover {
+    border-color: rgba(var(--accent-rgb),0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(var(--accent-rgb),0.08);
+  }
+
+  .bonus-emoji {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .bonus-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    color: var(--heading);
+  }
+
+  .bonus-card p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── CTA FINAL ── */
+  .final-cta {
+    text-align: center;
+    padding: 8rem 2rem;
+    background: var(--bg);
+  }
+
+  .final-quote {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    line-height: 1.4;
+    max-width: 750px;
+    margin: 0 auto 1rem;
+    color: var(--heading);
+  }
+
+  .final-sub {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  .final-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    color: var(--bg);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.15rem;
+    padding: 1.15rem 3rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 30px rgba(var(--accent-rgb),0.2);
+  }
+
+  .final-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 50px rgba(var(--accent-rgb),0.3);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 0.8; transform: scaleY(1.2); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .partie { padding: 4rem 1.5rem; }
+    .partie-percent { font-size: 5rem; top: 1rem; right: 1rem; }
+    section { padding: 4rem 1.5rem; }
+    .structures-grid { grid-template-columns: repeat(3, 1fr); }
+    .bonus-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 480px) {
+    .structures-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<tm-header></tm-header>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header class="hero">
+  <div class="hero-badge">Bac Éclair : Juin 2026</div>
+  <h1 class="hero-title"><span>Terre Math&eacute;matiques</span></h1>
+  <p class="hero-subtitle">Toujours les mêmes maths</p>
+  <p class="hero-tagline">Ouverture courant avril. Sois le premier averti.</p>
+  <a href="formation-avertir.html" class="hero-cta">
+    Je veux être averti
+  </a>
+</header>
+
+<!-- ═══════════ PROMISE ═══════════ -->
+<section class="promise section--light">
+  <p class="promise-quote reveal">
+    « Je te montre la <em>structure</em> du bac —<br>
+    et quand tu la vois, tout devient <em>prévisible</em>. »
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<template>
+<!-- ═══════════ PROGRAMME ═══════════ -->
+<div id="programme">
+
+  <!-- PARTIE 0 — LES PRINCIPES -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">00</div>
+      <div class="section-number">Partie 0 — Les Principes</div>
+      <h2 class="section-title">Comprendre ce qu'est<br>vraiment un exercice</h2>
+      <p class="section-desc">Reset mental. Lire avant de calculer.</p>
+
+      <div class="partie-insight">
+        <em>Clé :</em> Un exercice de maths commence toujours par une lecture de l'énoncé.
+      </div>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>Pourquoi les principes guident la réussite</span>
+        </div>
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>Le bac est un examen à reconnaissance de formes</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE I — LES DESSINS -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">I</div>
+      <div class="section-number">Partie I — Les Dessins</div>
+      <h2 class="section-title">Le dessin comme guide<br>du raisonnement</h2>
+      <p class="section-desc">Schémas mentaux, représentations visuelles, graphes de décision.</p>
+
+      <div class="partie-insight">
+        <em>Réflexe :</em> Dessiner avant d'écrire la moindre ligne de calcul.
+      </div>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE II — LES RAISONNEMENTS -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">II</div>
+      <div class="section-number">Partie II — Les Raisonnements</div>
+      <h2 class="section-title">Logique &<br>mémoire technique</h2>
+      <p class="section-desc">Implication, contraposée, absurde, récurrence — les structures de preuve du bac.</p>
+
+      <div class="partie-insight">
+        <em>Principe :</em> Chaque question du bac appelle un type de raisonnement précis.
+      </div>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE III — SAVOIR-FAIRE DE BASE -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">III</div>
+      <div class="section-number">Partie III — Savoir-faire de base</div>
+      <h2 class="section-title">Les gestes<br>fondamentaux</h2>
+      <p class="section-desc">Inégalités, équations, résolution graphique, résolution logique.</p>
+
+      <div class="exercise-grid">
+        <span class="exercise-tag">inégalités</span>
+        <span class="exercise-tag">équations</span>
+        <span class="exercise-tag">résolution graphique</span>
+        <span class="exercise-tag">résolution logique</span>
+      </div>
+
+      <div class="structures-grid">
+        <div class="structure-card">
+          <div class="structure-num">1</div>
+          <div class="structure-name">Comparer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">2</div>
+          <div class="structure-name">Encadrer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">3</div>
+          <div class="structure-name">Faire tendre</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">4</div>
+          <div class="structure-name">Répéter</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">5</div>
+          <div class="structure-name">Approximer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">6</div>
+          <div class="structure-name">Transformer</div>
+        </div>
+        <div class="structure-card">
+          <div class="structure-num">7</div>
+          <div class="structure-name">Conserver</div>
+        </div>
+      </div>
+
+      <div class="pdf-list" style="margin-top: 2rem;">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE IV — THÈME PAR THÈME -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">IV</div>
+      <div class="section-number">Partie IV — Thème par thème</div>
+      <h2 class="section-title">Chaque thème du bac</h2>
+      <p class="section-desc">Patterns, savoir-faire spécifique, exercices types.</p>
+
+      <div class="partie-insight">
+        <em>Méthode :</em> Chaque thème a ses réflexes propres. On les isole, on les maîtrise.
+      </div>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>Découpage à définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE V — ERREURS ET PIÈGES -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">V</div>
+      <div class="section-number">Partie V — Erreurs et pièges classiques</div>
+      <h2 class="section-title">Là où les points<br>se perdent</h2>
+      <p class="section-desc">Pertes de points récurrentes, confusions typiques, faux réflexes.</p>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE VI — ASTUCES -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">VI</div>
+      <div class="section-number">Partie VI — Astuces</div>
+      <h2 class="section-title">Raccourcis &<br>gain de temps</h2>
+      <p class="section-desc">Vérifications rapides, techniques d'élimination, intuition dirigée.</p>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE VII — SOLUTIONS DÉTAILLÉES -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">VII</div>
+      <div class="section-number">Partie VII — Solutions détaillées</div>
+      <h2 class="section-title">Sujets complets<br>corrigés</h2>
+      <p class="section-desc">Raisonnement explicité étape par étape.</p>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIE VIII — LA RÉDACTION TYPE -->
+  <div class="partie reveal">
+    <div class="container">
+      <div class="partie-percent">VIII</div>
+      <div class="section-number">Partie VIII — La Rédaction type</div>
+      <h2 class="section-title">Rédiger sans<br>inspiration</h2>
+      <p class="section-desc">Efficace, limpide, mécanique.</p>
+
+      <div class="partie-insight">
+        <em>Objectif :</em> Chaque réponse suit un template. Pas de créativité — de la précision.
+      </div>
+
+      <div class="pdf-list">
+        <div class="pdf-item">
+          <div class="pdf-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+          <span>À définir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="divider"></div>
+
+
+<!-- ═══════════ BONUS ═══════════ -->
+<section class="bonus-section section--light reveal">
+  <div class="container">
+    <div class="section-number" style="text-align: center;">Inclus dans la formation</div>
+    <h2 class="section-title" style="text-align: center; margin-bottom: 0.5rem;">Bonus</h2>
+    <p class="section-desc" style="text-align: center; margin: 0 auto;">Ce qui fait la différence.</p>
+
+    <div class="bonus-grid">
+      <div class="bonus-card">
+        <span class="bonus-emoji">🗓️</span>
+        <h3>Mode 15 jours</h3>
+        <p>Le plan de révision final pour tout éclater. Jour par jour, thème par thème, sans perte de temps.</p>
+      </div>
+      <div class="bonus-card">
+        <span class="bonus-emoji">▶</span>
+        <h3>Vidéos Manim</h3>
+        <p>Techniques spéciales en animation : élimination logique, intuition pure, « Quel calcul ? » avant de calculer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+</template>
+<!-- ═══════════ CTA FINAL ═══════════ -->
+<section class="final-cta reveal">
+  <p class="final-quote">Le bac n'est pas difficile.<br>Il est répétitif.</p>
+  <p class="final-sub">On ne vous a jamais montré la répétition.</p>
+  <a href="formation-avertir.html" class="final-btn">
+    Restez connecté - être averti en premier
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+  </a>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<tm-newsletter id="newsletter"></tm-newsletter>
+<tm-footer></tm-footer>
+
+<!-- ═══════════ SCROLL REVEAL ═══════════ -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+<script src="components.js"></script>
+<script src="newsletter.js"></script>
+<script src="/cookie-consent.js"></script>
+</body>
+</html>
