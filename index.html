@@ -162,6 +162,58 @@
     object-position: center center;
   }
 
+  /* ── OJA overlay buttons ── */
+  .oja-overlay {
+    position: absolute;
+    bottom: 72px;
+    left: 45%;
+    right: 4%;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    z-index: 2;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .oja-btn {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.9rem 2.4rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.35s ease;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .oja-btn--filled {
+    background: linear-gradient(135deg, #c9a84c, #e0c878);
+    color: #2a0a2e;
+    border: 1.5px solid transparent;
+    box-shadow: 0 4px 24px rgba(201,168,76,0.3);
+  }
+  .oja-btn--filled:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 36px rgba(201,168,76,0.45);
+  }
+  .oja-btn--outline {
+    background: rgba(19,14,28,0.45);
+    color: #e8c970;
+    border: 1.5px solid rgba(232,201,112,0.65);
+    box-shadow: 0 4px 24px rgba(10,5,18,0.25);
+  }
+  .oja-btn--outline:hover {
+    transform: translateY(-2px);
+    background: rgba(232,201,112,0.12);
+    border-color: #e8c970;
+    box-shadow: 0 8px 36px rgba(201,168,76,0.3);
+  }
+
   /* ── QCM slide styles ── */
   @keyframes qcmFadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -1351,7 +1403,7 @@
     }
 
     /* OJA : image pleine largeur, ratio naturel (le texte est dans l'image) */
-    .hero-slide--oja { height: auto; min-height: unset; }
+    .hero-slide--oja { height: auto; min-height: unset; position: relative; }
     .hero-slide--oja .hero-slide-photo {
       position: relative;
       inset: auto;
@@ -1362,6 +1414,19 @@
       height: auto;
       object-fit: contain;
       transform: none !important;
+    }
+    .oja-overlay {
+      left: 0;
+      right: 0;
+      bottom: 32px;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 16px;
+    }
+    .oja-btn {
+      font-size: 0.78rem;
+      padding: 0.72rem 1.4rem;
+      letter-spacing: 0.14em;
     }
 
     /* BAC : image pleine largeur à ratio naturel, texte en dessous */
@@ -1451,6 +1516,10 @@
   <div class="hero-slide hero-slide--oja">
     <div class="hero-slide-photo">
       <img src="OJA.png" alt="">
+    </div>
+    <div class="oja-overlay">
+      <a href="qui-suis-je.html" class="oja-btn oja-btn--filled">Qui suis-je ?</a>
+      <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="oja-btn oja-btn--outline" target="_blank" rel="noopener">Google Scholar ↗</a>
     </div>
   </div>
 
