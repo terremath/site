@@ -1450,9 +1450,9 @@
       padding: 0 16px;
     }
     .oja-btn {
-      font-size: 0.78rem;
-      padding: 0.72rem 1.4rem;
-      letter-spacing: 0.14em;
+      font-size: 0.68rem;
+      padding: 0.55rem 1rem;
+      letter-spacing: 0.1em;
     }
 
     .hero-slide-photo::after { display: none; }
@@ -1464,6 +1464,8 @@
     .hero-slide.active .hero-slide-content { transform: none; }
     .hero-slide-content::after { display: none; }
 
+    /* BAC : hauteur explicite sinon le slide s'effondre (photo en absolute) */
+    .hero-slide--bac { height: 100svh; min-height: 500px; }
     .bac-overlay { padding: 32px 16px 48px; }
     .bac-label { font-size: 0.72rem; padding: 8px 18px; letter-spacing: 0.2em; }
     .bac-cta { font-size: 0.78rem; padding: 0.75rem 1.8rem; letter-spacing: 0.16em; }
