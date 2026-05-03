@@ -1,0 +1,12 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/1904248797_312671125_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3791456616_1442652668.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_2704686740_3600149223.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3312498191_858999253.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3603286704_2098119427.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_2751725065_1281001903.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3679316965_3448878432.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3864283502_2751780486.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_202195069_1972814077.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_2666197528_4169217905.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene03_Inegalite/601603905_3740218889_1425389246.mp4'

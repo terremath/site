@@ -213,11 +213,7 @@
   .promise {
     padding: 8rem 2rem;
     text-align: center;
-    background: var(--bg-light);
-    --heading: #2A0A2E;
-    --heading-soft: #6B2D5B;
-    --text: #5A2A50;
-    --text-muted: rgba(74, 25, 66, 0.55);
+    background: var(--bg);
   }
 
   .promise-inner {
@@ -231,7 +227,7 @@
     font-size: clamp(1.5rem, 3.5vw, 2.4rem);
     font-weight: 600;
     line-height: 1.3;
-    color: #2A0A2E;
+    color: var(--heading);
     margin-bottom: 1.5rem;
   }
 
@@ -240,7 +236,7 @@
     font-size: clamp(1rem, 2vw, 1.3rem);
     font-style: italic;
     line-height: 1.6;
-    color: #6B2D5B;
+    color: var(--heading-soft);
   }
 
   .promise-secondary em {
@@ -298,7 +294,13 @@
   /* ── SECTION POUR QUI ── */
   .pour-qui {
     padding: 7rem 2rem;
-    background: var(--bg);
+    background: var(--bg-light);
+    --heading: #2A0A2E;
+    --heading-soft: #6B2D5B;
+    --text: #5A2A50;
+    --text-muted: rgba(74, 25, 66, 0.55);
+    --border: rgba(74, 25, 66, 0.15);
+    --accent-soft: rgba(212,164,120,0.15);
   }
 
   .pour-qui-inner {
@@ -333,13 +335,7 @@
   /* ── SECTION FORMAT ── */
   .format-section {
     padding: 7rem 2rem;
-    background: var(--bg-light);
-    --heading: #2A0A2E;
-    --heading-soft: #6B2D5B;
-    --text: #5A2A50;
-    --text-muted: rgba(74, 25, 66, 0.55);
-    --border: rgba(74, 25, 66, 0.15);
-    --accent-soft: rgba(212,164,120,0.12);
+    background: var(--bg);
   }
 
   .format-inner {
@@ -367,7 +363,12 @@
   /* ── SECTION FORMULES ── */
   .formules-section {
     padding: 7rem 2rem;
-    background: var(--bg);
+    background: var(--bg-light);
+    --heading: #2A0A2E;
+    --heading-soft: #6B2D5B;
+    --text: #5A2A50;
+    --text-muted: rgba(74, 25, 66, 0.55);
+    --border: rgba(74, 25, 66, 0.15);
   }
 
   .formules-grid {
@@ -382,7 +383,7 @@
     padding: 2.5rem 2rem;
     border-radius: 14px;
     border: 1px solid var(--border);
-    background: var(--bg-alt);
+    background: var(--bg-light-alt);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -510,6 +511,233 @@
     .pour-qui, .format-section, .formules-section { padding: 5rem 1.5rem; }
     .formules-grid { grid-template-columns: 1fr; }
   }
+
+  /* ─── VIDEO CAROUSEL ─── */
+  .video-carousel {
+    background: var(--bg-light);
+    overflow: hidden;
+  }
+
+  .video-carousel .section-label { color: var(--deep); }
+  .video-carousel .section-title { color: #2A0A2E; }
+
+  .video-carousel .carousel-btn {
+    color: #2A0A2E;
+  }
+
+  .video-carousel .carousel-btn:hover {
+    color: var(--deep);
+  }
+
+  .video-carousel .video-card {
+    background: var(--bg-light-alt);
+    border-color: rgba(74,25,66,0.12);
+  }
+
+  .carousel-wrapper {
+    position: relative;
+    margin-top: 48px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 8px;
+    touch-action: pan-x;
+    cursor: grab;
+  }
+
+  .carousel-track.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
+  .carousel-track::-webkit-scrollbar { display: none; }
+
+  .video-card {
+    flex: 0 0 300px;
+    scroll-snap-align: start;
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    aspect-ratio: 16/9;
+  }
+
+  .video-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .video-card:hover video { transform: scale(1.04); }
+
+  .play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.35);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+  }
+
+  .video-card:hover .play-overlay { opacity: 1; }
+
+  .play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(var(--accent-rgb), 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.85);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+
+  .video-card:hover .play-btn { transform: scale(1); }
+
+  .play-btn svg { color: var(--bg); margin-left: 4px; }
+
+  .carousel-nav {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    padding: 0 10px;
+  }
+
+  .carousel-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.85);
+    color: var(--heading);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    pointer-events: auto;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    backdrop-filter: blur(4px);
+    flex-shrink: 0;
+  }
+
+  .carousel-btn:hover {
+    background: rgba(255,255,255,1);
+    border-color: rgba(var(--accent-rgb),0.4);
+    color: var(--accent);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.22);
+  }
+
+  .video-card-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: #fff;
+    text-align: center;
+    padding: 16px;
+    pointer-events: none;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
+  }
+
+  .video-card-soon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #2A0A2E 0%, #4A1942 100%);
+    gap: 12px;
+  }
+
+  .video-card-soon span {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--accent-light, #E8C090);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+  }
+
+  .video-card-soon .soon-badge {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(212,164,120,0.6);
+  }
+
+  /* lightbox */
+  .video-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0,0,0,0.88);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-lightbox.active { display: flex; }
+
+  .lightbox-inner {
+    position: relative;
+    width: min(90vw, 960px);
+    aspect-ratio: 16/9;
+  }
+
+  .lightbox-inner.is-short {
+    width: min(50vw, 400px);
+    aspect-ratio: 9/16;
+  }
+
+  .lightbox-inner video {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    border: none;
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: -44px;
+    right: 0;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  .lightbox-close:hover { opacity: 1; }
 </style>
 </head>
 <body>
@@ -545,8 +773,60 @@
   </div>
 </header>
 
+<!-- ═══════════ CAROUSEL EN ACTION ═══════════ -->
+<section class="video-carousel section--light reveal" id="videos">
+  <div class="container">
+    <div class="section-label">En action</div>
+    <h2 class="section-title">Notre travail</h2>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+
+        <div class="video-card" data-src="exo.mp4">
+          <div class="video-card-soon">
+            <span>Reconstruction de la loi binomiale</span>
+            <div class="play-btn" style="margin-top:4px;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-card video-card--soon">
+          <video muted preload="none"></video>
+          <div class="video-card-soon">
+            <span>Exercice 2</span>
+            <span class="soon-badge">Bientôt disponible</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="carousel-nav">
+        <button type="button" class="carousel-btn" id="prevBtn" aria-label="Précédent">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button type="button" class="carousel-btn" id="nextBtn" aria-label="Suivant">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:2.5rem;">
+      <a href="https://app.terremathematiques.com/bac_eclair" style="display:inline-flex;align-items:center;gap:0.75rem;background:linear-gradient(135deg,#c9a84c,#e0c878);color:#2a0a2e;text-decoration:none;font-family:'Outfit',sans-serif;font-weight:600;font-size:0.88rem;text-transform:uppercase;letter-spacing:0.18em;padding:1.1rem 2.75rem;border-radius:8px;transition:all 0.4s ease;box-shadow:0 4px 30px rgba(201,168,76,0.25);">
+        Rejoindre Bac Éclair
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox vidéo -->
+<div class="video-lightbox" id="videoLightbox">
+  <div class="lightbox-inner" id="lightboxInner">
+    <button type="button" class="lightbox-close" id="lightboxClose">&#x2715;</button>
+    <video id="lightboxVideo" controls></video>
+  </div>
+</div>
+
 <!-- ═══════════ PROMISE ═══════════ -->
-<section class="promise section--light reveal">
+<section class="promise reveal">
   <div class="promise-inner">
     <p class="promise-main">La mécanique du bac suffit pour viser l'excellence.</p>
     <p class="promise-secondary">Mais cette mécanique, il faut l'apprendre. C'est notre <em>but</em>.</p>
@@ -663,6 +943,63 @@
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
+
+  // ── Video Carousel ──
+  const track = document.getElementById('carouselTrack');
+  const lightbox = document.getElementById('videoLightbox');
+  const lightboxInner = document.getElementById('lightboxInner');
+  const lightboxVideo = document.getElementById('lightboxVideo');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
+
+  document.getElementById('nextBtn').addEventListener('click', () => {
+    track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
+  });
+
+  document.getElementById('prevBtn').addEventListener('click', () => {
+    track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+  });
+
+  let isDragging = false, dragStartX = 0, dragScrollLeft = 0, dragMoved = false;
+
+  track.addEventListener('mousedown', e => {
+    isDragging = true;
+    dragMoved = false;
+    dragStartX = e.pageX - track.offsetLeft;
+    dragScrollLeft = track.scrollLeft;
+    track.classList.add('dragging');
+  });
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+    track.classList.remove('dragging');
+  });
+  track.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const x = e.pageX - track.offsetLeft;
+    const walk = x - dragStartX;
+    if (Math.abs(walk) > 5) dragMoved = true;
+    track.scrollLeft = dragScrollLeft - walk;
+  });
+
+  document.querySelectorAll('.video-card').forEach(card => {
+    card.addEventListener('click', () => {
+      if (dragMoved) return;
+      if (card.classList.contains('video-card--soon')) return;
+      lightboxVideo.src = card.dataset.src;
+      lightbox.classList.add('active');
+      lightboxVideo.play();
+    });
+  });
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    lightboxVideo.pause();
+    lightboxVideo.src = '';
+  }
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 
 <script src="components.js"></script>

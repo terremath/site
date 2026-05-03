@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/1904248797_211231230_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_3982771411_324598637.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_2704686740_73884744.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_2262548238_303444220.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_2778755582_2340471928.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_1218579536_3540867511.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_3804957080_2386898738.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_2666197528_1412855478.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/Scene06_LoiFaible/601603905_4213524787_3839322050.mp4'

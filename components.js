@@ -26,7 +26,6 @@ class TmFooter extends HTMLElement {
     </a>
     <div class="footer-right">
       <div class="footer-legal">
-        <a href="/contact.html">Contact</a>
         <a href="/mentions-legales.html">Mentions légales</a>
         <a href="/politique-confidentialite.html">Confidentialité</a>
         <a href="/politique-cookies.html">Cookies</a>
@@ -496,6 +495,7 @@ class TmHeader extends HTMLElement {
           <a href="analyse-carte-interactive.html">Carte Interactive Analyse</a>
         </div>
       </div> -->
+      <a href="contact.html">Contact</a>
     </div>
   </div>
   <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
@@ -516,6 +516,7 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="formations.html">Voir toutes les formations →</a>
       <!-- <div class="tm-drawer-section">Fiches Interactives</div>
       <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a> -->
+      <a href="contact.html">Contact</a>
     </div>
   </div>
 </nav>`;

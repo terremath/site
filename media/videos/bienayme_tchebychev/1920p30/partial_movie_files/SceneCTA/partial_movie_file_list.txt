@@ -1,0 +1,10 @@
+# This file is used internally by FFMPEG.
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/1904248797_877104500_223132457.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_2707492950_4199490660.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_805442554_1242395556.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_2633585494_3630567844.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_846632803_2729045953.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_549049957_2729045953.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_549049957_2729045953.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_2666197528_152163487.mp4'
+file 'file:C:/Users/felic/Desktop/TerreMathematiques/site/media/videos/bienayme_tchebychev/1920p30/partial_movie_files/SceneCTA/601603905_1194659006_3839120337.mp4'
