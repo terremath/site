@@ -716,7 +716,8 @@
     aspect-ratio: 9/16;
   }
 
-  .lightbox-inner video {
+  .lightbox-inner video,
+  .lightbox-inner iframe {
     width: 100%;
     height: 100%;
     border-radius: 12px;
@@ -781,7 +782,7 @@
     <div class="carousel-wrapper">
       <div class="carousel-track" id="carouselTrack">
 
-        <div class="video-card" data-src="exo.mp4">
+        <div class="video-card" data-youtube="uqGm14tBk9E">
           <div class="video-card-soon">
             <span>Reconstruction de la loi binomiale</span>
             <div class="play-btn" style="margin-top:4px;">
@@ -822,6 +823,7 @@
   <div class="lightbox-inner" id="lightboxInner">
     <button type="button" class="lightbox-close" id="lightboxClose">&#x2715;</button>
     <video id="lightboxVideo" controls></video>
+    <iframe id="lightboxIframe" style="display:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
   </div>
 </div>
 
@@ -949,6 +951,7 @@
   const lightbox = document.getElementById('videoLightbox');
   const lightboxInner = document.getElementById('lightboxInner');
   const lightboxVideo = document.getElementById('lightboxVideo');
+  const lightboxIframe = document.getElementById('lightboxIframe');
   const lightboxClose = document.getElementById('lightboxClose');
   const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
 
@@ -985,9 +988,17 @@
     card.addEventListener('click', () => {
       if (dragMoved) return;
       if (card.classList.contains('video-card--soon')) return;
-      lightboxVideo.src = card.dataset.src;
+      if (card.dataset.youtube) {
+        lightboxVideo.style.display = 'none';
+        lightboxIframe.style.display = 'block';
+        lightboxIframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.youtube}?autoplay=1`;
+      } else {
+        lightboxIframe.style.display = 'none';
+        lightboxVideo.style.display = '';
+        lightboxVideo.src = card.dataset.src;
+        lightboxVideo.play();
+      }
       lightbox.classList.add('active');
-      lightboxVideo.play();
     });
   });
 
@@ -995,6 +1006,7 @@
     lightbox.classList.remove('active');
     lightboxVideo.pause();
     lightboxVideo.src = '';
+    lightboxIframe.src = '';
   }
 
   lightboxClose.addEventListener('click', closeLightbox);
