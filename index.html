@@ -532,6 +532,44 @@
     animation: qcmPopupIn 0.25s cubic-bezier(0.22,1,0.36,1) forwards;
   }
 
+  /* Layout deux colonnes pour la popup Bac Éclair */
+  .bac-popup {
+    width: min(820px, 94vw);
+    padding: 0;
+    overflow: hidden;
+    text-align: left;
+  }
+  .bac-popup-inner {
+    display: flex;
+    min-height: 480px;
+  }
+  .bac-popup-img {
+    flex: 0 0 42%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px 0 0 16px;
+  }
+  .bac-popup-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+  .bac-popup-content {
+    flex: 1;
+    padding: 2.8rem 2.6rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  @media (max-width: 600px) {
+    .bac-popup { width: 92vw; }
+    .bac-popup-inner { flex-direction: column; min-height: unset; }
+    .bac-popup-img { flex: none; height: 200px; border-radius: 16px 16px 0 0; }
+    .bac-popup-content { padding: 1.6rem 1.4rem 1.6rem; text-align: center; }
+    .bac-popup-content .qcm-popup-cta { display: block; }
+  }
+
   .qcm-popup-close {
     position: absolute;
     top: 1rem; right: 1.1rem;
@@ -610,13 +648,6 @@
   }
   .qcm-popup-skip:hover { color: rgba(200,185,164,0.7); }
 
-  @media (max-height: 700px) {
-    .qcm-popup { padding: 1.8rem 1.6rem 1.4rem; }
-    .qcm-popup-icon img[src="sortieplus.png"] { max-height: 120px !important; }
-    .qcm-popup-title { font-size: clamp(1.2rem, 4vw, 1.6rem); margin-bottom: 0.6rem; }
-    .qcm-popup-desc { margin-bottom: 1.2rem; }
-    .qcm-popup-cta { padding: 0.75rem 2rem; margin-bottom: 0.7rem; }
-  }
 
   /* ─── SECTION GLOBAL ─── */
   section {
@@ -1575,14 +1606,20 @@
 
 <!-- ═══════════════ BAC ÉCLAIR POPUP ═══════════════ -->
 <div class="qcm-popup-overlay" id="bacPopupOverlay">
-  <div class="qcm-popup" role="dialog" aria-modal="true" aria-labelledby="bacPopupTitle">
+  <div class="qcm-popup bac-popup" role="dialog" aria-modal="true" aria-labelledby="bacPopupTitle">
     <button class="qcm-popup-close" id="bacPopupClose" aria-label="Fermer">&times;</button>
-    <div class="qcm-popup-icon"><img src="sortieplus.png" alt="Bac Éclair" style="width:100%;max-width:340px;max-height:clamp(140px,30vw,220px);object-fit:cover;border-radius:12px;display:block;margin:0 auto;"></div>
-    <div class="qcm-popup-label">Lancement officiel &middot; Maintenant disponible</div>
-    <h2 class="qcm-popup-title" id="bacPopupTitle">Bac <em>&Eacute;clair</em><br>est en ligne&nbsp;!</h2>
-    <p class="qcm-popup-desc">La formation qui fait la diff&eacute;rence est maintenant disponible. Rejoins les premiers inscrits.</p>
-    <a href="bac.html" class="qcm-popup-cta">Rejoindre maintenant &rarr;</a>
-    <button class="qcm-popup-skip" id="bacPopupSkip">Plus tard</button>
+    <div class="bac-popup-inner">
+      <div class="bac-popup-img">
+        <img src="sortieplus.png" alt="Bac Éclair">
+      </div>
+      <div class="bac-popup-content">
+        <div class="qcm-popup-label">Lancement officiel &middot; Maintenant disponible</div>
+        <h2 class="qcm-popup-title" id="bacPopupTitle">Bac <em>&Eacute;clair</em><br>est en ligne&nbsp;!</h2>
+        <p class="qcm-popup-desc" style="margin-left:0;margin-right:0;">La formation qui fait la diff&eacute;rence est maintenant disponible. Rejoins les premiers inscrits.</p>
+        <a href="bac.html" class="qcm-popup-cta">Rejoindre maintenant &rarr;</a>
+        <button class="qcm-popup-skip" id="bacPopupSkip" style="margin-left:0;">Plus tard</button>
+      </div>
+    </div>
   </div>
 </div>
 
