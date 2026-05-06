@@ -21,7 +21,7 @@ class TmFooter extends HTMLElement {
       <div class="footer-brand">
         <span>Terre</span>
         <span>Mathématiques</span>
-        <p class="footer-copy">&copy; 2026 — Tous droits réservés.</p>
+        <p class="footer-copy">&copy; 2026 - Tous droits réservés.</p>
       </div>
     </a>
     <div class="footer-right">

@@ -520,6 +520,8 @@
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: min(520px, 92vw);
+    max-height: 90vh;
+    overflow-y: auto;
     background: #1a0d22;
     border: 1px solid rgba(201,168,76,0.25);
     border-radius: 16px;
@@ -527,7 +529,7 @@
     text-align: center;
     z-index: 9001;
     box-shadow: 0 32px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.08);
-    animation: qcmPopupIn 0.45s cubic-bezier(0.22,1,0.36,1) forwards;
+    animation: qcmPopupIn 0.25s cubic-bezier(0.22,1,0.36,1) forwards;
   }
 
   .qcm-popup-close {
@@ -607,6 +609,14 @@
     transition: color 0.2s; margin: 0 auto;
   }
   .qcm-popup-skip:hover { color: rgba(200,185,164,0.7); }
+
+  @media (max-height: 700px) {
+    .qcm-popup { padding: 1.8rem 1.6rem 1.4rem; }
+    .qcm-popup-icon img[src="sortieplus.png"] { max-height: 120px !important; }
+    .qcm-popup-title { font-size: clamp(1.2rem, 4vw, 1.6rem); margin-bottom: 0.6rem; }
+    .qcm-popup-desc { margin-bottom: 1.2rem; }
+    .qcm-popup-cta { padding: 0.75rem 2rem; margin-bottom: 0.7rem; }
+  }
 
   /* ─── SECTION GLOBAL ─── */
   section {
@@ -2024,19 +2034,15 @@
 
   // ── Bac Éclair Popup ──
   (function() {
-    const KEY = 'bacPopupDismissed';
-    const ts = localStorage.getItem(KEY);
-    if (ts && Date.now() - parseInt(ts) < 3 * 24 * 60 * 60 * 1000) return;
     const overlay = document.getElementById('bacPopupOverlay');
     function closePopup() {
       overlay.classList.remove('visible');
-      localStorage.setItem(KEY, Date.now().toString());
     }
     document.getElementById('bacPopupClose').addEventListener('click', closePopup);
     document.getElementById('bacPopupSkip').addEventListener('click', closePopup);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
-    setTimeout(function() { overlay.classList.add('visible'); }, 3000);
+    setTimeout(function() { overlay.classList.add('visible'); }, 800);
   })();
 
   // Smooth scroll
