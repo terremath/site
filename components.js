@@ -112,33 +112,33 @@ footer {
 .footer-socials {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
 }
 .footer-socials a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  border: 1px solid rgba(var(--accent-rgb),0.15);
-  background: rgba(var(--accent-rgb),0.05);
+  border: 1.5px solid rgba(var(--bg-rgb),0.25);
+  background: rgba(var(--bg-rgb),0.07);
   transition: all 0.3s ease;
 }
 .footer-socials a:hover {
-  border-color: rgba(var(--accent-rgb),0.4);
-  background: rgba(var(--accent-rgb),0.1);
+  border-color: rgba(var(--bg-rgb),0.55);
+  background: rgba(var(--bg-rgb),0.13);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(var(--accent-rgb),0.15);
+  box-shadow: 0 4px 16px rgba(var(--bg-rgb),0.18);
 }
 .footer-socials a svg {
-  width: 18px;
-  height: 18px;
-  fill: rgba(var(--accent-rgb),0.6);
+  width: 26px;
+  height: 26px;
+  fill: rgba(var(--bg-rgb),0.65);
   transition: fill 0.3s ease;
 }
 .footer-socials a:hover svg {
-  fill: var(--accent);
+  fill: var(--bg);
 }
 .footer-right {
   display: flex;
