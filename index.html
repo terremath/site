@@ -41,17 +41,12 @@
     pointer-events: auto;
   }
 
-  /* ── BAC slide : pleine photo ── */
+  /* ── BAC slide : photo gauche / texte droite ── */
   .hero-slide--bac {
-    display: block;
+    background: var(--bg);
   }
   .hero-slide--bac::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(19,14,28,0.52) 0%, rgba(19,14,28,0.15) 45%, rgba(19,14,28,0.48) 100%);
-    z-index: 1;
-    pointer-events: none;
+    display: none;
   }
 
   /* ── Photo half ── */
@@ -82,16 +77,50 @@
     pointer-events: none;
   }
   .hero-slide--bac .hero-slide-photo {
-    position: absolute;
-    inset: 0;
-    background: #130E1C;
+    background: #0D0917;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
   .hero-slide--bac .hero-slide-photo::after { display: none; }
   .hero-slide--bac .hero-slide-photo img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center center;
+    object-fit: contain;
+    object-position: center bottom;
+    transform: none;
+    transition: none;
+  }
+
+  /* ── BAC split slide — titre et description ── */
+  .bac-split-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 3.8vw, 3.4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--heading);
+    margin: 0;
+  }
+  .bac-split-title em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+  }
+  .bac-split-desc {
+    font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+    color: var(--text);
+    line-height: 1.75;
+    font-weight: 300;
+    max-width: 440px;
+  }
+  .hero-slide--bac .hero-slide-content {
+    gap: 1.6rem;
+  }
+  .hero-slide--bac .hero-slide-content .bac-cta {
+    align-self: flex-start;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
 
@@ -1505,17 +1534,23 @@
     .hero-slide.active .hero-slide-content { transform: none; }
     .hero-slide-content::after { display: none; }
 
-    /* BAC : hauteur explicite sinon le slide s'effondre (photo en absolute) */
-    .hero-slide--bac { height: 100svh; min-height: 500px; }
-    /* BAC mobile : image entière visible (pas de crop) */
+    /* BAC split : pile vertical, photo limitée en hauteur */
+    .hero-slide--bac { height: auto; min-height: unset; }
+    .hero-slide--bac .hero-slide-photo {
+      height: clamp(220px, 60vw, 360px);
+    }
     .hero-slide--bac .hero-slide-photo img {
       object-fit: contain !important;
       object-position: center center !important;
-      transform: none !important;
     }
-    .bac-overlay { padding: 32px 16px 48px; }
+    .hero-slide--bac .hero-slide-content {
+      padding: 32px 20px 48px !important;
+      gap: 1.2rem !important;
+    }
+    .bac-split-title { font-size: clamp(1.7rem, 7vw, 2.4rem) !important; }
+    .bac-split-desc { font-size: 0.88rem !important; }
     .bac-label { font-size: 0.72rem; padding: 8px 18px; letter-spacing: 0.2em; }
-    .bac-cta { font-size: 0.78rem; padding: 0.75rem 1.8rem; letter-spacing: 0.16em; }
+    .hero-slide--bac .hero-slide-content .bac-cta { font-size: 0.78rem; padding: 0.75rem 1.8rem; letter-spacing: 0.16em; }
 
     .hero-badge { font-size: 0.72rem; padding: 6px 14px; margin-bottom: 20px; }
 
@@ -1550,11 +1585,13 @@
   <!-- ── Slide 1 : BAC ÉCLAIR ── -->
   <div class="hero-slide active hero-slide--bac">
     <div class="hero-slide-photo">
-      <img src="bac.png" alt="Bac Éclair">
+      <img src="sortieplus.png" alt="Bac Éclair">
     </div>
-    <div class="bac-overlay">
-      <p class="bac-label">BAC &Eacute;CLAIR 2026 &mdash; EN LIGNE</p>
-      <a href="bac.html#programme" class="bac-cta">Voir le programme</a>
+    <div class="hero-slide-content">
+      <p class="bac-label">BAC &Eacute;CLAIR 2026 - EN LIGNE</p>
+      <h2 class="bac-split-title">La mécanique <br>du BAC <em>dévoilée</em></h2>
+      <p class="bac-split-desc">Un programme complet sur les maths au bac: m&eacute;thode unique, contenus cibl&eacute;s, accompagnement personnalis&eacute;.</p>
+      <a href="bac.html" class="bac-cta">Rejoindre le programme</a>
     </div>
   </div>
 
