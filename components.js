@@ -479,16 +479,16 @@ class TmHeader extends HTMLElement {
           <a href="qui-suis-je.html">Qui suis-je ?</a>
         </div>
       </div>
-      <div class="tm-dd">
+      <!-- <div class="tm-dd">
         <a href="#">Formations ▾</a>
         <div class="tm-dd-panel">
           <a href="bac.html">BAC</a>
           <a href="elite.html">Élite</a>
-          <!-- <a href="encours.html">Trading</a> -->
-          <!-- <a href="encours.html">IA</a> -->
+          <a href="encours.html">Trading</a>
+          <a href="encours.html">IA</a>
           <a href="formations.html">Voir toutes les formations →</a>
         </div>
-      </div>
+      </div> -->
       <!-- <div class="tm-dd">
         <a href="#">Fiches Interactives ▾</a>
         <div class="tm-dd-panel">
@@ -508,12 +508,12 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
       <a class="tm-sub" href="methode.html">Ma méthode</a>
       <a class="tm-sub" href="qui-suis-je.html">Qui suis-je ?</a>
-      <div class="tm-drawer-section">Formations</div>
+      <!-- <div class="tm-drawer-section">Formations</div>
       <a class="tm-sub" href="bac.html">BAC</a>
       <a class="tm-sub" href="elite.html">Élite</a>
-      <!-- <a class="tm-sub" href="encours.html">Trading</a> -->
-      <!-- <a class="tm-sub" href="encours.html">IA</a> -->
-      <a class="tm-sub" href="formations.html">Voir toutes les formations →</a>
+      <a class="tm-sub" href="encours.html">Trading</a>
+      <a class="tm-sub" href="encours.html">IA</a>
+      <a class="tm-sub" href="formations.html">Voir toutes les formations →</a> -->
       <!-- <div class="tm-drawer-section">Fiches Interactives</div>
       <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a> -->
       <a href="contact.html">Contact</a>

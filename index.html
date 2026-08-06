@@ -1582,16 +1582,14 @@
 <!-- ═══════════════ HERO CAROUSEL ═══════════════ -->
 <section class="hero">
 
-  <!-- ── Slide 1 : BAC ÉCLAIR ── -->
-  <div class="hero-slide active hero-slide--bac">
+  <!-- ── Slide 1 : OJA ── -->
+  <div class="hero-slide active hero-slide--oja">
     <div class="hero-slide-photo">
-      <img src="sortieplus.png" alt="Bac Éclair">
+      <img src="OJA.png" alt="">
     </div>
-    <div class="hero-slide-content">
-      <p class="bac-label">BAC &Eacute;CLAIR 2026 - EN LIGNE</p>
-      <h2 class="bac-split-title">La mécanique <br>du BAC <em>dévoilée</em></h2>
-      <p class="bac-split-desc">Un programme complet sur les maths au bac: m&eacute;thode unique, contenus cibl&eacute;s, accompagnement personnalis&eacute;.</p>
-      <a href="bac.html" class="bac-cta">Rejoindre le programme</a>
+    <div class="oja-overlay">
+      <a href="qui-suis-je.html" class="oja-btn oja-btn--filled">Qui suis-je ?</a>
+      <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="oja-btn oja-btn--outline" target="_blank" rel="noopener">Google Scholar ↗</a>
     </div>
   </div>
 
@@ -1608,22 +1606,24 @@
     </div>
   </div>
 
-  <!-- ── Slide 3 : OJA ── -->
-  <div class="hero-slide hero-slide--oja">
+  <!-- ── Slide 3 : BAC ÉCLAIR (désactivé) ──
+  <div class="hero-slide hero-slide--bac">
     <div class="hero-slide-photo">
-      <img src="OJA.png" alt="">
+      <img src="sortieplus.png" alt="Bac Éclair">
     </div>
-    <div class="oja-overlay">
-      <a href="qui-suis-je.html" class="oja-btn oja-btn--filled">Qui suis-je ?</a>
-      <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="oja-btn oja-btn--outline" target="_blank" rel="noopener">Google Scholar ↗</a>
+    <div class="hero-slide-content">
+      <p class="bac-label">BAC &Eacute;CLAIR 2026 - EN LIGNE</p>
+      <h2 class="bac-split-title">La mécanique <br>du BAC <em>dévoilée</em></h2>
+      <p class="bac-split-desc">Un programme complet sur les maths au bac: m&eacute;thode unique, contenus cibl&eacute;s, accompagnement personnalis&eacute;.</p>
+      <a href="bac.html" class="bac-cta">Rejoindre le programme</a>
     </div>
   </div>
+  -->
 
   <!-- Indicateurs -->
   <div class="hero-dots">
     <button type="button" class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
     <button type="button" class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
-    <button type="button" class="hero-dot" data-index="2" aria-label="Diapositive 3"></button>
   </div>
 
 </section>
@@ -2116,7 +2116,7 @@
     document.getElementById('bacPopupSkip').addEventListener('click', closePopup);
     overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
     document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
-    setTimeout(function() { overlay.classList.add('visible'); }, 800);
+    // setTimeout(function() { overlay.classList.add('visible'); }, 800);
   })();
 
   // Smooth scroll
