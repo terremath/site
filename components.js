@@ -310,6 +310,42 @@ footer {
   background: rgba(var(--accent-rgb),0.5);
 }
 
+.tm-lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 8px;
+  padding: 3px;
+  border: 1px solid rgba(var(--bg-rgb),0.22);
+  border-radius: 999px;
+  background: rgba(var(--bg-rgb),0.08);
+  flex-shrink: 0;
+}
+.tm-lang-switch button {
+  min-width: 34px;
+  height: 28px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(var(--bg-rgb),0.58);
+  font-family: 'Outfit', 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.tm-lang-switch button.is-active {
+  background: var(--accent);
+  color: var(--heading);
+}
+.tm-lang-switch button:focus-visible {
+  outline: 2px solid var(--bg);
+  outline-offset: 2px;
+}
+
 /* ── Dropdowns ── */
 .tm-dd { position: relative; }
 .tm-dd-panel {
@@ -402,9 +438,19 @@ footer {
   padding-left: 40px; font-size: 0.82rem;
   letter-spacing: 2px; color: rgba(var(--heading-rgb),0.55);
 }
+.tm-drawer .tm-lang-switch {
+  margin: 12px 24px 0;
+}
+.tm-drawer .tm-lang-switch button {
+  color: rgba(var(--heading-rgb),0.58);
+}
+.tm-drawer .tm-lang-switch button.is-active {
+  color: var(--heading);
+}
 @media (max-width: 768px) {
   .tm-nav { --nav-h: 64px; }
   .tm-menu  { display: none !important; }
+  .tm-bottom-bar > .tm-lang-switch { display: none !important; }
   .tm-hamburger { display: flex; }
   .tm-bottom-bar { padding: 0 18px 10px; }
   .tm-left-logo img { width: 38px; height: 38px; }
@@ -479,6 +525,7 @@ class TmHeader extends HTMLElement {
           <a href="qui-suis-je.html">Qui suis-je ?</a>
         </div>
       </div>
+      <a href="recherche.html">Recherche</a>
       <!-- <div class="tm-dd">
         <a href="#">Formations ▾</a>
         <div class="tm-dd-panel">
@@ -497,6 +544,10 @@ class TmHeader extends HTMLElement {
       </div> -->
       <a href="contact.html">Contact</a>
     </div>
+    <div class="tm-lang-switch" aria-label="Choix de la langue">
+      <button type="button" data-lang-switch="fr" class="is-active">FR</button>
+      <button type="button" data-lang-switch="en">EN</button>
+    </div>
   </div>
   <label class="tm-hamburger" for="tm-toggle" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -508,6 +559,7 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
       <a class="tm-sub" href="methode.html">Ma méthode</a>
       <a class="tm-sub" href="qui-suis-je.html">Qui suis-je ?</a>
+      <a href="recherche.html">Recherche</a>
       <!-- <div class="tm-drawer-section">Formations</div>
       <a class="tm-sub" href="bac.html">BAC</a>
       <a class="tm-sub" href="elite.html">Élite</a>
@@ -517,6 +569,10 @@ class TmHeader extends HTMLElement {
       <!-- <div class="tm-drawer-section">Fiches Interactives</div>
       <a class="tm-sub" href="analyse-carte-interactive.html">Carte Interactive Analyse</a> -->
       <a href="contact.html">Contact</a>
+      <div class="tm-lang-switch" aria-label="Choix de la langue">
+        <button type="button" data-lang-switch="fr" class="is-active">FR</button>
+        <button type="button" data-lang-switch="en">EN</button>
+      </div>
     </div>
   </div>
 </nav>`;
@@ -569,6 +625,10 @@ class TmHeaderSimple extends HTMLElement {
     <li><a href="https://www.terremathematiques.com/qui-suis-je">Qui suis-je ?</a></li>
   </ul>
   <a href="https://www.terremathematiques.com/#pricing" class="navbar-cta">Réserver un appel</a>
+  <div class="tm-lang-switch" aria-label="Choix de la langue">
+    <button type="button" data-lang-switch="fr" class="is-active">FR</button>
+    <button type="button" data-lang-switch="en">EN</button>
+  </div>
   <button class="mobile-toggle" aria-label="Menu">☰</button>
 </nav>`;
 

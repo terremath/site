@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Terre Mathematiqus</title>
+<title>Obayda Assaad - Terre Mathématiques</title>
 <script src="colors.js"></script>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -216,28 +216,83 @@
     object-fit: cover;
     object-position: center center;
   }
+  .hero-slide--oja::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(90deg,
+        rgba(19,14,28,0.00) 0%,
+        rgba(19,14,28,0.03) 34%,
+        rgba(19,14,28,0.70) 56%,
+        rgba(19,14,28,0.93) 100%),
+      linear-gradient(0deg, rgba(19,14,28,0.18), transparent 36%);
+    pointer-events: none;
+  }
 
   /* ── OJA overlay buttons ── */
   .oja-overlay {
     position: absolute;
-    bottom: 72px;
-    left: 45%;
-    right: 4%;
+    top: 18%;
+    bottom: auto;
+    left: 56%;
+    right: 7%;
     display: flex;
-    gap: 16px;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
     justify-content: center;
     z-index: 2;
-    flex-wrap: wrap;
     padding: 0;
+  }
+  .oja-kicker {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: #e8c970;
+  }
+  .oja-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 5.2vw, 5.2rem);
+    font-weight: 800;
+    line-height: 0.9;
+    color: #f5ead6;
+    text-shadow: 0 8px 36px rgba(10,5,18,0.55);
+    max-width: 620px;
+    margin: 0;
+  }
+  .oja-subtitle {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.45rem, 2.5vw, 2.5rem);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: #e8c970;
+    line-height: 1.15;
+  }
+  .oja-copy {
+    max-width: 520px;
+    color: rgba(245, 234, 214, 0.86);
+    font-size: clamp(1rem, 1.5vw, 1.12rem);
+    line-height: 1.62;
+    text-shadow: 0 4px 22px rgba(10,5,18,0.7);
+    margin-top: 12px;
+  }
+  .oja-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: nowrap;
+    margin-top: 8px;
   }
   .oja-btn {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 0.88rem;
+    font-size: 0.78rem;
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 0.9rem 2.4rem;
+    padding: 0.82rem 1.65rem;
     border-radius: 6px;
     display: inline-flex;
     align-items: center;
@@ -267,6 +322,19 @@
     background: rgba(232,201,112,0.12);
     border-color: #e8c970;
     box-shadow: 0 8px 36px rgba(201,168,76,0.3);
+  }
+  @media (max-width: 800px) {
+    .oja-overlay {
+      top: auto;
+      left: 24px;
+      right: 24px;
+      bottom: 76px;
+    }
+    .oja-title { font-size: clamp(2.1rem, 10vw, 3.2rem); }
+    .oja-subtitle { font-size: clamp(1.2rem, 6vw, 1.8rem); }
+    .oja-copy { font-size: 0.95rem; }
+    .oja-actions { gap: 10px; }
+    .oja-btn { width: 100%; justify-content: center; padding: 0.85rem 1.3rem; }
   }
 
   /* ── QCM slide styles ── */
@@ -453,6 +521,14 @@
     color: var(--accent);
     font-style: italic;
     font-weight: 300;
+  }
+
+  .hero-slide--oja .oja-title {
+    font-size: clamp(3rem, 5.2vw, 5.2rem);
+    line-height: 0.9;
+    max-width: 560px;
+    margin: 0;
+    color: #f5ead6;
   }
 
   .hero-sub {
@@ -676,6 +752,54 @@
     transition: color 0.2s; margin: 0 auto;
   }
   .qcm-popup-skip:hover { color: rgba(200,185,164,0.7); }
+
+  .article-popup {
+    width: min(680px, 92vw);
+    text-align: left;
+  }
+  .article-popup .qcm-popup-label {
+    margin-bottom: 1.2rem;
+  }
+  .article-popup .qcm-popup-title {
+    font-size: clamp(1.65rem, 4vw, 2.35rem);
+    line-height: 1.12;
+  }
+  .article-popup .qcm-popup-desc {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .article-popup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 1.5rem;
+  }
+  .article-popup-meta span {
+    display: inline-flex;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.18);
+    color: #e0c878;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+  }
+  .article-popup-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .article-popup-actions .qcm-popup-cta,
+  .article-popup-actions .qcm-popup-skip {
+    margin: 0;
+  }
+  @media (max-width: 560px) {
+    .article-popup { text-align: center; }
+    .article-popup-actions { justify-content: center; }
+    .article-popup-actions .qcm-popup-cta { width: 100%; text-align: center; }
+  }
 
 
   /* ─── SECTION GLOBAL ─── */
@@ -1443,6 +1567,70 @@
 
   .lightbox-close:hover { opacity: 1; }
 
+  .articles {
+    background: var(--bg-light);
+  }
+  .articles .section-label { color: var(--deep); }
+  .articles .section-title { color: #2A0A2E; }
+  .articles .section-desc { color: #5A2A50; }
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 48px;
+  }
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+    min-height: 260px;
+    background: var(--bg-light-alt);
+    border: 1px solid rgba(74,25,66,0.13);
+    border-radius: 8px;
+    color: #2A0A2E;
+    text-decoration: none;
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .article-card:hover {
+    border-color: rgba(var(--accent-rgb),0.55);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 36px rgba(42, 10, 46, 0.09);
+  }
+  .article-authors {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8B4D7F;
+  }
+  .article-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 600;
+    color: #2A0A2E;
+  }
+  .article-journal {
+    color: #5A2A50;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+  .article-doi {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    color: #8B4D7F;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 820px) {
+    .articles-grid { grid-template-columns: 1fr; }
+    .article-card { min-height: 0; }
+  }
+
   .video-card-label {
     position: absolute;
     inset: 0;
@@ -1585,11 +1773,17 @@
   <!-- ── Slide 1 : OJA ── -->
   <div class="hero-slide active hero-slide--oja">
     <div class="hero-slide-photo">
-      <img src="OJA.png" alt="">
+      <img src="oja_new.png" alt="Portrait d'Obayda Assaad">
     </div>
     <div class="oja-overlay">
-      <a href="qui-suis-je.html" class="oja-btn oja-btn--filled">Qui suis-je ?</a>
-      <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="oja-btn oja-btn--outline" target="_blank" rel="noopener">Google Scholar ↗</a>
+      <div class="oja-kicker">Chercheur en probabilités</div>
+      <h1 class="oja-title">Obayda Assaad</h1>
+      <div class="oja-subtitle">Docteur en mathématiques</div>
+      <p class="oja-copy">Recherche en probabilités, équations stochastiques et analyse fine des phénomènes aléatoires.</p>
+      <div class="oja-actions">
+        <a href="qui-suis-je.html" class="oja-btn oja-btn--filled">Découvrir son parcours</a>
+        <a href="https://scholar.google.com/citations?user=CpRK-wIAAAAJ&hl=fr" class="oja-btn oja-btn--outline" target="_blank" rel="noopener">Google Scholar ↗</a>
+      </div>
     </div>
   </div>
 
@@ -1656,6 +1850,25 @@
         <a href="bac.html" class="qcm-popup-cta">Rejoindre maintenant &rarr;</a>
         <button class="qcm-popup-skip" id="bacPopupSkip" style="margin-left:0;">Plus tard</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ARTICLE POPUP ═══════════════ -->
+<div class="qcm-popup-overlay" id="articlePopupOverlay">
+  <div class="qcm-popup article-popup" role="dialog" aria-modal="true" aria-labelledby="articlePopupTitle">
+    <button class="qcm-popup-close" id="articlePopupClose" aria-label="Fermer">&times;</button>
+    <div class="qcm-popup-label">Nouvel article &middot; arXiv math.PR</div>
+    <h2 class="qcm-popup-title" id="articlePopupTitle">Weak Limits of Wiener Chaos</h2>
+    <div class="article-popup-meta">
+      <span>Obayda Julien Assaad</span>
+      <span>Soumis le 12 août 2026</span>
+      <span>arXiv:2608.12492</span>
+    </div>
+    <p class="qcm-popup-desc">Primitive-Fock Classification and Hilbert-Stein Extraction : une contribution récente autour des limites faibles du chaos de Wiener et des structures de Fock associées.</p>
+    <div class="article-popup-actions">
+      <a href="https://arxiv.org/abs/2608.12492" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
+      <button class="qcm-popup-skip" id="articlePopupSkip">Plus tard</button>
     </div>
   </div>
 </div>
@@ -1772,63 +1985,60 @@
   </div>
 </section>
 -->
-<!-- ═══════════════ VIDEO CAROUSEL ═══════════════ -->
-<section class="video-carousel section--light" id="videos">
+<!-- ═══════════════ ARTICLES SCIENTIFIQUES ═══════════════ -->
+<section class="articles section--light" id="articles">
   <div class="container">
-    <div class="section-label">En action</div>
-    <h2 class="section-title">Nos vidéos</h2>
-    <div class="carousel-wrapper">
-      <div class="carousel-track" id="carouselTrack">
-        <div class="video-card" data-youtube="e_zwiAinPAM">
-          <video poster="jesus_water.jpg" muted preload="metadata"></video>
-          <div class="video-card-label">Marcher sur l'eau&nbsp;?</div>
-          <div class="play-overlay">
-            <div class="play-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="video-card" data-youtube="fNbQCsw0mWw">
-          <video poster="turing_enigma.jpg" muted preload="metadata"></video>
-          <div class="video-card-label">Hacking?</div>
-          <div class="play-overlay">
-            <div class="play-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="video-card" data-src="irobot_FINAL.mp4">
-          <video src="irobot_FINAL.mp4" poster="irobot.jpg" muted preload="metadata"></video>
-          <div class="video-card-label">Loi optimale = tyrannie?</div>
-          <div class="play-overlay">
-            <div class="play-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-        </div>
-        <div class="video-card" data-src="evasion_asteroides_FINAL.mp4">
-          <video src="evasion_asteroides_FINAL.mp4" poster="evasion_asteroides.jpg" muted preload="metadata"></video>
-          <div class="video-card-label">Guerre interstellaire </div>
-          <div class="play-overlay">
-            <div class="play-btn">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="carousel-nav">
-        <button type="button" class="carousel-btn" id="prevBtn" aria-label="Précédent">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button type="button" class="carousel-btn" id="nextBtn" aria-label="Suivant">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
-        </button>
-      </div>
+    <div class="section-label">Recherche</div>
+    <h2 class="section-title">Articles scientifiques</h2>
+    <p class="section-desc">Une sélection de travaux autour des processus stochastiques, des équations aux dérivées partielles stochastiques, de l'estimation de paramètres et des approximations normales quantitatives.</p>
+    <div class="articles-grid">
+      <a class="article-card" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">
+        <div class="article-authors">Obayda Julien Assaad</div>
+        <h3 class="article-title">Weak Limits of Wiener Chaos: Primitive-Fock Classification and Hilbert-Stein Extraction</h3>
+        <p class="article-journal"><strong>arXiv:2608.12492</strong>, Mathematics - Probability, soumis le 12 août 2026.</p>
+        <span class="article-doi">Lire sur arXiv</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1007/s11203-020-09219-z" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <h3 class="article-title">Parameter identification for the Hermite Ornstein-Uhlenbeck process</h3>
+        <p class="article-journal"><strong>Statistical Inference for Stochastic Processes</strong>, 23(2), 251-270, 2020.</p>
+        <span class="article-doi">DOI: 10.1007/s11203-020-09219-z</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1016/j.bulsci.2021.102995" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <h3 class="article-title">Pathwise analysis and parameter estimation for the stochastic Burgers equation</h3>
+        <p class="article-journal"><strong>Bulletin des Sciences Mathématiques</strong>, 170, 102995, 2021.</p>
+        <span class="article-doi">DOI: 10.1016/j.bulsci.2021.102995</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1051/ps/2021009" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <h3 class="article-title">Wavelet analysis for the solution to the wave equation with fractional noise in time and white noise in space</h3>
+        <p class="article-journal"><strong>ESAIM: Probability and Statistics</strong>, 25, 220-257, 2021.</p>
+        <span class="article-doi">DOI: 10.1051/ps/2021009</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1007/s40072-021-00198-7" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, D. Nualart, C. A. Tudor, L. Viitasaari</div>
+        <h3 class="article-title">Quantitative normal approximations for the stochastic fractional heat equation</h3>
+        <p class="article-journal"><strong>Stochastics and Partial Differential Equations: Analysis and Computations</strong>, 10, 223-254, 2022.</p>
+        <span class="article-doi">DOI: 10.1007/s40072-021-00198-7</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1142/S0219493722400147" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, J. Gamain, C. A. Tudor</div>
+        <h3 class="article-title">Quadratic variation and drift parameter estimation for the stochastic wave equation with space-time white noise</h3>
+        <p class="article-journal"><strong>Stochastics and Dynamics</strong>, 22(7), 2240014, 2022.</p>
+        <span class="article-doi">DOI: 10.1142/S0219493722400147</span>
+      </a>
+      <a class="article-card" href="https://doi.org/10.1080/17442508.2022.2068955" target="_blank" rel="noopener">
+        <div class="article-authors">O. Assaad, C.-P. Diez, C. A. Tudor</div>
+        <h3 class="article-title">Generalized Wiener-Hermite integrals and rough non-Gaussian Ornstein-Uhlenbeck process</h3>
+        <p class="article-journal"><strong>Stochastics</strong>, 95(2), 2023.</p>
+        <span class="article-doi">DOI: 10.1080/17442508.2022.2068955</span>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- Lightbox vidéo -->
+<!-- Lightbox vidéo conservée pour réactivation éventuelle du bloc vidéo.
 <div class="video-lightbox" id="videoLightbox">
   <div class="lightbox-inner" id="lightboxInner">
     <button type="button" class="lightbox-close" id="lightboxClose">&#x2715;</button>
@@ -1836,8 +2046,10 @@
     <iframe id="lightboxIframe" style="display:none" allowfullscreen allow="autoplay; encrypted-media"></iframe>
   </div>
 </div>
+-->
 
 <!-- ═══════════════ PREUVE SOCIALE ═══════════════ -->
+<!--
 <section class="proof" style="background: var(--bg);">
   <div class="container">
     <div class="section-label">Témoignages</div>
@@ -1845,6 +2057,7 @@
     <div id="avis-container"></div>
   </div>
 </section>
+-->
 <!-- ═══════════════ TARIF ═══════════════ -->
 <!--
 <section class="pricing section--light" id="pricing">
@@ -2010,75 +2223,81 @@
     });
   })();
 
-  // ── Video Carousel ──
-  const track = document.getElementById('carouselTrack');
-  const lightbox = document.getElementById('videoLightbox');
-  const lightboxInner = document.getElementById('lightboxInner');
-  const lightboxVideo = document.getElementById('lightboxVideo');
-  const lightboxIframe = document.getElementById('lightboxIframe');
-  const lightboxClose = document.getElementById('lightboxClose');
-  const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
+  // ── Video Carousel (désactivé si la section vidéo est absente) ──
+  (function() {
+    const track = document.getElementById('carouselTrack');
+    const lightbox = document.getElementById('videoLightbox');
+    const lightboxInner = document.getElementById('lightboxInner');
+    const lightboxVideo = document.getElementById('lightboxVideo');
+    const lightboxIframe = document.getElementById('lightboxIframe');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
 
-  document.getElementById('nextBtn').addEventListener('click', () => {
-    track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
-  });
+    if (!track || !lightbox || !lightboxInner || !lightboxVideo || !lightboxIframe || !lightboxClose || !prevBtn || !nextBtn) return;
 
-  document.getElementById('prevBtn').addEventListener('click', () => {
-    track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
-  });
+    const cardWidth = () => track.querySelector('.video-card').offsetWidth + 20;
 
-  // ── Drag & swipe ──
-  let isDragging = false, dragStartX = 0, dragScrollLeft = 0, dragMoved = false;
-
-  track.addEventListener('mousedown', e => {
-    isDragging = true;
-    dragMoved = false;
-    dragStartX = e.pageX - track.offsetLeft;
-    dragScrollLeft = track.scrollLeft;
-    track.classList.add('dragging');
-  });
-  window.addEventListener('mouseup', () => {
-    isDragging = false;
-    track.classList.remove('dragging');
-  });
-  track.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    const x = e.pageX - track.offsetLeft;
-    const walk = x - dragStartX;
-    if (Math.abs(walk) > 5) dragMoved = true;
-    track.scrollLeft = dragScrollLeft - walk;
-  });
-
-  document.querySelectorAll('.video-card').forEach(card => {
-    card.addEventListener('click', () => {
-      if (dragMoved) return;
-      if (card.dataset.youtube) {
-        lightboxVideo.style.display = 'none';
-        lightboxIframe.style.display = 'block';
-        lightboxIframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.youtube}?autoplay=1`;
-        lightboxInner.classList.add('is-short');
-      } else {
-        lightboxIframe.style.display = 'none';
-        lightboxVideo.style.display = '';
-        lightboxVideo.src = card.dataset.src;
-        lightboxInner.classList.remove('is-short');
-        lightboxVideo.play();
-      }
-      lightbox.classList.add('active');
+    nextBtn.addEventListener('click', () => {
+      track.scrollBy({ left: cardWidth(), behavior: 'smooth' });
     });
-  });
 
-  function closeLightbox() {
-    lightbox.classList.remove('active');
-    lightboxVideo.pause();
-    lightboxVideo.src = '';
-    lightboxIframe.src = '';
-    lightboxInner.classList.remove('is-short');
-  }
+    prevBtn.addEventListener('click', () => {
+      track.scrollBy({ left: -cardWidth(), behavior: 'smooth' });
+    });
 
-  lightboxClose.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+    let isDragging = false, dragStartX = 0, dragScrollLeft = 0, dragMoved = false;
+
+    track.addEventListener('mousedown', e => {
+      isDragging = true;
+      dragMoved = false;
+      dragStartX = e.pageX - track.offsetLeft;
+      dragScrollLeft = track.scrollLeft;
+      track.classList.add('dragging');
+    });
+    window.addEventListener('mouseup', () => {
+      isDragging = false;
+      track.classList.remove('dragging');
+    });
+    track.addEventListener('mousemove', e => {
+      if (!isDragging) return;
+      const x = e.pageX - track.offsetLeft;
+      const walk = x - dragStartX;
+      if (Math.abs(walk) > 5) dragMoved = true;
+      track.scrollLeft = dragScrollLeft - walk;
+    });
+
+    document.querySelectorAll('.video-card').forEach(card => {
+      card.addEventListener('click', () => {
+        if (dragMoved) return;
+        if (card.dataset.youtube) {
+          lightboxVideo.style.display = 'none';
+          lightboxIframe.style.display = 'block';
+          lightboxIframe.src = `https://www.youtube-nocookie.com/embed/${card.dataset.youtube}?autoplay=1`;
+          lightboxInner.classList.add('is-short');
+        } else {
+          lightboxIframe.style.display = 'none';
+          lightboxVideo.style.display = '';
+          lightboxVideo.src = card.dataset.src;
+          lightboxInner.classList.remove('is-short');
+          lightboxVideo.play();
+        }
+        lightbox.classList.add('active');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      lightboxVideo.pause();
+      lightboxVideo.src = '';
+      lightboxIframe.src = '';
+      lightboxInner.classList.remove('is-short');
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  })();
 
   // FAQ Toggle
   document.querySelectorAll('.faq-q').forEach(q => {
@@ -2119,6 +2338,24 @@
     // setTimeout(function() { overlay.classList.add('visible'); }, 800);
   })();
 
+  // ── Article Popup ──
+  (function() {
+    if (sessionStorage.getItem('articlePopupDismissed')) return;
+    const overlay = document.getElementById('articlePopupOverlay');
+    if (!overlay) return;
+
+    function closePopup() {
+      overlay.classList.remove('visible');
+      sessionStorage.setItem('articlePopupDismissed', '1');
+    }
+
+    document.getElementById('articlePopupClose').addEventListener('click', closePopup);
+    document.getElementById('articlePopupSkip').addEventListener('click', closePopup);
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) closePopup(); });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+    setTimeout(function() { overlay.classList.add('visible'); }, 900);
+  })();
+
   // Smooth scroll
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
@@ -2146,9 +2383,10 @@
   });
 </script>
 
-<script src="avis.js"></script>
+<!-- <script src="avis.js"></script> -->
 <script src="components.js"></script>
 <script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
+<script src="translations.js"></script>
 </body>
 </html>
