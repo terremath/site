@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Obayda Assaad - Terre Mathématiques</title>
+<title>Obayda Julien Assaad - Terre Mathématiques</title>
 <script src="colors.js"></script>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -449,6 +449,201 @@
     .qcm-meta { flex-direction: column; gap: 0.8rem; }
   }
 
+  /* ── Publication slides : dossier scientifique / cachet de soumission ── */
+  .hero-slide--paper {
+    background:
+      radial-gradient(circle at 84% 18%, rgba(var(--accent-rgb),0.16), transparent 34%),
+      linear-gradient(135deg, #1C1024 0%, #130E1C 58%, #0E0816 100%);
+    color: var(--heading);
+  }
+  .paper-visual {
+    position: relative;
+    z-index: 1;
+    min-height: 100%;
+    padding: 84px 6vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .paper-visual::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 62% 66%, rgba(var(--accent-rgb),0.2), transparent 30%),
+      linear-gradient(180deg, var(--bg-light-alt), var(--bg-light));
+    clip-path: polygon(0 0, 88% 0, 100% 100%, 0 100%);
+    box-shadow: inset -18px 0 42px rgba(var(--bg-rgb),0.18);
+  }
+  .paper-sheet {
+    position: relative;
+    z-index: 1;
+    width: min(440px, 78%);
+    aspect-ratio: 0.72;
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.95), rgba(245,234,214,0.94)),
+      repeating-linear-gradient(0deg, transparent 0 33px, rgba(42,16,32,0.08) 34px 35px);
+    border: 1px solid rgba(var(--accent-rgb),0.34);
+    box-shadow: 0 34px 90px rgba(0,0,0,0.42);
+    transform: rotate(-4deg);
+  }
+  .paper-sheet::before,
+  .paper-sheet::after {
+    content: '';
+    position: absolute;
+    border-radius: 999px;
+    background: rgba(var(--deep-rgb),0.22);
+  }
+  .paper-sheet::before {
+    left: 12%;
+    right: 18%;
+    top: 18%;
+    height: 10px;
+    box-shadow:
+      0 34px 0 rgba(var(--deep-rgb),0.18),
+      0 68px 0 rgba(var(--deep-rgb),0.13),
+      0 136px 0 rgba(var(--deep-rgb),0.12);
+  }
+  .paper-sheet::after {
+    width: 44%;
+    height: 44%;
+    right: -11%;
+    bottom: 13%;
+    border: 2px solid rgba(var(--accent-rgb),0.8);
+    background:
+      radial-gradient(circle, transparent 44%, rgba(var(--accent-rgb),0.18) 45% 58%, transparent 59%);
+    transform: rotate(18deg);
+  }
+  .paper-orbit {
+    position: absolute;
+    inset: 12%;
+    border: 1px solid rgba(var(--accent-rgb),0.18);
+    border-radius: 50%;
+    transform: rotate(28deg);
+  }
+  .paper-orbit::before,
+  .paper-orbit::after {
+    content: '';
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 28px rgba(var(--accent-rgb),0.8);
+  }
+  .paper-orbit::before { top: 11%; left: 20%; }
+  .paper-orbit::after { right: 18%; bottom: 13%; }
+  .paper-content {
+    padding: 86px 7vw 80px 58px;
+    gap: 18px;
+    background:
+      linear-gradient(90deg, rgba(var(--bg-rgb),0.18), transparent 22%),
+      rgba(var(--bg-rgb),0.02);
+  }
+  .paper-content::after { display: none; }
+  .paper-kicker {
+    font-size: 0.74rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .paper-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.15rem, 4.15vw, 4.15rem);
+    line-height: 1.03;
+    color: var(--heading);
+    max-width: 760px;
+    margin: 0;
+    text-shadow: 0 2px 28px rgba(0,0,0,0.34);
+  }
+  .paper-title em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+  }
+  .paper-venue {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--deep);
+    font-weight: 800;
+    box-shadow: 0 16px 44px rgba(var(--accent-rgb),0.28);
+  }
+  .paper-venue::before {
+    content: attr(data-prefix);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+    opacity: 0.72;
+  }
+  .paper-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 700px;
+  }
+  .paper-meta span {
+    padding: 7px 12px;
+    border: 1px solid rgba(var(--accent-rgb),0.24);
+    border-radius: 999px;
+    color: rgba(var(--heading-rgb),0.84);
+    background: rgba(var(--heading-rgb),0.05);
+    font-size: 0.86rem;
+  }
+  .paper-copy {
+    max-width: 680px;
+    color: rgba(var(--heading-rgb),0.9);
+    font-size: clamp(0.98rem, 1.5vw, 1.12rem);
+    line-height: 1.7;
+  }
+  .paper-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .paper-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+  }
+  .paper-btn--primary {
+    background: var(--heading);
+    color: var(--deep);
+  }
+  .paper-btn--ghost {
+    border: 1px solid rgba(var(--heading-rgb),0.38);
+    color: var(--heading);
+    background: rgba(var(--heading-rgb),0.04);
+  }
+  .hero-slide--paper-alt {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(var(--accent-rgb),0.18), transparent 32%),
+      linear-gradient(135deg, #0E0816 0%, #130E1C 54%, #1C1024 100%);
+  }
+  .hero-slide--paper-alt .paper-visual { order: 2; }
+  .hero-slide--paper-alt .paper-content { order: 1; }
+  .hero-slide--paper-alt .paper-sheet { transform: rotate(4deg); }
+  .hero-slide--paper-alt .paper-visual::before {
+    clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+    box-shadow: inset 18px 0 42px rgba(var(--bg-rgb),0.18);
+  }
+
   .hero-dots {
     position: absolute;
     bottom: 28px;
@@ -756,18 +951,43 @@
   .article-popup {
     width: min(680px, 92vw);
     text-align: left;
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb),0.18), transparent 34%),
+      linear-gradient(180deg, var(--bg-light-alt), var(--bg-light));
+    border: 1px solid rgba(var(--accent-rgb),0.42);
+    box-shadow: 0 34px 86px rgba(var(--bg-rgb),0.38), 0 0 0 1px rgba(var(--accent-rgb),0.18);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .article-popup::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--deep), var(--accent), var(--accent-light));
+  }
+  .article-popup .qcm-popup-close {
+    color: rgba(var(--deep-rgb),0.45);
+  }
+  .article-popup .qcm-popup-close:hover {
+    color: var(--deep);
   }
   .article-popup .qcm-popup-label {
     margin-bottom: 1.2rem;
+    color: var(--deep);
+    font-weight: 700;
   }
   .article-popup .qcm-popup-title {
     font-size: clamp(1.65rem, 4vw, 2.35rem);
     line-height: 1.12;
+    color: var(--deep);
   }
   .article-popup .qcm-popup-desc {
     max-width: none;
     margin-left: 0;
     margin-right: 0;
+    color: var(--deep);
+    font-weight: 500;
   }
   .article-popup-meta {
     display: flex;
@@ -777,13 +997,21 @@
   }
   .article-popup-meta span {
     display: inline-flex;
+    align-items: center;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.18);
-    color: #e0c878;
+    background: rgba(var(--accent-rgb),0.16);
+    border: 1px solid rgba(var(--accent-rgb),0.28);
+    color: var(--deep);
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
+  }
+  .article-popup-meta .article-popup-submission {
+    background: var(--deep);
+    border-color: var(--deep);
+    color: var(--bg-light-alt);
+    font-weight: 700;
+    box-shadow: 0 8px 22px rgba(var(--deep-rgb),0.18);
   }
   .article-popup-actions {
     display: flex;
@@ -794,6 +1022,41 @@
   .article-popup-actions .qcm-popup-cta,
   .article-popup-actions .qcm-popup-skip {
     margin: 0;
+  }
+  .article-popup-actions .qcm-popup-skip {
+    color: rgba(var(--deep-rgb),0.68);
+    font-weight: 600;
+  }
+  .article-popup-actions .qcm-popup-skip:hover {
+    color: var(--deep);
+  }
+  .article-popup-list {
+    display: grid;
+    gap: 1rem;
+    margin: 0 0 1.5rem;
+  }
+  .article-popup-card {
+    padding: 1.1rem 1rem;
+    border: 1px solid rgba(var(--accent-rgb),0.28);
+    border-radius: 10px;
+    background: rgba(var(--bg-light-alt),0.72);
+    box-shadow: 0 12px 28px rgba(var(--deep-rgb),0.08);
+  }
+  .article-popup-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.25rem, 3vw, 1.65rem);
+    line-height: 1.12;
+    color: var(--deep);
+    margin: 0 0 0.75rem;
+  }
+  .article-popup-card .qcm-popup-desc {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+  .article-popup-card .qcm-popup-cta {
+    padding: 0.72rem 1.45rem;
+    font-size: 0.72rem;
   }
   @media (max-width: 560px) {
     .article-popup { text-align: center; }
@@ -1686,6 +1949,78 @@
       letter-spacing: 0.05em !important;
     }
 
+    .hero-slide--paper,
+    .hero-slide--paper-alt {
+      background:
+        linear-gradient(180deg, #130E1C 0%, #1A0D20 42%, #F5EAD6 42.2%, #FAF6EE 100%);
+      min-height: 100svh;
+    }
+    .hero-slide--paper-alt .paper-visual,
+    .hero-slide--paper-alt .paper-content {
+      order: initial;
+    }
+    .paper-visual {
+      min-height: 0;
+      padding: 32px 24px 12px;
+    }
+    .paper-sheet {
+      width: min(240px, 68vw);
+      transform: rotate(-3deg);
+    }
+    .paper-content {
+      padding: 24px 22px 78px !important;
+      gap: 14px;
+      background: var(--bg-light);
+      color: var(--deep);
+    }
+    .paper-kicker {
+      color: var(--deep);
+      font-size: 0.68rem;
+    }
+    .paper-title {
+      color: var(--deep);
+      font-size: clamp(2rem, 10vw, 3.2rem);
+    }
+    .paper-title em {
+      color: #8B4D7F;
+    }
+    .paper-venue {
+      padding: 10px 14px;
+      border-radius: 8px;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+    .paper-venue::before {
+      letter-spacing: 0.12em;
+    }
+    .paper-meta {
+      gap: 8px;
+    }
+    .paper-meta span {
+      color: rgba(var(--deep-rgb),0.82);
+      border-color: rgba(var(--deep-rgb),0.14);
+      background: rgba(255,255,255,0.52);
+    }
+    .paper-copy {
+      color: rgba(var(--deep-rgb),0.78);
+      font-size: 0.96rem;
+    }
+    .paper-actions {
+      width: 100%;
+    }
+    .paper-btn {
+      width: 100%;
+    }
+    .paper-btn--primary {
+      background: var(--deep);
+      color: var(--heading);
+    }
+    .paper-btn--ghost {
+      border-color: rgba(var(--deep-rgb),0.22);
+      color: var(--deep);
+    }
+
     /* OJA : image pleine largeur, ratio naturel (le texte est dans l'image) */
     .hero-slide--oja { height: auto; min-height: unset; position: relative; }
     .hero-slide--oja .hero-slide-photo {
@@ -1773,11 +2108,11 @@
   <!-- ── Slide 1 : OJA ── -->
   <div class="hero-slide active hero-slide--oja">
     <div class="hero-slide-photo">
-      <img src="oja_new.png" alt="Portrait d'Obayda Assaad">
+      <img src="oja_new.png" alt="Portrait d'Obayda Julien Assaad">
     </div>
     <div class="oja-overlay">
       <div class="oja-kicker">Chercheur en probabilités</div>
-      <h1 class="oja-title">Obayda Assaad</h1>
+      <h1 class="oja-title">Obayda Julien Assaad</h1>
       <div class="oja-subtitle">Docteur en mathématiques</div>
       <p class="oja-copy">Recherche en probabilités, équations stochastiques et analyse fine des phénomènes aléatoires.</p>
       <div class="oja-actions">
@@ -1787,7 +2122,7 @@
     </div>
   </div>
 
-  <!-- ── Slide 2 : QCM ── -->
+  <!-- ── Slide 2 : QCM (désactivé dans le carousel) ──
   <div class="hero-slide hero-slide--qcm">
     <div class="qcm-bg">
       <iframe src="qcm_proto3d_spheres.html" title="Animation 3D sphères"></iframe>
@@ -1797,6 +2132,55 @@
       <h1 class="qcm-title">TESTE-TOI</h1>
       <p class="qcm-subtitle">QCM original et cr&eacute;atif</p>
       <a href="qcm.html" class="qcm-btn">Commencer le test &rarr;</a>
+    </div>
+  </div>
+  -->
+
+  <!-- ── Slide 2 : Publication Advances in Mathematics ── -->
+  <div class="hero-slide hero-slide--paper">
+    <div class="paper-visual" aria-hidden="true">
+      <div class="paper-sheet">
+        <div class="paper-orbit"></div>
+      </div>
+    </div>
+    <div class="hero-slide-content paper-content">
+      <p class="paper-kicker">Nouvelle prépublication</p>
+      <h2 class="paper-title">Finite Gaussian Reconstruction of <em>Polynomial Orbits</em></h2>
+      <div class="paper-venue" data-prefix="Soumis à">Advances in Mathematics</div>
+      <div class="paper-meta">
+        <span>O.J. Assaad</span>
+        <span>Soumis le 14 août 2026</span>
+        <span>arXiv:2608.14475</span>
+      </div>
+      <p class="paper-copy">Reconstruction finie des orbites orthogonales de polynômes à partir de moments gaussiens corrélés et de périodes oscillatoires.</p>
+      <div class="paper-actions">
+        <a class="paper-btn paper-btn--primary" href="https://arxiv.org/abs/2608.14475" target="_blank" rel="noopener">Lire sur arXiv</a>
+        <a class="paper-btn paper-btn--ghost" href="publications.html">Voir les publications</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 3 : Publication Annals of Probability ── -->
+  <div class="hero-slide hero-slide--paper hero-slide--paper-alt">
+    <div class="paper-visual" aria-hidden="true">
+      <div class="paper-sheet">
+        <div class="paper-orbit"></div>
+      </div>
+    </div>
+    <div class="hero-slide-content paper-content">
+      <p class="paper-kicker">Nouvelle prépublication</p>
+      <h2 class="paper-title">Weak Limits of <em>Wiener Chaos</em></h2>
+      <div class="paper-venue" data-prefix="Soumis aux">Annals of Probability</div>
+      <div class="paper-meta">
+        <span>O.J. Assaad</span>
+        <span>Soumis le 12 août 2026</span>
+        <span>arXiv:2608.12492</span>
+      </div>
+      <p class="paper-copy">Primitive-Fock Classification and Hilbert-Stein Extraction : limites faibles du chaos de Wiener et structures de Fock associées.</p>
+      <div class="paper-actions">
+        <a class="paper-btn paper-btn--primary" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">Lire sur arXiv</a>
+        <a class="paper-btn paper-btn--ghost" href="publications.html">Voir les publications</a>
+      </div>
     </div>
   </div>
 
@@ -1818,6 +2202,7 @@
   <div class="hero-dots">
     <button type="button" class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
     <button type="button" class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
+    <button type="button" class="hero-dot" data-index="2" aria-label="Diapositive 3"></button>
   </div>
 
 </section>
@@ -1858,16 +2243,33 @@
 <div class="qcm-popup-overlay" id="articlePopupOverlay">
   <div class="qcm-popup article-popup" role="dialog" aria-modal="true" aria-labelledby="articlePopupTitle">
     <button class="qcm-popup-close" id="articlePopupClose" aria-label="Fermer">&times;</button>
-    <div class="qcm-popup-label">Nouvel article &middot; arXiv math.PR</div>
-    <h2 class="qcm-popup-title" id="articlePopupTitle">Weak Limits of Wiener Chaos</h2>
-    <div class="article-popup-meta">
-      <span>Obayda Julien Assaad</span>
-      <span>Soumis le 12 août 2026</span>
-      <span>arXiv:2608.12492</span>
+    <div class="qcm-popup-label">Deux nouveaux articles</div>
+    <h2 class="qcm-popup-title" id="articlePopupTitle">Deux soumissions récentes</h2>
+    <div class="article-popup-list">
+      <article class="article-popup-card">
+        <h3>Finite Gaussian Reconstruction of Polynomial Orbits</h3>
+        <div class="article-popup-meta">
+          <span>O.J. Assaad</span>
+          <span>Soumis le 14 août 2026</span>
+          <span class="article-popup-submission">Soumis à Advances in Mathematics</span>
+          <span>arXiv:2608.14475</span>
+        </div>
+        <p class="qcm-popup-desc">From Correlated Moments to Oscillatory Periods : reconstruction finie des orbites orthogonales de polynômes à partir de moments gaussiens corrélés et de périodes oscillatoires.</p>
+        <a href="https://arxiv.org/abs/2608.14475" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
+      </article>
+      <article class="article-popup-card">
+        <h3>Weak Limits of Wiener Chaos</h3>
+        <div class="article-popup-meta">
+          <span>O.J. Assaad</span>
+          <span>Soumis le 12 août 2026</span>
+          <span class="article-popup-submission">Soumis aux Annals of Probability</span>
+          <span>arXiv:2608.12492</span>
+        </div>
+        <p class="qcm-popup-desc">Primitive-Fock Classification and Hilbert-Stein Extraction : une contribution récente autour des limites faibles du chaos de Wiener et des structures de Fock associées.</p>
+        <a href="https://arxiv.org/abs/2608.12492" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
+      </article>
     </div>
-    <p class="qcm-popup-desc">Primitive-Fock Classification and Hilbert-Stein Extraction : une contribution récente autour des limites faibles du chaos de Wiener et des structures de Fock associées.</p>
     <div class="article-popup-actions">
-      <a href="https://arxiv.org/abs/2608.12492" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
       <button class="qcm-popup-skip" id="articlePopupSkip">Plus tard</button>
     </div>
   </div>
@@ -1992,44 +2394,50 @@
     <h2 class="section-title">Articles scientifiques</h2>
     <p class="section-desc">Une sélection de travaux autour des processus stochastiques, des équations aux dérivées partielles stochastiques, de l'estimation de paramètres et des approximations normales quantitatives.</p>
     <div class="articles-grid">
+      <a class="article-card" href="https://arxiv.org/abs/2608.14475" target="_blank" rel="noopener">
+        <div class="article-authors">O.J. Assaad</div>
+        <h3 class="article-title">Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods</h3>
+        <p class="article-journal"><strong>arXiv:2608.14475</strong>, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, soumis le 14 août 2026. Soumis à <em>Advances in Mathematics</em>.</p>
+        <span class="article-doi">Lire sur arXiv</span>
+      </a>
       <a class="article-card" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">
-        <div class="article-authors">Obayda Julien Assaad</div>
+        <div class="article-authors">O.J. Assaad</div>
         <h3 class="article-title">Weak Limits of Wiener Chaos: Primitive-Fock Classification and Hilbert-Stein Extraction</h3>
-        <p class="article-journal"><strong>arXiv:2608.12492</strong>, Mathematics - Probability, soumis le 12 août 2026.</p>
+        <p class="article-journal"><strong>arXiv:2608.12492</strong>, Mathematics - Probability, soumis le 12 août 2026. Soumis aux <em>Annals of Probability</em>.</p>
         <span class="article-doi">Lire sur arXiv</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1007/s11203-020-09219-z" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <div class="article-authors">O.J. Assaad, C. A. Tudor</div>
         <h3 class="article-title">Parameter identification for the Hermite Ornstein-Uhlenbeck process</h3>
         <p class="article-journal"><strong>Statistical Inference for Stochastic Processes</strong>, 23(2), 251-270, 2020.</p>
         <span class="article-doi">DOI: 10.1007/s11203-020-09219-z</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1016/j.bulsci.2021.102995" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <div class="article-authors">O.J. Assaad, C. A. Tudor</div>
         <h3 class="article-title">Pathwise analysis and parameter estimation for the stochastic Burgers equation</h3>
         <p class="article-journal"><strong>Bulletin des Sciences Mathématiques</strong>, 170, 102995, 2021.</p>
         <span class="article-doi">DOI: 10.1016/j.bulsci.2021.102995</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1051/ps/2021009" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, C. A. Tudor</div>
+        <div class="article-authors">O.J. Assaad, C. A. Tudor</div>
         <h3 class="article-title">Wavelet analysis for the solution to the wave equation with fractional noise in time and white noise in space</h3>
         <p class="article-journal"><strong>ESAIM: Probability and Statistics</strong>, 25, 220-257, 2021.</p>
         <span class="article-doi">DOI: 10.1051/ps/2021009</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1007/s40072-021-00198-7" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, D. Nualart, C. A. Tudor, L. Viitasaari</div>
+        <div class="article-authors">O.J. Assaad, D. Nualart, C. A. Tudor, L. Viitasaari</div>
         <h3 class="article-title">Quantitative normal approximations for the stochastic fractional heat equation</h3>
         <p class="article-journal"><strong>Stochastics and Partial Differential Equations: Analysis and Computations</strong>, 10, 223-254, 2022.</p>
         <span class="article-doi">DOI: 10.1007/s40072-021-00198-7</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1142/S0219493722400147" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, J. Gamain, C. A. Tudor</div>
+        <div class="article-authors">O.J. Assaad, J. Gamain, C. A. Tudor</div>
         <h3 class="article-title">Quadratic variation and drift parameter estimation for the stochastic wave equation with space-time white noise</h3>
         <p class="article-journal"><strong>Stochastics and Dynamics</strong>, 22(7), 2240014, 2022.</p>
         <span class="article-doi">DOI: 10.1142/S0219493722400147</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1080/17442508.2022.2068955" target="_blank" rel="noopener">
-        <div class="article-authors">O. Assaad, C.-P. Diez, C. A. Tudor</div>
+        <div class="article-authors">O.J. Assaad, C.-P. Diez, C. A. Tudor</div>
         <h3 class="article-title">Generalized Wiener-Hermite integrals and rough non-Gaussian Ornstein-Uhlenbeck process</h3>
         <p class="article-journal"><strong>Stochastics</strong>, 95(2), 2023.</p>
         <span class="article-doi">DOI: 10.1080/17442508.2022.2068955</span>

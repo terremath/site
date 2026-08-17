@@ -3,16 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Recherche - Obayda Assaad</title>
+<title>Recherche - Obayda Julien Assaad</title>
 <script src="colors.js"></script>
+<script src="components.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
   body {
     font-family: 'Outfit', sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg-light);
+    color: var(--deep);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
@@ -24,20 +25,8 @@
     background:
       radial-gradient(ellipse 70% 60% at 70% 20%, rgba(var(--accent-rgb),0.08), transparent 62%),
       var(--bg);
+    border-bottom: 1px solid rgba(var(--accent-rgb),0.14);
     padding: 88px 28px 72px;
-  }
-
-  .research-hero img {
-    position: relative;
-    z-index: 1;
-    display: block;
-    width: 100%;
-    max-width: 1180px;
-    height: auto;
-    margin: 44px auto 0;
-    border-radius: 8px;
-    border: 1px solid rgba(var(--accent-rgb),0.18);
-    box-shadow: 0 24px 80px rgba(0,0,0,0.34);
   }
 
   .hero-content {
@@ -95,133 +84,90 @@
     font-family: 'Fraunces', serif;
     font-size: clamp(2rem, 4vw, 3.2rem);
     line-height: 1.12;
-    color: var(--heading);
+    color: var(--deep);
     margin-bottom: 20px;
   }
 
   .section-desc {
     max-width: 760px;
-    color: var(--text);
+    color: rgba(var(--deep-rgb),0.74);
     font-size: 1rem;
     line-height: 1.75;
     font-weight: 300;
   }
 
-  .axes {
-    background: var(--bg);
+  .research-themes {
+    color: var(--deep);
+    background-color: var(--bg-light);
+    background:
+      linear-gradient(180deg, var(--bg-light), var(--bg-light-alt) 58%, var(--bg-light));
   }
 
-  .axes-grid {
+  .research-themes .section-label {
+    color: var(--deep);
+  }
+
+  .theme-text {
+    max-width: 920px;
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-    margin-top: 46px;
+    gap: 22px;
   }
 
-  .axis-card {
-    min-height: 260px;
-    padding: 32px 28px;
-    border: 1px solid rgba(var(--accent-rgb), 0.14);
+  .theme-intro,
+  .theme-conclusion {
+    border: 1px solid rgba(var(--accent-rgb),0.28);
     border-radius: 8px;
-    background: rgba(var(--accent-rgb), 0.04);
+    background: rgba(255,255,255,0.44);
+    box-shadow: 0 18px 52px rgba(74,25,66,0.08);
+    padding: 28px 30px;
   }
 
-  .axis-num {
+  .theme-text p {
+    color: rgba(var(--deep-rgb),0.78);
+    line-height: 1.85;
+    font-size: clamp(1rem, 1.35vw, 1.08rem);
+    font-weight: 400;
+  }
+
+  .theme-intro p,
+  .theme-conclusion p {
+    color: rgba(var(--deep-rgb),0.9);
+    font-size: clamp(1.04rem, 1.45vw, 1.14rem);
+  }
+
+  .theme-axis {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 26px;
+    padding: 8px 0 4px;
+  }
+
+  .theme-axis-label {
     font-family: 'Fraunces', serif;
-    font-size: 2.4rem;
-    color: rgba(var(--accent-rgb), 0.24);
-    margin-bottom: 22px;
+    color: var(--accent);
+    font-size: 2.2rem;
+    line-height: 1;
+    border-top: 1px solid rgba(var(--deep-rgb),0.16);
+    padding-top: 14px;
   }
 
-  .axis-card h3 {
+  .theme-axis h3 {
     font-family: 'Fraunces', serif;
-    color: var(--heading);
-    font-size: 1.35rem;
-    line-height: 1.22;
-    margin-bottom: 14px;
+    color: var(--deep);
+    font-size: clamp(1.28rem, 2vw, 1.65rem);
+    line-height: 1.18;
+    margin-bottom: 10px;
   }
 
-  .axis-card p {
-    color: var(--text);
-    line-height: 1.7;
-    font-size: 0.95rem;
-    font-weight: 300;
+  .theme-conclusion {
+    border-left: 4px solid var(--accent);
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb),0.18), transparent 48%),
+      rgba(255,255,255,0.52);
   }
 
   .articles {
     background: var(--bg-light);
-  }
-
-  .upcoming {
-    background: var(--bg-alt);
-  }
-
-  .upcoming-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    margin-top: 46px;
-  }
-
-  .upcoming-card {
-    border: 1px solid rgba(var(--accent-rgb),0.16);
-    border-radius: 8px;
-    background: rgba(var(--bg-rgb),0.34);
-    overflow: hidden;
-  }
-
-  .upcoming-card img {
-    width: 100%;
-    display: block;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-bottom: 1px solid rgba(var(--accent-rgb),0.12);
-  }
-
-  .upcoming-content {
-    padding: 28px;
-  }
-
-  .draft-badge {
-    display: inline-flex;
-    margin-bottom: 16px;
-    padding: 0.32rem 0.72rem;
-    border: 1px solid rgba(var(--accent-rgb),0.24);
-    border-radius: 999px;
-    color: var(--accent);
-    font-size: 0.68rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-  }
-
-  .upcoming-content h3 {
-    font-family: 'Fraunces', serif;
-    color: var(--heading);
-    font-size: 1.45rem;
-    line-height: 1.2;
-    margin-bottom: 12px;
-  }
-
-  .upcoming-content p {
-    color: var(--text);
-    line-height: 1.72;
-    font-size: 0.95rem;
-    font-weight: 300;
-  }
-
-  .slot-list {
-    margin-top: 20px;
-    display: grid;
-    gap: 10px;
-  }
-
-  .slot-list span {
-    display: block;
-    padding: 11px 13px;
-    border-radius: 6px;
-    background: rgba(var(--accent-rgb),0.06);
-    color: var(--text);
-    font-size: 0.86rem;
   }
 
   .articles .section-label { color: var(--deep); }
@@ -342,9 +288,15 @@
   }
 
   @media (max-width: 860px) {
-    .research-hero { min-height: 64vh; }
-    .axes-grid { grid-template-columns: 1fr; }
-    .upcoming-grid { grid-template-columns: 1fr; }
+    .theme-axis {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .theme-axis-label {
+      font-size: 1.35rem;
+      border-top: 0;
+      padding-top: 0;
+    }
     .article-head { grid-template-columns: 1fr; gap: 16px; }
     .article-toggle { justify-self: start; }
   }
@@ -361,227 +313,63 @@
 <tm-header></tm-header>
 
 <header class="research-hero">
-  <img src="wiener-chaos-simulation.png" alt="Simulation graphique d'une limite faible dans le deuxième chaos de Wiener">
   <div class="hero-content">
     <span class="section-label">Recherche</span>
-    <h1 class="hero-title">Probabilités, chaos et <em>équations stochastiques</em></h1>
-    <p class="hero-copy">Mes travaux portent sur l'analyse fine des phénomènes aléatoires : processus non gaussiens, chaos de Wiener, équations aux dérivées partielles stochastiques, estimation de paramètres et théorèmes limites quantitatifs.</p>
+    <h1 class="hero-title">Thématiques de recherche et <em>intérêts</em></h1>
+    <p class="hero-copy">Probabilités, analyse, géométrie et physique mathématique : comprendre les structures profondes qui gouvernent les phénomènes aléatoires complexes.</p>
   </div>
 </header>
 
-<section class="axes">
+<section class="research-themes">
   <div class="container">
-    <span class="section-label">Domaine</span>
-    <h2 class="section-title">Comprendre ce que l'aléatoire laisse voir</h2>
-    <p class="section-desc">Un même fil traverse ces travaux : extraire une structure mesurable à partir d'objets aléatoires complexes. Les trajectoires, variations, moyennes spatiales et projections de chaos deviennent alors des outils pour identifier des paramètres, décrire des limites et mesurer la part gaussienne cachée dans un système.</p>
+    <span class="section-label">Thématiques</span>
+    <h2 class="section-title">Structures, hasard, champs et spectres</h2>
+    <div class="theme-text">
+      <div class="theme-intro">
+        <p>Mes recherches se situent à l’interface des probabilités, de l’analyse, de la géométrie et de la physique mathématique. Elles sont guidées par une même question : quelles structures profondes gouvernent les phénomènes aléatoires complexes, et comment les reconstruire à partir de leurs manifestations observables ?</p>
+      </div>
 
-    <div class="axes-grid">
-      <article class="axis-card">
-        <div class="axis-num">01</div>
-        <h3>Processus stochastiques et mémoire longue</h3>
-        <p>Étude de processus fractionnaires ou hermitiens, souvent non gaussiens, où la dépendance à long terme modifie profondément les méthodes classiques d'estimation et de convergence.</p>
-      </article>
-      <article class="axis-card">
-        <div class="axis-num">02</div>
-        <h3>EDP stochastiques</h3>
-        <p>Analyse d'équations de Burgers, de la chaleur ou des ondes perturbées par du bruit, avec un intérêt particulier pour les variations, les moyennes spatiales et les paramètres de dérive.</p>
-      </article>
-      <article class="axis-card">
-        <div class="axis-num">03</div>
-        <h3>Chaos de Wiener et limites faibles</h3>
-        <p>Classification des limites, décomposition des composantes primitives et extraction de facteurs gaussiens dans des suites de variables vivant dans des chaos de Wiener.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="upcoming" id="travaux-en-preparation">
-  <div class="container">
-    <span class="section-label">Travaux en préparation</span>
-    <h2 class="section-title">Deux prochains axes à formaliser</h2>
-    <p class="section-desc">Cette zone prépare l'arrivée des deux prochains articles. Chaque bloc contient déjà sa place pour le titre définitif, l'abstract en français et une simulation associée. Les visuels actuels sont des canevas de travail.</p>
-
-    <div class="upcoming-grid">
-      <article class="upcoming-card">
-        <img src="torelli-simulation.png" alt="Simulation préparatoire pour l'article Torelli">
-        <div class="upcoming-content">
-          <span class="draft-badge">Torelli · brouillon</span>
-          <h3>Titre à préciser</h3>
-          <p>Préparer une géométrie globale à partir d'invariants analytiques : périodes, signatures reconstructives, formes primitives et passage d'un objet local à une reconstruction globale.</p>
-          <div class="slot-list">
-            <span><strong>Titre :</strong> à remplacer par le titre officiel.</span>
-            <span><strong>Abstract :</strong> à intégrer dès que le résumé sera stabilisé.</span>
-            <span><strong>Simulation :</strong> canevas provisoire autour d'une géométrie de type Torelli.</span>
-          </div>
+      <article class="theme-axis">
+        <div class="theme-axis-label">01</div>
+        <div>
+          <h3>Analyse stochastique et chaos de Wiener</h3>
+          <p>Une première partie de mes travaux porte sur l’analyse stochastique et les chaos de Wiener : limites en loi, développements de Hermite, calcul de Malliavin, approximations de Stein et représentations en espace de Fock. Je m’intéresse en particulier aux mécanismes universels qui déterminent la forme des fluctuations, ainsi qu’aux structures combinatoires, algébriques et géométriques cachées derrière les convergences probabilistes.</p>
         </div>
       </article>
 
-      <article class="upcoming-card">
-        <img src="hermite-simulation.png" alt="Simulation préparatoire pour l'article Hermite">
-        <div class="upcoming-content">
-          <span class="draft-badge">Hermite · brouillon</span>
-          <h3>Titre à préciser</h3>
-          <p>Préparer le terrain autour des processus hermitiens : mémoire longue, transformations de Hermite, non-gaussianité, variations et estimation de paramètres.</p>
-          <div class="slot-list">
-            <span><strong>Titre :</strong> à remplacer par le titre officiel.</span>
-            <span><strong>Abstract :</strong> à intégrer dès que le résumé sera stabilisé.</span>
-            <span><strong>Simulation :</strong> canevas provisoire autour de chaos hermitiens.</span>
-          </div>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="articles" id="articles">
-  <div class="container">
-    <span class="section-label">Publications</span>
-    <h2 class="section-title">Articles scientifiques</h2>
-    <p class="section-desc">Chaque article peut être ouvert pour lire un résumé en français et accéder à la source officielle.</p>
-
-    <div class="article-list">
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">Obayda Julien Assaad</span>
-            <span class="article-title">Weak Limits of Wiener Chaos: Primitive-Fock Classification and Hilbert-Stein Extraction</span>
-            <span class="article-meta">arXiv:2608.12492, Mathematics - Probability, soumis le 12 août 2026.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>L'article caractérise les limites faibles de vecteurs bornés dans un chaos de Wiener fixe lorsque les espaces de Hilbert gaussiens peuvent varier. Il décrit une classification par polynômes de Wiener pondérés, construit une extraction positive de type Hilbert-Stein et relie les projections primitives à la part gaussienne indépendante détectable par contractions.</p>
-            <a class="article-link" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">Lire sur arXiv</a>
-          </div>
+      <article class="theme-axis">
+        <div class="theme-axis-label">02</div>
+        <div>
+          <h3>Physique mathématique et champs singuliers</h3>
+          <p>Un second axe concerne la physique mathématique et les modèles de champs singuliers. J’étudie les phénomènes de renormalisation, les interactions critiques, les structures multiscalaires et les passages entre descriptions microscopiques et comportements macroscopiques. L’objectif est de comprendre comment une théorie probabiliste cohérente peut émerger de dynamiques fortement corrélées, et comment la géométrie du modèle organise ses divergences, ses symétries et ses lois effectives.</p>
         </div>
       </article>
 
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, C. A. Tudor</span>
-            <span class="article-title">Parameter identification for the Hermite Ornstein-Uhlenbeck process</span>
-            <span class="article-meta">Statistical Inference for Stochastic Processes, 23(2), 251-270, 2020. DOI: 10.1007/s11203-020-09219-z.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>Le travail utilise l'analyse sur les chaos de Wiener pour étudier les variations quadratiques du processus d'Ornstein-Uhlenbeck hermitien, défini comme solution d'une équation de Langevin conduite par un processus d'Hermite. Ces résultats servent ensuite à identifier le paramètre de Hurst du modèle.</p>
-            <a class="article-link" href="https://doi.org/10.1007/s11203-020-09219-z" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
+      <article class="theme-axis">
+        <div class="theme-axis-label">03</div>
+        <div>
+          <h3>Reconstruction géométrique et spectrale</h3>
+          <p>Je développe également des approches de reconstruction géométrique et spectrale. Il s’agit de déterminer dans quelle mesure un objet — une variété, une dynamique, une structure analytique ou un modèle probabiliste — peut être retrouvé à partir d’une famille réduite d’observables. Ces questions conduisent naturellement aux problèmes inverses, aux principes de type Torelli, aux phénomènes de Stokes, à la géométrie spectrale et aux liens entre analyse, topologie et théorie des représentations.</p>
         </div>
       </article>
 
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, C. A. Tudor</span>
-            <span class="article-title">Pathwise analysis and parameter estimation for the stochastic Burgers equation</span>
-            <span class="article-meta">Bulletin des Sciences Mathématiques, 170, 102995, 2021. DOI: 10.1016/j.bulsci.2021.102995.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>L'article analyse la solution de l'équation de Burgers stochastique avec bruit blanc espace-temps additif. La solution est décomposée en une partie liée à l'équation de la chaleur stochastique et une partie plus régulière, puis cette structure est exploitée pour estimer le paramètre de dérive à partir de variations en temps et en espace.</p>
-            <a class="article-link" href="https://doi.org/10.1016/j.bulsci.2021.102995" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
+      <article class="theme-axis">
+        <div class="theme-axis-label">04</div>
+        <div>
+          <h3>Structures arithmétiques et opérateurs spectraux</h3>
+          <p>Enfin, mes intérêts s’étendent aux relations entre structures arithmétiques, spectres et phénomènes physiques. Je m’intéresse aux fonctions zêta, aux opérateurs spectraux, aux formules de trace et à la recherche de cadres géométriques dans lesquels les propriétés arithmétiques apparaissent comme les conséquences naturelles d’une structure analytique ou dynamique.</p>
         </div>
       </article>
 
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, C. A. Tudor</span>
-            <span class="article-title">Wavelet analysis for the solution to the wave equation with fractional noise in time and white noise in space</span>
-            <span class="article-meta">ESAIM: Probability and Statistics, 25, 220-257, 2021. DOI: 10.1051/ps/2021009.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>À l'aide du calcul de Malliavin, l'article étudie le comportement limite des variations par ondelettes associées à une équation des ondes stochastique. Il propose un estimateur par ondelettes du paramètre de Hurst et établit ses propriétés asymptotiques.</p>
-            <a class="article-link" href="https://doi.org/10.1051/ps/2021009" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, D. Nualart, C. A. Tudor, L. Viitasaari</span>
-            <span class="article-title">Quantitative normal approximations for the stochastic fractional heat equation</span>
-            <span class="article-meta">Stochastics and Partial Differential Equations: Analysis and Computations, 10, 223-254, 2022. DOI: 10.1007/s40072-021-00198-7.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>Ce travail établit un théorème central limite quantitatif pour l'équation de la chaleur fractionnaire stochastique avec bruit gaussien multiplicatif. Les moyennes spatiales, correctement renormalisées, convergent vers une limite gaussienne en distance de variation totale, avec une version fonctionnelle du résultat.</p>
-            <a class="article-link" href="https://doi.org/10.1007/s40072-021-00198-7" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, J. Gamain, C. A. Tudor</span>
-            <span class="article-title">Quadratic variation and drift parameter estimation for the stochastic wave equation with space-time white noise</span>
-            <span class="article-meta">Stochastics and Dynamics, 22(7), 2240014, 2022. DOI: 10.1142/S0219493722400147.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>L'article étudie les variations quadratiques, en temps et en espace, de la solution de l'équation des ondes stochastique conduite par un bruit blanc espace-temps. Après renormalisation, ces variations satisfont un théorème central limite et permettent de construire des estimateurs pour le paramètre de dérive.</p>
-            <a class="article-link" href="https://doi.org/10.1142/S0219493722400147" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
-        </div>
-      </article>
-
-      <article class="article-item">
-        <button class="article-head" type="button">
-          <span>
-            <span class="article-authors">O. Assaad, C.-P. Diez, C. A. Tudor</span>
-            <span class="article-title">Generalized Wiener-Hermite integrals and rough non-Gaussian Ornstein-Uhlenbeck process</span>
-            <span class="article-meta">Stochastics, 95(2), 2023. DOI: 10.1080/17442508.2022.2068955.</span>
-          </span>
-          <span class="article-toggle">+</span>
-        </button>
-        <div class="article-body">
-          <div class="article-body-inner">
-            <span class="abstract-label">Résumé</span>
-            <p>Le texte étudie des propriétés du processus d'Hermite généralisé, un processus auto-similaire non gaussien. Il définit une intégrale de Wiener associée à ce processus, puis l'utilise pour construire et analyser un processus d'Ornstein-Uhlenbeck non gaussien et rugueux.</p>
-            <a class="article-link" href="https://doi.org/10.1080/17442508.2022.2068955" target="_blank" rel="noopener">Voir la publication</a>
-          </div>
-        </div>
-      </article>
+      <div class="theme-conclusion">
+        <p>Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide. Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.</p>
+      </div>
     </div>
   </div>
 </section>
 
 <tm-newsletter></tm-newsletter>
 <tm-footer></tm-footer>
-
-<script>
-  document.querySelectorAll('.article-head').forEach(button => {
-    button.addEventListener('click', () => {
-      const item = button.closest('.article-item');
-      if (!item) return;
-      item.classList.toggle('open');
-    });
-  });
-</script>
-<script src="components.js"></script>
 <script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
 <script src="translations.js"></script>

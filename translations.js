@@ -3,7 +3,8 @@
   const LANGS = ['fr', 'en'];
 
   const en = {
-    'Obayda Assaad - Terre Mathématiques': 'Obayda Assaad - Terre Mathematics',
+    'Obayda Assaad - Terre Mathématiques': 'Obayda Julien Assaad - Terre Mathematics',
+    'Obayda Julien Assaad - Terre Mathématiques': 'Obayda Julien Assaad - Terre Mathematics',
     'Terre Mathématiques': 'Terre Mathematics',
     'Terre': 'Terre',
     'Mathématiques': 'Mathematics',
@@ -13,6 +14,44 @@
     'Ma méthode': 'My Method',
     'Qui suis-je ?': 'About',
     'Recherche': 'Research',
+    'Recherche ▾': 'Research ▾',
+    'Recherche â–¾': 'Research â–¾',
+    'Transmissions': 'Transmissions',
+    'Transmissions ▾': 'Transmissions ▾',
+    'Bac Éclair': 'Bac Éclair',
+    'QCM': 'Quiz',
+    'Thématiques': 'Themes',
+    'Publications - Obayda Julien Assaad': 'Publications - Obayda Julien Assaad',
+    'Publications scientifiques': 'Scientific Publications',
+    'Publications': 'Publications',
+    'scientifiques': 'Scientific',
+    'Articles, prépublications et travaux autour des probabilités, des structures stochastiques, de l’analyse et de la géométrie.': 'Papers, preprints, and works on probability, stochastic structures, analysis, and geometry.',
+    'Thématiques de recherche et intérêts': 'Research Themes and Interests',
+    'Thématiques de recherche et': 'Research Themes and',
+    'intérêts': 'Interests',
+    'Probabilités, analyse, géométrie et physique mathématique : comprendre les structures profondes qui gouvernent les phénomènes aléatoires complexes.': 'Probability, analysis, geometry, and mathematical physics: understanding the deep structures that govern complex random phenomena.',
+    'Structures, hasard, champs et spectres': 'Structures, Randomness, Fields, and Spectra',
+    'Analyse stochastique et chaos de Wiener': 'Stochastic Analysis and Wiener Chaos',
+    'Physique mathématique et champs singuliers': 'Mathematical Physics and Singular Fields',
+    'Reconstruction géométrique et spectrale': 'Geometric and Spectral Reconstruction',
+    'Structures arithmétiques et opérateurs spectraux': 'Arithmetic Structures and Spectral Operators',
+    'Mes recherches se situent à l’interface des probabilités, de l’analyse, de la géométrie et de la physique mathématique. Elles sont guidées par une même question : quelles structures profondes gouvernent les phénomènes aléatoires complexes, et comment les reconstruire à partir de leurs manifestations observables ?': 'My research lies at the interface of probability, analysis, geometry, and mathematical physics. It is guided by a single question: which deep structures govern complex random phenomena, and how can they be reconstructed from their observable manifestations?',
+    'Une première partie de mes travaux porte sur l’analyse stochastique et les chaos de Wiener : limites en loi, développements de Hermite, calcul de Malliavin, approximations de Stein et représentations en espace de Fock. Je m’intéresse en particulier aux mécanismes universels qui déterminent la forme des fluctuations, ainsi qu’aux structures combinatoires, algébriques et géométriques cachées derrière les convergences probabilistes.': 'A first part of my work concerns stochastic analysis and Wiener chaos: convergence in law, Hermite expansions, Malliavin calculus, Stein approximations, and representations in Fock space. I am particularly interested in the universal mechanisms that determine the shape of fluctuations, as well as the combinatorial, algebraic, and geometric structures hidden behind probabilistic convergences.',
+    'Un second axe concerne la physique mathématique et les modèles de champs singuliers. J’étudie les phénomènes de renormalisation, les interactions critiques, les structures multiscalaires et les passages entre descriptions microscopiques et comportements macroscopiques. L’objectif est de comprendre comment une théorie probabiliste cohérente peut émerger de dynamiques fortement corrélées, et comment la géométrie du modèle organise ses divergences, ses symétries et ses lois effectives.': 'A second direction concerns mathematical physics and singular field models. I study renormalization phenomena, critical interactions, multiscale structures, and the passage from microscopic descriptions to macroscopic behavior. The goal is to understand how a coherent probabilistic theory can emerge from strongly correlated dynamics, and how the geometry of the model organizes its divergences, symmetries, and effective laws.',
+    'Je développe également des approches de reconstruction géométrique et spectrale. Il s’agit de déterminer dans quelle mesure un objet — une variété, une dynamique, une structure analytique ou un modèle probabiliste — peut être retrouvé à partir d’une famille réduite d’observables. Ces questions conduisent naturellement aux problèmes inverses, aux principes de type Torelli, aux phénomènes de Stokes, à la géométrie spectrale et aux liens entre analyse, topologie et théorie des représentations.': 'I also develop geometric and spectral reconstruction approaches. The aim is to determine to what extent an object - a variety, a dynamical system, an analytic structure, or a probabilistic model - can be recovered from a reduced family of observables. These questions naturally lead to inverse problems, Torelli-type principles, Stokes phenomena, spectral geometry, and links between analysis, topology, and representation theory.',
+    'Enfin, mes intérêts s’étendent aux relations entre structures arithmétiques, spectres et phénomènes physiques. Je m’intéresse aux fonctions zêta, aux opérateurs spectraux, aux formules de trace et à la recherche de cadres géométriques dans lesquels les propriétés arithmétiques apparaissent comme les conséquences naturelles d’une structure analytique ou dynamique.': 'Finally, my interests extend to the relations between arithmetic structures, spectra, and physical phenomena. I am interested in zeta functions, spectral operators, trace formulas, and the search for geometric frameworks in which arithmetic properties appear as natural consequences of an analytic or dynamical structure.',
+    'Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide. Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.': 'Beyond the diversity of the fields involved, my work rests on a common conviction: the deepest difficulties are not always resolved by accumulating calculations, but by identifying the language in which the problem becomes rigid. I therefore seek to build bridges between disciplines, isolate universal mechanisms, and reveal the hidden geometry behind randomness, fields, and spectra.',
+    'Deux nouveaux articles': 'Two New Papers',
+    'Deux soumissions récentes': 'Two Recent Submissions',
+    'Soumis le 14 août 2026': 'Submitted on August 14, 2026',
+    'Soumis à Advances in Mathematics': 'Submitted to Advances in Mathematics',
+    'Finite Gaussian Reconstruction of Polynomial Orbits': 'Finite Gaussian Reconstruction of Polynomial Orbits',
+    'Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods': 'Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods',
+    'From Correlated Moments to Oscillatory Periods : reconstruction finie des orbites orthogonales de polynômes à partir de moments gaussiens corrélés et de périodes oscillatoires.': 'From Correlated Moments to Oscillatory Periods: finite reconstruction of orthogonal polynomial orbits from correlated Gaussian moments and oscillatory periods.',
+    'arXiv:2608.14475, Mathematics - Probability, soumis le 14 août 2026. Soumis à Advances in Mathematics.': 'arXiv:2608.14475, Mathematics - Probability, submitted on August 14, 2026. Submitted to Advances in Mathematics.',
+    'arXiv:2608.14475, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, soumis le 14 août 2026. Soumis à Advances in Mathematics.': 'arXiv:2608.14475, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, submitted on August 14, 2026. Submitted to Advances in Mathematics.',
+    ', Mathematics - Probability, soumis le 14 août 2026. Soumis à': ', Mathematics - Probability, submitted on August 14, 2026. Submitted to',
+    ', Mathematics - Probability, Commutative Algebra, Algebraic Geometry, soumis le 14 août 2026. Soumis à': ', Mathematics - Probability, Commutative Algebra, Algebraic Geometry, submitted on August 14, 2026. Submitted to',
     'Contact': 'Contact',
     'Formations': 'Programs',
     'Réserver un appel': 'Book a Call',
@@ -25,7 +64,8 @@
     'Choix de la langue': 'Language selection',
 
     'Chercheur en probabilités': 'Researcher in Probability',
-    'Obayda Assaad': 'Obayda Assaad',
+    'Obayda Assaad': 'Obayda Julien Assaad',
+    'Obayda Julien Assaad': 'Obayda Julien Assaad',
     'Docteur en mathématiques': 'PhD in Mathematics',
     'Recherche en probabilités, équations stochastiques et analyse fine des phénomènes aléatoires.': 'Research in probability, stochastic equations, and the fine analysis of random phenomena.',
     'Découvrir son parcours': 'Discover His Path',
@@ -38,7 +78,11 @@
     '21 questions folles pour un petit génie…': '21 wild questions for a sharp mind...',
     'Non merci, pas maintenant': 'No thanks, not now',
     'Nouvel article · arXiv math.PR': 'New Paper · arXiv math.PR',
+    'Nouvel article · soumis aux Annals of Probability': 'New Paper · submitted to the Annals of Probability',
     'Soumis le 12 août 2026': 'Submitted on August 12, 2026',
+    'Soumis aux Annals of Probability': 'Submitted to the Annals of Probability',
+    ', Mathematics - Probability, soumis le 12 août 2026. Soumis aux': ', Mathematics - Probability, submitted on August 12, 2026. Submitted to',
+    'arXiv:2608.12492, Mathematics - Probability, soumis le 12 août 2026. Soumis aux Annals of Probability.': 'arXiv:2608.12492, Mathematics - Probability, submitted on August 12, 2026. Submitted to the Annals of Probability.',
     'Primitive-Fock Classification and Hilbert-Stein Extraction : une contribution récente autour des limites faibles du chaos de Wiener et des structures de Fock associées.': 'Primitive-Fock Classification and Hilbert-Stein Extraction: a recent contribution on weak limits of Wiener chaos and the associated Fock structures.',
     'Lire sur arXiv →': 'Read on arXiv →',
     'Plus tard': 'Later',
@@ -46,7 +90,8 @@
     "Une sélection de travaux autour des processus stochastiques, des équations aux dérivées partielles stochastiques, de l'estimation de paramètres et des approximations normales quantitatives.": 'A selection of works on stochastic processes, stochastic partial differential equations, parameter estimation, and quantitative normal approximations.',
     'Lire sur arXiv': 'Read on arXiv',
 
-    'Recherche - Obayda Assaad': 'Research - Obayda Assaad',
+    'Recherche - Obayda Assaad': 'Research - Obayda Julien Assaad',
+    'Recherche - Obayda Julien Assaad': 'Research - Obayda Julien Assaad',
     'Probabilités, chaos de Wiener et équations stochastiques': 'Probability, Wiener Chaos, and Stochastic Equations',
     'Probabilités, chaos et équations stochastiques': 'Probability, Chaos, and Stochastic Equations',
     'Probabilités, chaos et': 'Probability, Chaos, and',
@@ -58,7 +103,8 @@
     'Domaine': 'Field',
     "Comprendre ce que l'aléatoire laisse voir": 'Understanding What Randomness Lets Us See',
     "Un même fil traverse ces travaux : extraire une structure mesurable à partir d'objets aléatoires complexes. Les trajectoires, variations, moyennes spatiales et projections de chaos deviennent alors des outils pour identifier des paramètres, décrire des limites et mesurer la part gaussienne cachée dans un système.": 'A single thread runs through these works: extracting measurable structure from complex random objects. Paths, variations, spatial averages, and chaos projections then become tools for identifying parameters, describing limits, and measuring the hidden Gaussian component of a system.',
-    "Le travail d'Obayda Assaad se situe à l'intersection des probabilités modernes, de l'analyse stochastique et des équations aux dérivées partielles aléatoires.": "Obayda Assaad's work lies at the intersection of modern probability, stochastic analysis, and random partial differential equations.",
+    "Le travail d'Obayda Assaad se situe à l'intersection des probabilités modernes, de l'analyse stochastique et des équations aux dérivées partielles aléatoires.": "Obayda Julien Assaad's work lies at the intersection of modern probability, stochastic analysis, and random partial differential equations.",
+    "Le travail d'Obayda Julien Assaad se situe à l'intersection des probabilités modernes, de l'analyse stochastique et des équations aux dérivées partielles aléatoires.": "Obayda Julien Assaad's work lies at the intersection of modern probability, stochastic analysis, and random partial differential equations.",
     'Axes principaux': 'Main Directions',
     'Processus stochastiques et mémoire longue': 'Stochastic Processes and Long Memory',
     "Étude de processus fractionnaires ou hermitiens, souvent non gaussiens, où la dépendance à long terme modifie profondément les méthodes classiques d'estimation et de convergence.": 'Study of fractional or Hermitian processes, often non-Gaussian, where long-range dependence deeply changes classical estimation and convergence methods.',
@@ -101,6 +147,7 @@
     'Voir la source': 'View Source',
     'Voir la publication': 'View Publication',
     'Lire le résumé': 'Read Abstract',
+    "L'article étudie la reconstruction des orbites orthogonales de polynômes à partir d'une famille finie de moments mixtes de répliques gaussiennes corrélées. Il construit un certificat fini explicite, puis relie ce même invariant à un système de périodes oscillatoires et à des structures de type Jacobi-Rees.": 'The paper studies the reconstruction of orthogonal polynomial orbits from a finite family of mixed moments of correlated Gaussian replicas. It constructs an explicit finite certificate, then connects the same invariant to a system of oscillatory periods and Jacobi-Rees type structures.',
     "L'article caractérise les limites faibles de vecteurs bornés dans un chaos de Wiener fixe lorsque les espaces de Hilbert gaussiens peuvent varier. Il décrit une classification par polynômes de Wiener pondérés, construit une extraction positive de type Hilbert-Stein et relie les projections primitives à la part gaussienne indépendante détectable par contractions.": 'The paper characterizes weak limits of bounded vectors in a fixed Wiener chaos when the underlying Gaussian Hilbert spaces may vary. It gives a classification by weighted Wiener polynomials, constructs a positive Hilbert-Stein type extraction, and connects primitive projections with the independent Gaussian part detected by contractions.',
     "Le travail utilise l'analyse sur les chaos de Wiener pour étudier les variations quadratiques du processus d'Ornstein-Uhlenbeck hermitien, défini comme solution d'une équation de Langevin conduite par un processus d'Hermite. Ces résultats servent ensuite à identifier le paramètre de Hurst du modèle.": 'This work uses analysis on Wiener chaoses to study the quadratic variations of the Hermite Ornstein-Uhlenbeck process, defined as the solution of a Langevin equation driven by a Hermite process. These results are then used to identify the Hurst parameter of the model.',
     "L'article analyse la solution de l'équation de Burgers stochastique avec bruit blanc espace-temps additif. La solution est décomposée en une partie liée à l'équation de la chaleur stochastique et une partie plus régulière, puis cette structure est exploitée pour estimer le paramètre de dérive à partir de variations en temps et en espace.": 'The paper analyzes the solution of the stochastic Burgers equation with additive space-time white noise. The solution is decomposed into a component related to the stochastic heat equation and a more regular component, and this structure is used to estimate the drift parameter from temporal and spatial variations.',
@@ -271,52 +318,7 @@
   let queued = false;
 
   function ensureFloatingSwitch() {
-    if (document.querySelector('[data-lang-switch]')) return;
-    if (!document.getElementById('tm-floating-lang-style')) {
-      const style = document.createElement('style');
-      style.id = 'tm-floating-lang-style';
-      style.textContent = `
-.tm-floating-lang {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 10000;
-  display: inline-flex;
-  gap: 3px;
-  padding: 3px;
-  border: 1px solid rgba(45,27,51,0.18);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.82);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-}
-.tm-floating-lang button {
-  min-width: 34px;
-  height: 28px;
-  padding: 0 9px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: #2D1B33;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-}
-.tm-floating-lang button.is-active {
-  background: #C9A84C;
-  color: #2D1B33;
-}`;
-      document.head.appendChild(style);
-    }
-    const switcher = document.createElement('div');
-    switcher.className = 'tm-floating-lang';
-    switcher.setAttribute('aria-label', 'Choix de la langue');
-    switcher.innerHTML = `
-      <button type="button" data-lang-switch="fr" class="is-active">FR</button>
-      <button type="button" data-lang-switch="en">EN</button>`;
-    document.body.appendChild(switcher);
+    document.querySelectorAll('.tm-floating-lang').forEach(el => el.remove());
   }
 
   function normalize(text) {

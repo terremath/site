@@ -525,7 +525,20 @@ class TmHeader extends HTMLElement {
           <a href="qui-suis-je.html">Qui suis-je ?</a>
         </div>
       </div>
-      <a href="recherche.html">Recherche</a>
+      <div class="tm-dd">
+        <a href="#">Recherche ▾</a>
+        <div class="tm-dd-panel">
+          <a href="recherche.html">Thématiques</a>
+          <a href="publications.html">Publications</a>
+        </div>
+      </div>
+      <div class="tm-dd">
+        <a href="#">Transmissions ▾</a>
+        <div class="tm-dd-panel">
+          <a href="bac.html">Bac Éclair</a>
+          <a href="qcm.html">QCM</a>
+        </div>
+      </div>
       <!-- <div class="tm-dd">
         <a href="#">Formations ▾</a>
         <div class="tm-dd-panel">
@@ -559,7 +572,12 @@ class TmHeader extends HTMLElement {
       <a class="tm-sub" href="philosophie.html">Ma philosophie</a>
       <a class="tm-sub" href="methode.html">Ma méthode</a>
       <a class="tm-sub" href="qui-suis-je.html">Qui suis-je ?</a>
-      <a href="recherche.html">Recherche</a>
+      <div class="tm-drawer-section">Recherche</div>
+      <a class="tm-sub" href="recherche.html">Thématiques</a>
+      <a class="tm-sub" href="publications.html">Publications</a>
+      <div class="tm-drawer-section">Transmissions</div>
+      <a class="tm-sub" href="bac.html">Bac Éclair</a>
+      <a class="tm-sub" href="qcm.html">QCM</a>
       <!-- <div class="tm-drawer-section">Formations</div>
       <a class="tm-sub" href="bac.html">BAC</a>
       <a class="tm-sub" href="elite.html">Élite</a>

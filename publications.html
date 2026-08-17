@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publications - Obayda Julien Assaad</title>
+<script src="colors.js"></script>
+<script src="components.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .research-hero {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 70% 20%, rgba(var(--accent-rgb),0.08), transparent 62%),
+      var(--bg);
+    padding: 88px 28px 72px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .section-label {
+    display: inline-flex;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 8vw, 6.4rem);
+    line-height: 0.95;
+    color: var(--heading);
+    max-width: 740px;
+    margin-bottom: 24px;
+  }
+
+  .hero-title em {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero-copy {
+    max-width: 700px;
+    font-size: clamp(1rem, 1.7vw, 1.18rem);
+    line-height: 1.75;
+    color: rgba(245,237,224,0.82);
+    font-weight: 300;
+  }
+
+  section {
+    padding: 92px 28px;
+  }
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.12;
+    color: var(--heading);
+    margin-bottom: 20px;
+  }
+
+  .section-desc {
+    max-width: 760px;
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .research-themes {
+    background: var(--bg);
+  }
+
+  .theme-text {
+    max-width: 920px;
+    display: grid;
+    gap: 22px;
+  }
+
+  .theme-intro,
+  .theme-conclusion {
+    border: 1px solid rgba(var(--accent-rgb),0.18);
+    border-radius: 8px;
+    background: rgba(var(--accent-rgb),0.055);
+    padding: 28px 30px;
+  }
+
+  .theme-text p {
+    color: var(--text);
+    line-height: 1.85;
+    font-size: clamp(1rem, 1.35vw, 1.08rem);
+    font-weight: 300;
+  }
+
+  .theme-intro p,
+  .theme-conclusion p {
+    color: rgba(var(--heading-rgb),0.86);
+    font-size: clamp(1.04rem, 1.45vw, 1.14rem);
+  }
+
+  .theme-axis {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 26px;
+    padding: 8px 0 4px;
+  }
+
+  .theme-axis-label {
+    font-family: 'Fraunces', serif;
+    color: rgba(var(--accent-rgb),0.72);
+    font-size: 2.2rem;
+    line-height: 1;
+    border-top: 1px solid rgba(var(--accent-rgb),0.28);
+    padding-top: 14px;
+  }
+
+  .theme-axis h3 {
+    font-family: 'Fraunces', serif;
+    color: var(--heading);
+    font-size: clamp(1.28rem, 2vw, 1.65rem);
+    line-height: 1.18;
+    margin-bottom: 10px;
+  }
+
+  .theme-conclusion {
+    border-left: 4px solid var(--accent);
+    background:
+      linear-gradient(135deg, rgba(var(--accent-rgb),0.11), transparent 46%),
+      rgba(var(--accent-rgb),0.045);
+  }
+
+  .articles {
+    background: var(--bg-light);
+  }
+
+  .articles .section-label { color: var(--deep); }
+  .articles .section-title { color: #2A0A2E; }
+  .articles .section-desc { color: #5A2A50; }
+
+  .article-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 46px;
+  }
+
+  .article-item {
+    background: var(--bg-light-alt);
+    border: 1px solid rgba(74,25,66,0.13);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #2A0A2E;
+  }
+
+  .article-head {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    padding: 30px 34px;
+    text-align: left;
+    cursor: pointer;
+    color: inherit;
+    align-items: center;
+  }
+
+  .article-head > span:first-child {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .article-authors {
+    display: block;
+    font-size: 0.74rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8B4D7F;
+    font-weight: 500;
+  }
+
+  .article-title {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.34rem, 2.8vw, 2rem);
+    line-height: 1.15;
+    color: #2A0A2E;
+    max-width: 980px;
+  }
+
+  .article-meta {
+    display: block;
+    max-width: 860px;
+    color: #5A2A50;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    font-weight: 400;
+  }
+
+  .article-toggle {
+    align-self: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(74,25,66,0.18);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #8B4D7F;
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+  }
+
+  .article-item.open .article-toggle {
+    transform: rotate(45deg);
+  }
+
+  .article-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+    border-top: 1px solid transparent;
+  }
+
+  .article-item.open .article-body {
+    max-height: 520px;
+    border-top-color: rgba(74,25,66,0.1);
+  }
+
+  .article-body-inner {
+    padding: 26px 34px 34px;
+  }
+
+  .abstract-label {
+    display: block;
+    color: #8B4D7F;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .article-body p {
+    color: #5A2A50;
+    line-height: 1.75;
+    font-size: 0.96rem;
+    margin-bottom: 20px;
+  }
+
+  .article-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 22px;
+    border: 1px solid rgba(74,25,66,0.16);
+    border-radius: 999px;
+    background: rgba(var(--accent-rgb),0.18);
+    color: #2A0A2E;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 10px 28px rgba(74,25,66,0.08);
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .article-link:hover {
+    background: var(--accent);
+    color: #2A0A2E;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 860px) {
+    .theme-axis {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .theme-axis-label {
+      font-size: 1.35rem;
+      border-top: 0;
+      padding-top: 0;
+    }
+    .article-head { grid-template-columns: 1fr; gap: 16px; }
+    .article-toggle { justify-self: start; }
+  }
+
+  @media (max-width: 560px) {
+    section { padding: 72px 22px; }
+    .research-hero { padding: 72px 22px 56px; }
+    .hero-content { padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<tm-header></tm-header>
+
+<header class="research-hero">
+  <div class="hero-content">
+    <span class="section-label">Recherche</span>
+    <h1 class="hero-title">Publications <em>scientifiques</em></h1>
+    <p class="hero-copy">Articles, prépublications et travaux autour des probabilités, des structures stochastiques, de l’analyse et de la géométrie.</p>
+  </div>
+</header>
+
+<section class="articles" id="articles">
+  <div class="container">
+    <span class="section-label">Publications</span>
+    <h2 class="section-title">Articles scientifiques</h2>
+    <p class="section-desc">Chaque article peut être ouvert pour lire un résumé en français et accéder à la source officielle.</p>
+
+    <div class="article-list">
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad</span>
+            <span class="article-title">Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods</span>
+            <span class="article-meta">arXiv:2608.14475, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, soumis le 14 août 2026. Soumis à Advances in Mathematics.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>L'article étudie la reconstruction des orbites orthogonales de polynômes à partir d'une famille finie de moments mixtes de répliques gaussiennes corrélées. Il construit un certificat fini explicite, puis relie ce même invariant à un système de périodes oscillatoires et à des structures de type Jacobi-Rees.</p>
+            <a class="article-link" href="https://arxiv.org/abs/2608.14475" target="_blank" rel="noopener">Lire sur arXiv</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad</span>
+            <span class="article-title">Weak Limits of Wiener Chaos: Primitive-Fock Classification and Hilbert-Stein Extraction</span>
+            <span class="article-meta">arXiv:2608.12492, Mathematics - Probability, soumis le 12 août 2026. Soumis aux Annals of Probability.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>L'article caractérise les limites faibles de vecteurs bornés dans un chaos de Wiener fixe lorsque les espaces de Hilbert gaussiens peuvent varier. Il décrit une classification par polynômes de Wiener pondérés, construit une extraction positive de type Hilbert-Stein et relie les projections primitives à la part gaussienne indépendante détectable par contractions.</p>
+            <a class="article-link" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">Lire sur arXiv</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, C. A. Tudor</span>
+            <span class="article-title">Parameter identification for the Hermite Ornstein-Uhlenbeck process</span>
+            <span class="article-meta">Statistical Inference for Stochastic Processes, 23(2), 251-270, 2020. DOI: 10.1007/s11203-020-09219-z.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>Le travail utilise l'analyse sur les chaos de Wiener pour étudier les variations quadratiques du processus d'Ornstein-Uhlenbeck hermitien, défini comme solution d'une équation de Langevin conduite par un processus d'Hermite. Ces résultats servent ensuite à identifier le paramètre de Hurst du modèle.</p>
+            <a class="article-link" href="https://doi.org/10.1007/s11203-020-09219-z" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, C. A. Tudor</span>
+            <span class="article-title">Pathwise analysis and parameter estimation for the stochastic Burgers equation</span>
+            <span class="article-meta">Bulletin des Sciences Mathématiques, 170, 102995, 2021. DOI: 10.1016/j.bulsci.2021.102995.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>L'article analyse la solution de l'équation de Burgers stochastique avec bruit blanc espace-temps additif. La solution est décomposée en une partie liée à l'équation de la chaleur stochastique et une partie plus régulière, puis cette structure est exploitée pour estimer le paramètre de dérive à partir de variations en temps et en espace.</p>
+            <a class="article-link" href="https://doi.org/10.1016/j.bulsci.2021.102995" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, C. A. Tudor</span>
+            <span class="article-title">Wavelet analysis for the solution to the wave equation with fractional noise in time and white noise in space</span>
+            <span class="article-meta">ESAIM: Probability and Statistics, 25, 220-257, 2021. DOI: 10.1051/ps/2021009.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>À l'aide du calcul de Malliavin, l'article étudie le comportement limite des variations par ondelettes associées à une équation des ondes stochastique. Il propose un estimateur par ondelettes du paramètre de Hurst et établit ses propriétés asymptotiques.</p>
+            <a class="article-link" href="https://doi.org/10.1051/ps/2021009" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, D. Nualart, C. A. Tudor, L. Viitasaari</span>
+            <span class="article-title">Quantitative normal approximations for the stochastic fractional heat equation</span>
+            <span class="article-meta">Stochastics and Partial Differential Equations: Analysis and Computations, 10, 223-254, 2022. DOI: 10.1007/s40072-021-00198-7.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>Ce travail établit un théorème central limite quantitatif pour l'équation de la chaleur fractionnaire stochastique avec bruit gaussien multiplicatif. Les moyennes spatiales, correctement renormalisées, convergent vers une limite gaussienne en distance de variation totale, avec une version fonctionnelle du résultat.</p>
+            <a class="article-link" href="https://doi.org/10.1007/s40072-021-00198-7" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, J. Gamain, C. A. Tudor</span>
+            <span class="article-title">Quadratic variation and drift parameter estimation for the stochastic wave equation with space-time white noise</span>
+            <span class="article-meta">Stochastics and Dynamics, 22(7), 2240014, 2022. DOI: 10.1142/S0219493722400147.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>L'article étudie les variations quadratiques, en temps et en espace, de la solution de l'équation des ondes stochastique conduite par un bruit blanc espace-temps. Après renormalisation, ces variations satisfont un théorème central limite et permettent de construire des estimateurs pour le paramètre de dérive.</p>
+            <a class="article-link" href="https://doi.org/10.1142/S0219493722400147" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad, C.-P. Diez, C. A. Tudor</span>
+            <span class="article-title">Generalized Wiener-Hermite integrals and rough non-Gaussian Ornstein-Uhlenbeck process</span>
+            <span class="article-meta">Stochastics, 95(2), 2023. DOI: 10.1080/17442508.2022.2068955.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>Le texte étudie des propriétés du processus d'Hermite généralisé, un processus auto-similaire non gaussien. Il définit une intégrale de Wiener associée à ce processus, puis l'utilise pour construire et analyser un processus d'Ornstein-Uhlenbeck non gaussien et rugueux.</p>
+            <a class="article-link" href="https://doi.org/10.1080/17442508.2022.2068955" target="_blank" rel="noopener">Voir la publication</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<tm-newsletter></tm-newsletter>
+<tm-footer></tm-footer>
+
+<script>
+  document.querySelectorAll('.article-head').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.closest('.article-item');
+      if (!item) return;
+      item.classList.toggle('open');
+    });
+  });
+</script>
+<script src="newsletter.js"></script>
+<script src="/cookie-consent.js"></script>
+<script src="translations.js"></script>
+</body>
+</html>
