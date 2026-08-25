@@ -163,18 +163,20 @@
 
   .articles .section-label { color: var(--deep); }
   .articles .section-title { color: #2A0A2E; }
-  .articles .section-desc { color: #5A2A50; }
+  .articles .section-desc { color: #3B1438; }
 
   .article-list {
     display: grid;
-    gap: 16px;
+    gap: 0;
     margin-top: 46px;
+    border-top: 1px solid rgba(74,25,66,0.16);
   }
 
   .article-item {
-    background: var(--bg-light-alt);
-    border: 1px solid rgba(74,25,66,0.13);
-    border-radius: 8px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(74,25,66,0.12);
+    border-radius: 0;
     overflow: hidden;
     color: #2A0A2E;
   }
@@ -185,8 +187,8 @@
     background: transparent;
     display: grid;
     grid-template-columns: 1fr auto;
-    gap: 24px;
-    padding: 30px 34px;
+    gap: 20px;
+    padding: 22px 0;
     text-align: left;
     cursor: pointer;
     color: inherit;
@@ -195,48 +197,48 @@
 
   .article-head > span:first-child {
     display: grid;
-    gap: 10px;
+    gap: 8px;
     min-width: 0;
   }
 
   .article-authors {
     display: block;
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #8B4D7F;
+    color: #6B2D5B;
     font-weight: 500;
   }
 
   .article-title {
     display: block;
     font-family: 'Fraunces', serif;
-    font-size: clamp(1.34rem, 2.8vw, 2rem);
-    line-height: 1.15;
+    font-size: clamp(1.06rem, 1.7vw, 1.3rem);
+    line-height: 1.22;
     color: #2A0A2E;
-    max-width: 980px;
+    max-width: 900px;
   }
 
   .article-meta {
     display: block;
-    max-width: 860px;
-    color: #5A2A50;
-    font-size: 0.94rem;
-    line-height: 1.65;
+    max-width: 920px;
+    color: #3B1438;
+    font-size: 0.86rem;
+    line-height: 1.5;
     font-weight: 400;
   }
 
   .article-toggle {
     align-self: center;
-    width: 38px;
-    height: 38px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     border: 1px solid rgba(74,25,66,0.18);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #8B4D7F;
-    font-size: 1.5rem;
+    color: #6B2D5B;
+    font-size: 1.05rem;
     line-height: 1;
     transition: transform 0.25s ease;
   }
@@ -258,12 +260,12 @@
   }
 
   .article-body-inner {
-    padding: 26px 34px 34px;
+    padding: 0 0 24px;
   }
 
   .abstract-label {
     display: block;
-    color: #8B4D7F;
+    color: #6B2D5B;
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -271,32 +273,34 @@
   }
 
   .article-body p {
-    color: #5A2A50;
-    line-height: 1.75;
-    font-size: 0.96rem;
-    margin-bottom: 20px;
+    color: #3B1438;
+    line-height: 1.65;
+    font-size: 0.9rem;
+    max-width: 920px;
+    margin-bottom: 14px;
   }
 
   .article-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 42px;
-    padding: 0 22px;
-    border: 1px solid rgba(74,25,66,0.16);
-    border-radius: 999px;
-    background: rgba(var(--accent-rgb),0.18);
-    color: #2A0A2E;
-    font-weight: 600;
+    min-height: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #6B2D5B;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-decoration: none;
-    box-shadow: 0 10px 28px rgba(74,25,66,0.08);
-    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    box-shadow: none;
+    transition: color 0.2s ease;
   }
 
   .article-link:hover {
-    background: var(--accent);
     color: #2A0A2E;
-    transform: translateY(-1px);
   }
 
   @media (max-width: 860px) {
@@ -339,6 +343,24 @@
     <p class="section-desc">Chaque article peut être ouvert pour lire un résumé en français et accéder à la source officielle.</p>
 
     <div class="article-list">
+      <article class="article-item">
+        <button class="article-head" type="button">
+          <span>
+            <span class="article-authors">O.J. Assaad</span>
+            <span class="article-title">Heat Geometry from a Universal Scalar Process</span>
+            <span class="article-meta">Zenodo preprint, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Accès ouvert, licence CC BY 4.0. Soumis à Annals of Mathematics.</span>
+          </span>
+          <span class="article-toggle">+</span>
+        </button>
+        <div class="article-body">
+          <div class="article-body-inner">
+            <span class="abstract-label">Résumé</span>
+            <p>L'article montre que la loi d'un unique processus scalaire lisse dans un chaos de Wiener fini détermine complètement des familles finies de tenseurs symétriques sur des espaces de Hilbert réels séparables, à équivalence orthogonale simultanée près. Les caractères de graphes gaussiens reconstruisent toutes les contractions, tandis qu'un opérateur de Gram intrinsèque de classe trace ramène le problème à la théorie invariante finie. Appliqué à un temps positif fixé au paquet de chaleur quadratique et quartique canonique, ce principe reconstruit le générateur de chaleur et force toute unité reconstruite à être spatiale. Il en résulte qu'un processus scalaire universel détermine des variétés riemanniennes fermées, des espaces RCD compacts de dimension finie, ainsi que des fibrés euclidiens munis d'une connexion métrique et d'un potentiel autoadjoint.</p>
+            <a class="article-link" href="https://zenodo.org/records/22092369" target="_blank" rel="noopener">Lire sur Zenodo</a>
+          </div>
+        </div>
+      </article>
+
       <article class="article-item">
         <button class="article-head" type="button">
           <span>
@@ -486,7 +508,6 @@
   </div>
 </section>
 
-<tm-newsletter></tm-newsletter>
 <tm-footer></tm-footer>
 
 <script>
@@ -498,7 +519,6 @@
     });
   });
 </script>
-<script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
 <script src="translations.js"></script>
 </body>

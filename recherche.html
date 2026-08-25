@@ -108,62 +108,63 @@
   }
 
   .theme-text {
-    max-width: 920px;
     display: grid;
-    gap: 22px;
-  }
-
-  .theme-intro,
-  .theme-conclusion {
-    border: 1px solid rgba(var(--accent-rgb),0.28);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.44);
-    box-shadow: 0 18px 52px rgba(74,25,66,0.08);
-    padding: 28px 30px;
+    grid-template-columns: minmax(260px, 0.72fr) 1fr;
+    gap: 58px;
+    align-items: start;
+    margin-top: 34px;
   }
 
   .theme-text p {
-    color: rgba(var(--deep-rgb),0.78);
-    line-height: 1.85;
-    font-size: clamp(1rem, 1.35vw, 1.08rem);
+    color: #351032;
+    line-height: 1.66;
+    font-size: 0.94rem;
     font-weight: 400;
   }
 
-  .theme-intro p,
-  .theme-conclusion p {
-    color: rgba(var(--deep-rgb),0.9);
-    font-size: clamp(1.04rem, 1.45vw, 1.14rem);
+  .theme-intro {
+    position: sticky;
+    top: 82px;
+    padding-left: 22px;
+    border-left: 3px solid var(--accent);
   }
 
-  .theme-axis {
-    display: grid;
-    grid-template-columns: 84px 1fr;
-    gap: 26px;
-    padding: 8px 0 4px;
+  .theme-intro p {
+    color: #2C0B2A;
+    font-size: clamp(1.04rem, 1.45vw, 1.18rem);
+    line-height: 1.72;
   }
 
   .theme-axis-label {
-    font-family: 'Fraunces', serif;
-    color: var(--accent);
-    font-size: 2.2rem;
-    line-height: 1;
-    border-top: 1px solid rgba(var(--deep-rgb),0.16);
-    padding-top: 14px;
+    display: none;
+  }
+
+  .theme-axes {
+    display: grid;
+    gap: 24px;
+  }
+
+  .theme-axis {
+    display: block;
+    padding: 0;
   }
 
   .theme-axis h3 {
     font-family: 'Fraunces', serif;
     color: var(--deep);
-    font-size: clamp(1.28rem, 2vw, 1.65rem);
-    line-height: 1.18;
-    margin-bottom: 10px;
+    font-size: clamp(1.02rem, 1.35vw, 1.18rem);
+    line-height: 1.24;
+    margin-bottom: 8px;
   }
 
   .theme-conclusion {
-    border-left: 4px solid var(--accent);
-    background:
-      linear-gradient(135deg, rgba(var(--accent-rgb),0.18), transparent 48%),
-      rgba(255,255,255,0.52);
+    margin-top: 30px;
+  }
+
+  .theme-conclusion p {
+    color: #2C0B2A;
+    line-height: 1.7;
+    font-size: 0.98rem;
   }
 
   .articles {
@@ -288,14 +289,18 @@
   }
 
   @media (max-width: 860px) {
-    .theme-axis {
+    .theme-text {
       grid-template-columns: 1fr;
-      gap: 10px;
+      gap: 34px;
+    }
+    .theme-intro {
+      position: static;
+    }
+    .theme-axis {
+      display: block;
     }
     .theme-axis-label {
-      font-size: 1.35rem;
-      border-top: 0;
-      padding-top: 0;
+      display: none;
     }
     .article-head { grid-template-columns: 1fr; gap: 16px; }
     .article-toggle { justify-self: start; }
@@ -329,48 +334,36 @@
         <p>Mes recherches se situent à l’interface des probabilités, de l’analyse, de la géométrie et de la physique mathématique. Elles sont guidées par une même question : quelles structures profondes gouvernent les phénomènes aléatoires complexes, et comment les reconstruire à partir de leurs manifestations observables ?</p>
       </div>
 
-      <article class="theme-axis">
-        <div class="theme-axis-label">01</div>
-        <div>
+      <div class="theme-axes">
+        <article class="theme-axis">
           <h3>Analyse stochastique et chaos de Wiener</h3>
           <p>Une première partie de mes travaux porte sur l’analyse stochastique et les chaos de Wiener : limites en loi, développements de Hermite, calcul de Malliavin, approximations de Stein et représentations en espace de Fock. Je m’intéresse en particulier aux mécanismes universels qui déterminent la forme des fluctuations, ainsi qu’aux structures combinatoires, algébriques et géométriques cachées derrière les convergences probabilistes.</p>
-        </div>
-      </article>
+        </article>
 
-      <article class="theme-axis">
-        <div class="theme-axis-label">02</div>
-        <div>
+        <article class="theme-axis">
           <h3>Physique mathématique et champs singuliers</h3>
           <p>Un second axe concerne la physique mathématique et les modèles de champs singuliers. J’étudie les phénomènes de renormalisation, les interactions critiques, les structures multiscalaires et les passages entre descriptions microscopiques et comportements macroscopiques. L’objectif est de comprendre comment une théorie probabiliste cohérente peut émerger de dynamiques fortement corrélées, et comment la géométrie du modèle organise ses divergences, ses symétries et ses lois effectives.</p>
-        </div>
-      </article>
+        </article>
 
-      <article class="theme-axis">
-        <div class="theme-axis-label">03</div>
-        <div>
+        <article class="theme-axis">
           <h3>Reconstruction géométrique et spectrale</h3>
           <p>Je développe également des approches de reconstruction géométrique et spectrale. Il s’agit de déterminer dans quelle mesure un objet — une variété, une dynamique, une structure analytique ou un modèle probabiliste — peut être retrouvé à partir d’une famille réduite d’observables. Ces questions conduisent naturellement aux problèmes inverses, aux principes de type Torelli, aux phénomènes de Stokes, à la géométrie spectrale et aux liens entre analyse, topologie et théorie des représentations.</p>
-        </div>
-      </article>
+        </article>
 
-      <article class="theme-axis">
-        <div class="theme-axis-label">04</div>
-        <div>
+        <article class="theme-axis">
           <h3>Structures arithmétiques et opérateurs spectraux</h3>
           <p>Enfin, mes intérêts s’étendent aux relations entre structures arithmétiques, spectres et phénomènes physiques. Je m’intéresse aux fonctions zêta, aux opérateurs spectraux, aux formules de trace et à la recherche de cadres géométriques dans lesquels les propriétés arithmétiques apparaissent comme les conséquences naturelles d’une structure analytique ou dynamique.</p>
-        </div>
-      </article>
+        </article>
 
-      <div class="theme-conclusion">
-        <p>Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide. Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.</p>
+        <div class="theme-conclusion">
+          <p>Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide. Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<tm-newsletter></tm-newsletter>
 <tm-footer></tm-footer>
-<script src="newsletter.js"></script>
 <script src="/cookie-consent.js"></script>
 <script src="translations.js"></script>
 </body>

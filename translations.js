@@ -43,6 +43,28 @@
     'Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide. Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.': 'Beyond the diversity of the fields involved, my work rests on a common conviction: the deepest difficulties are not always resolved by accumulating calculations, but by identifying the language in which the problem becomes rigid. I therefore seek to build bridges between disciplines, isolate universal mechanisms, and reveal the hidden geometry behind randomness, fields, and spectra.',
     'Deux nouveaux articles': 'Two New Papers',
     'Deux soumissions récentes': 'Two Recent Submissions',
+    'Trois nouveaux articles': 'Three New Papers',
+    'Trois soumissions récentes': 'Three Recent Submissions',
+    'Nouvel article': 'New Paper',
+    'Dernière soumission': 'Latest Submission',
+    'Soumis à': 'Submitted to',
+    'Soumis aux': 'Submitted to the',
+    'Publié le 25 août 2026': 'Published on August 25, 2026',
+    'publié le 25 août 2026': 'published on August 25, 2026',
+    ', publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Soumis à': ', published on August 25, 2026. DOI: 10.5281/zenodo.22092369. Submitted to',
+    ', publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Accès ouvert, licence CC BY 4.0. Soumis à': ', published on August 25, 2026. DOI: 10.5281/zenodo.22092369. Open access, CC BY 4.0 license. Submitted to',
+    'Soumis à Annals of Mathematics': 'Submitted to Annals of Mathematics',
+    'Annals of Mathematics': 'Annals of Mathematics',
+    'Nouvelle prépublication': 'New Preprint',
+    'Voir les publications': 'View Publications',
+    'Zenodo preprint': 'Zenodo preprint',
+    'Heat Geometry from a Universal Scalar Process': 'Heat Geometry from a Universal Scalar Process',
+    'Reconstruction de géométries de la chaleur à partir d’un processus scalaire universel en chaos de Wiener fini.': 'Reconstruction of heat geometries from a universal scalar process in finite Wiener chaos.',
+    'Lire sur Zenodo →': 'Read on Zenodo →',
+    'Lire sur Zenodo': 'Read on Zenodo',
+    'Zenodo preprint, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Accès ouvert, licence CC BY 4.0. Soumis à Annals of Mathematics.': 'Zenodo preprint, published on August 25, 2026. DOI: 10.5281/zenodo.22092369. Open access, CC BY 4.0 license. Submitted to Annals of Mathematics.',
+    'Zenodo preprint, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Soumis à Annals of Mathematics.': 'Zenodo preprint, published on August 25, 2026. DOI: 10.5281/zenodo.22092369. Submitted to Annals of Mathematics.',
+    "L'article montre que la loi d'un unique processus scalaire lisse dans un chaos de Wiener fini détermine complètement des familles finies de tenseurs symétriques sur des espaces de Hilbert réels séparables, à équivalence orthogonale simultanée près. Les caractères de graphes gaussiens reconstruisent toutes les contractions, tandis qu'un opérateur de Gram intrinsèque de classe trace ramène le problème à la théorie invariante finie. Appliqué à un temps positif fixé au paquet de chaleur quadratique et quartique canonique, ce principe reconstruit le générateur de chaleur et force toute unité reconstruite à être spatiale. Il en résulte qu'un processus scalaire universel détermine des variétés riemanniennes fermées, des espaces RCD compacts de dimension finie, ainsi que des fibrés euclidiens munis d'une connexion métrique et d'un potentiel autoadjoint.": 'The paper proves that the law of one smooth scalar process in a finite Wiener chaos completely determines finite families of symmetric tensors on arbitrary real separable Hilbert spaces, up to simultaneous orthogonal equivalence. Gaussian graph characters recover all contractions, while an intrinsic trace class Gram operator reduces the problem to finite dimensional invariant theory. Applied at a single fixed positive time to the canonical quadratic and quartic heat packet, this principle reconstructs the heat generator and forces every reconstructed unitary to be spatial. Consequently, one universal scalar process determines closed Riemannian manifolds, compact RCD spaces of finite dimension, and Euclidean bundles with metric connection and self-adjoint potential.',
     'Soumis le 14 août 2026': 'Submitted on August 14, 2026',
     'Soumis à Advances in Mathematics': 'Submitted to Advances in Mathematics',
     'Finite Gaussian Reconstruction of Polynomial Orbits': 'Finite Gaussian Reconstruction of Polynomial Orbits',
@@ -64,6 +86,7 @@
     'Choix de la langue': 'Language selection',
 
     'Chercheur en probabilités': 'Researcher in Probability',
+    'Mathématicien philosophe': 'Mathematician Philosopher',
     'Obayda Assaad': 'Obayda Julien Assaad',
     'Obayda Julien Assaad': 'Obayda Julien Assaad',
     'Docteur en mathématiques': 'PhD in Mathematics',
@@ -351,7 +374,7 @@
   }
 
   function translateAttributes(el, lang) {
-    ['placeholder', 'aria-label', 'alt', 'title', 'value'].forEach(attr => {
+    ['placeholder', 'aria-label', 'alt', 'title', 'value', 'data-prefix'].forEach(attr => {
       if (!el.hasAttribute(attr)) return;
       if (attr === 'value' && !['BUTTON', 'INPUT'].includes(el.tagName)) return;
       let map = attrOriginals.get(el);

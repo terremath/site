@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prévisualisation designs recherche</title>
+<script src="colors.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg-light);
+    color: #240822;
+    -webkit-font-smoothing: antialiased;
+  }
+  .preview-hero {
+    background: var(--bg);
+    color: var(--heading);
+    padding: 58px 28px 50px;
+  }
+  .wrap {
+    width: min(1120px, calc(100% - 40px));
+    margin: 0 auto;
+  }
+  .label {
+    color: var(--accent);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 0.98;
+    max-width: 860px;
+    margin-bottom: 18px;
+  }
+  .preview-hero p {
+    max-width: 760px;
+    color: rgba(245,237,224,0.82);
+    line-height: 1.7;
+  }
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(250,246,238,0.96);
+    border-bottom: 1px solid rgba(74,25,66,0.14);
+    backdrop-filter: blur(12px);
+  }
+  .nav .wrap {
+    display: flex;
+    gap: 10px;
+    padding: 12px 0;
+    overflow-x: auto;
+  }
+  .nav a {
+    flex: 0 0 auto;
+    color: #240822;
+    text-decoration: none;
+    border: 1px solid rgba(74,25,66,0.2);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+  .version {
+    padding: 76px 0;
+    border-bottom: 1px solid rgba(74,25,66,0.12);
+  }
+  .version:nth-of-type(even) {
+    background: var(--bg-light-alt);
+  }
+  .version-head {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    gap: 30px;
+    margin-bottom: 36px;
+  }
+  .version-mark {
+    font-family: 'Fraunces', serif;
+    color: var(--accent);
+    font-size: 3.4rem;
+    line-height: 1;
+  }
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.9rem, 3vw, 2.7rem);
+    line-height: 1.08;
+    margin-bottom: 12px;
+  }
+  .desc {
+    color: #3B1438;
+    line-height: 1.68;
+    max-width: 780px;
+    font-size: 0.98rem;
+  }
+  .theme-title {
+    font-family: 'Fraunces', serif;
+    color: #240822;
+    font-size: clamp(1.18rem, 1.8vw, 1.42rem);
+    line-height: 1.2;
+    margin-bottom: 9px;
+  }
+  .theme-copy {
+    color: #351032;
+    font-size: 0.94rem;
+    line-height: 1.66;
+  }
+  .intro-copy,
+  .close-copy {
+    color: #2C0B2A;
+    font-size: clamp(1.02rem, 1.4vw, 1.16rem);
+    line-height: 1.72;
+  }
+
+  .manifesto {
+    display: grid;
+    gap: 26px;
+  }
+  .manifesto-lead,
+  .manifesto-close {
+    max-width: 900px;
+    padding: 0 0 24px;
+    border-bottom: 1px solid rgba(74,25,66,0.18);
+  }
+  .manifesto-close {
+    padding: 26px 0 0;
+    border-top: 1px solid rgba(74,25,66,0.18);
+    border-bottom: 0;
+  }
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 42px;
+  }
+  .manifesto-item {
+    padding-top: 18px;
+    border-top: 2px solid rgba(212,164,120,0.55);
+  }
+
+  .two-column {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.72fr) 1fr;
+    gap: 58px;
+    align-items: start;
+  }
+  .side-note {
+    position: sticky;
+    top: 82px;
+    padding-left: 22px;
+    border-left: 3px solid var(--accent);
+  }
+  .side-note .intro-copy {
+    font-size: clamp(1.05rem, 1.5vw, 1.22rem);
+  }
+  .stack {
+    display: grid;
+    gap: 0;
+    border-top: 1px solid rgba(74,25,66,0.16);
+  }
+  .stack-item {
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(74,25,66,0.12);
+  }
+  .stack-close {
+    margin-top: 26px;
+    color: #2C0B2A;
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+
+  .chapters {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(74,25,66,0.16);
+    border-bottom: 1px solid rgba(74,25,66,0.16);
+  }
+  .chapter {
+    padding: 28px 22px 30px;
+    border-right: 1px solid rgba(74,25,66,0.12);
+  }
+  .chapter:last-child {
+    border-right: 0;
+  }
+  .chapter .label {
+    margin-bottom: 16px;
+    color: #6B2D5B;
+  }
+  .chapter h3 {
+    min-height: 3.1em;
+  }
+  .chapter-intro,
+  .chapter-close {
+    max-width: 920px;
+    margin-bottom: 30px;
+  }
+  .chapter-close {
+    margin: 30px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(74,25,66,0.16);
+  }
+
+  @media (max-width: 900px) {
+    .version-head,
+    .two-column,
+    .manifesto-grid,
+    .chapters {
+      grid-template-columns: 1fr;
+    }
+    .side-note {
+      position: static;
+    }
+    .chapter {
+      border-right: 0;
+      border-bottom: 1px solid rgba(74,25,66,0.12);
+    }
+    .chapter:last-child {
+      border-bottom: 0;
+    }
+    .chapter h3 {
+      min-height: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="preview-hero">
+    <div class="wrap">
+      <div class="label">Prévisualisation</div>
+      <h1>Trois directions pour la page recherche</h1>
+      <p>Fond sable conservé, numéros retirés, et trois manières de rendre les axes plus lisibles et plus cohérents.</p>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <div class="wrap">
+      <a href="#v1">Version 1 - manifeste continu</a>
+      <a href="#v2">Version 2 - note latérale</a>
+      <a href="#v3">Version 3 - chapitres</a>
+    </div>
+  </nav>
+
+  <section class="version" id="v1">
+    <div class="wrap">
+      <div class="version-head">
+        <div class="version-mark">01</div>
+        <div>
+          <h2>Manifeste continu</h2>
+          <p class="desc">Intro et conclusion deviennent deux paragraphes structurants, sans cartes concurrentes. Les axes forment une grille calme avec de vraies respirations.</p>
+        </div>
+      </div>
+      <div class="manifesto">
+        <div class="manifesto-lead">
+          <p class="intro-copy">Mes recherches se situent à l’interface des probabilités, de l’analyse, de la géométrie et de la physique mathématique. Elles sont guidées par une même question : quelles structures profondes gouvernent les phénomènes aléatoires complexes, et comment les reconstruire à partir de leurs manifestations observables ?</p>
+        </div>
+        <div class="manifesto-grid">
+          <article class="manifesto-item">
+            <h3 class="theme-title">Analyse stochastique et chaos de Wiener</h3>
+            <p class="theme-copy">Limites en loi, développements de Hermite, calcul de Malliavin, approximations de Stein et représentations en espace de Fock.</p>
+          </article>
+          <article class="manifesto-item">
+            <h3 class="theme-title">Physique mathématique et champs singuliers</h3>
+            <p class="theme-copy">Renormalisation, interactions critiques, structures multiscalaires et passages entre descriptions microscopiques et comportements macroscopiques.</p>
+          </article>
+          <article class="manifesto-item">
+            <h3 class="theme-title">Reconstruction géométrique et spectrale</h3>
+            <p class="theme-copy">Problèmes inverses, principes de type Torelli, phénomènes de Stokes, géométrie spectrale et liens avec la topologie.</p>
+          </article>
+          <article class="manifesto-item">
+            <h3 class="theme-title">Structures arithmétiques et opérateurs spectraux</h3>
+            <p class="theme-copy">Fonctions zêta, opérateurs spectraux, formules de trace et cadres géométriques pour les propriétés arithmétiques.</p>
+          </article>
+        </div>
+        <div class="manifesto-close">
+          <p class="close-copy">Au-delà de la diversité des domaines abordés, mon travail repose sur une conviction commune : les difficultés les plus profondes ne se résolvent pas toujours par l’accumulation de calculs, mais par l’identification du langage dans lequel le problème devient rigide.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="version" id="v2">
+    <div class="wrap">
+      <div class="version-head">
+        <div class="version-mark">02</div>
+        <div>
+          <h2>Note latérale et axes empilés</h2>
+          <p class="desc">Une colonne gauche porte l’idée générale, tandis que les axes deviennent une liste dense. C’est la version la plus lisible pour de longs textes.</p>
+        </div>
+      </div>
+      <div class="two-column">
+        <aside class="side-note">
+          <div class="label">Fil conducteur</div>
+          <p class="intro-copy">Comprendre les structures profondes qui gouvernent les phénomènes aléatoires complexes, puis les reconstruire à partir de leurs manifestations observables.</p>
+        </aside>
+        <div>
+          <div class="stack">
+            <article class="stack-item">
+              <h3 class="theme-title">Analyse stochastique et chaos de Wiener</h3>
+              <p class="theme-copy">Une première partie de mes travaux porte sur les limites en loi, les développements de Hermite, le calcul de Malliavin, les approximations de Stein et les représentations en espace de Fock.</p>
+            </article>
+            <article class="stack-item">
+              <h3 class="theme-title">Physique mathématique et champs singuliers</h3>
+              <p class="theme-copy">J’étudie les phénomènes de renormalisation, les interactions critiques, les structures multiscalaires et les passages entre échelles.</p>
+            </article>
+            <article class="stack-item">
+              <h3 class="theme-title">Reconstruction géométrique et spectrale</h3>
+              <p class="theme-copy">Il s’agit de déterminer dans quelle mesure un objet peut être retrouvé à partir d’une famille réduite d’observables.</p>
+            </article>
+            <article class="stack-item">
+              <h3 class="theme-title">Structures arithmétiques et opérateurs spectraux</h3>
+              <p class="theme-copy">Mes intérêts s’étendent aux relations entre fonctions zêta, opérateurs spectraux, formules de trace et phénomènes physiques.</p>
+            </article>
+          </div>
+          <p class="stack-close">Je cherche ainsi à construire des ponts entre disciplines, à isoler des mécanismes universels et à faire émerger la géométrie cachée derrière le hasard, les champs et les spectres.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="version" id="v3">
+    <div class="wrap">
+      <div class="version-head">
+        <div class="version-mark">03</div>
+        <div>
+          <h2>Quatre chapitres horizontaux</h2>
+          <p class="desc">Plus graphique, mais encore sobre. Les axes sont comme quatre chapitres d’un même programme, sans numéros et sans cartes d’intro/conclusion.</p>
+        </div>
+      </div>
+      <div class="chapter-intro">
+        <p class="intro-copy">Mes recherches se situent à l’interface des probabilités, de l’analyse, de la géométrie et de la physique mathématique.</p>
+      </div>
+      <div class="chapters">
+        <article class="chapter">
+          <div class="label">Probabilités</div>
+          <h3 class="theme-title">Analyse stochastique et chaos de Wiener</h3>
+          <p class="theme-copy">Fluctuations, limites faibles, chaos, Fock et structures cachées derrière les convergences probabilistes.</p>
+        </article>
+        <article class="chapter">
+          <div class="label">Champs</div>
+          <h3 class="theme-title">Physique mathématique et champs singuliers</h3>
+          <p class="theme-copy">Renormalisation, interactions critiques et émergence de lois effectives depuis des dynamiques corrélées.</p>
+        </article>
+        <article class="chapter">
+          <div class="label">Géométrie</div>
+          <h3 class="theme-title">Reconstruction géométrique et spectrale</h3>
+          <p class="theme-copy">Retrouver variétés, dynamiques ou structures analytiques à partir d’observables réduites.</p>
+        </article>
+        <article class="chapter">
+          <div class="label">Spectres</div>
+          <h3 class="theme-title">Structures arithmétiques et opérateurs spectraux</h3>
+          <p class="theme-copy">Fonctions zêta, formules de trace et cadres où l’arithmétique devient géométrique.</p>
+        </article>
+      </div>
+      <div class="chapter-close">
+        <p class="close-copy">La diversité des domaines abordés est traversée par une conviction commune : identifier le langage dans lequel le problème devient rigide.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

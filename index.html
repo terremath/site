@@ -1835,65 +1835,61 @@
   }
   .articles .section-label { color: var(--deep); }
   .articles .section-title { color: #2A0A2E; }
-  .articles .section-desc { color: #5A2A50; }
+  .articles .section-desc { color: #3B1438; }
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 0;
     margin-top: 48px;
+    border-top: 1px solid rgba(74,25,66,0.16);
   }
   .article-card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 28px;
-    min-height: 260px;
-    background: var(--bg-light-alt);
-    border: 1px solid rgba(74,25,66,0.13);
-    border-radius: 8px;
+    display: grid;
+    gap: 8px;
+    padding: 22px 0;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(74,25,66,0.12);
+    border-radius: 0;
     color: #2A0A2E;
     text-decoration: none;
-    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    transition: background 0.2s ease, padding-left 0.2s ease;
   }
   .article-card:hover {
-    border-color: rgba(var(--accent-rgb),0.55);
-    transform: translateY(-3px);
-    box-shadow: 0 14px 36px rgba(42, 10, 46, 0.09);
+    background: rgba(255,255,255,0.28);
+    padding-left: 12px;
   }
   .article-authors {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #8B4D7F;
+    color: #6B2D5B;
   }
   .article-title {
     font-family: 'Fraunces', serif;
-    font-size: 1.35rem;
-    line-height: 1.25;
+    font-size: clamp(1.06rem, 1.7vw, 1.3rem);
+    line-height: 1.22;
     font-weight: 600;
     color: #2A0A2E;
+    max-width: 900px;
   }
   .article-journal {
-    color: #5A2A50;
-    line-height: 1.6;
-    font-size: 0.95rem;
+    color: #3B1438;
+    line-height: 1.5;
+    font-size: 0.86rem;
+    max-width: 920px;
   }
   .article-doi {
-    margin-top: auto;
     display: inline-flex;
     align-items: center;
-    color: #8B4D7F;
-    font-size: 0.82rem;
-    font-weight: 600;
+    width: fit-content;
+    margin-top: 2px;
+    color: #6B2D5B;
+    font-size: 0.75rem;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  @media (max-width: 820px) {
-    .articles-grid { grid-template-columns: 1fr; }
-    .article-card { min-height: 0; }
-  }
-
   .video-card-label {
     position: absolute;
     inset: 0;
@@ -2111,7 +2107,7 @@
       <img src="oja_new.png" alt="Portrait d'Obayda Julien Assaad">
     </div>
     <div class="oja-overlay">
-      <div class="oja-kicker">Chercheur en probabilités</div>
+      <div class="oja-kicker">Mathématicien philosophe</div>
       <h1 class="oja-title">Obayda Julien Assaad</h1>
       <div class="oja-subtitle">Docteur en mathématiques</div>
       <p class="oja-copy">Recherche en probabilités, équations stochastiques et analyse fine des phénomènes aléatoires.</p>
@@ -2136,7 +2132,31 @@
   </div>
   -->
 
-  <!-- ── Slide 2 : Publication Advances in Mathematics ── -->
+  <!-- ── Slide 2 : Publication Annals of Mathematics ── -->
+  <div class="hero-slide hero-slide--paper hero-slide--paper-alt">
+    <div class="paper-visual" aria-hidden="true">
+      <div class="paper-sheet">
+        <div class="paper-orbit"></div>
+      </div>
+    </div>
+    <div class="hero-slide-content paper-content">
+      <p class="paper-kicker">Nouvelle prépublication</p>
+      <h2 class="paper-title">Heat Geometry from a <em>Universal Scalar Process</em></h2>
+      <div class="paper-venue" data-prefix="Soumis à">Annals of Mathematics</div>
+      <div class="paper-meta">
+        <span>O.J. Assaad</span>
+        <span>Publié le 25 août 2026</span>
+        <span>DOI: 10.5281/zenodo.22092369</span>
+      </div>
+      <p class="paper-copy">Reconstruction de géométries de la chaleur à partir d’un processus scalaire universel en chaos de Wiener fini.</p>
+      <div class="paper-actions">
+        <a class="paper-btn paper-btn--primary" href="https://zenodo.org/records/22092369" target="_blank" rel="noopener">Lire sur Zenodo</a>
+        <a class="paper-btn paper-btn--ghost" href="publications.html">Voir les publications</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 3 : Publication Advances in Mathematics ── -->
   <div class="hero-slide hero-slide--paper">
     <div class="paper-visual" aria-hidden="true">
       <div class="paper-sheet">
@@ -2160,7 +2180,7 @@
     </div>
   </div>
 
-  <!-- ── Slide 3 : Publication Annals of Probability ── -->
+  <!-- ── Slide 4 : Publication Annals of Probability ── -->
   <div class="hero-slide hero-slide--paper hero-slide--paper-alt">
     <div class="paper-visual" aria-hidden="true">
       <div class="paper-sheet">
@@ -2203,6 +2223,7 @@
     <button type="button" class="hero-dot active" data-index="0" aria-label="Diapositive 1"></button>
     <button type="button" class="hero-dot" data-index="1" aria-label="Diapositive 2"></button>
     <button type="button" class="hero-dot" data-index="2" aria-label="Diapositive 3"></button>
+    <button type="button" class="hero-dot" data-index="3" aria-label="Diapositive 4"></button>
   </div>
 
 </section>
@@ -2243,30 +2264,19 @@
 <div class="qcm-popup-overlay" id="articlePopupOverlay">
   <div class="qcm-popup article-popup" role="dialog" aria-modal="true" aria-labelledby="articlePopupTitle">
     <button class="qcm-popup-close" id="articlePopupClose" aria-label="Fermer">&times;</button>
-    <div class="qcm-popup-label">Deux nouveaux articles</div>
-    <h2 class="qcm-popup-title" id="articlePopupTitle">Deux soumissions récentes</h2>
+    <div class="qcm-popup-label">Nouvel article</div>
+    <h2 class="qcm-popup-title" id="articlePopupTitle">Dernière soumission</h2>
     <div class="article-popup-list">
       <article class="article-popup-card">
-        <h3>Finite Gaussian Reconstruction of Polynomial Orbits</h3>
+        <h3>Heat Geometry from a Universal Scalar Process</h3>
         <div class="article-popup-meta">
           <span>O.J. Assaad</span>
-          <span>Soumis le 14 août 2026</span>
-          <span class="article-popup-submission">Soumis à Advances in Mathematics</span>
-          <span>arXiv:2608.14475</span>
+          <span>Publié le 25 août 2026</span>
+          <span class="article-popup-submission">Soumis à Annals of Mathematics</span>
+          <span>DOI: 10.5281/zenodo.22092369</span>
         </div>
-        <p class="qcm-popup-desc">From Correlated Moments to Oscillatory Periods : reconstruction finie des orbites orthogonales de polynômes à partir de moments gaussiens corrélés et de périodes oscillatoires.</p>
-        <a href="https://arxiv.org/abs/2608.14475" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
-      </article>
-      <article class="article-popup-card">
-        <h3>Weak Limits of Wiener Chaos</h3>
-        <div class="article-popup-meta">
-          <span>O.J. Assaad</span>
-          <span>Soumis le 12 août 2026</span>
-          <span class="article-popup-submission">Soumis aux Annals of Probability</span>
-          <span>arXiv:2608.12492</span>
-        </div>
-        <p class="qcm-popup-desc">Primitive-Fock Classification and Hilbert-Stein Extraction : une contribution récente autour des limites faibles du chaos de Wiener et des structures de Fock associées.</p>
-        <a href="https://arxiv.org/abs/2608.12492" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur arXiv &rarr;</a>
+        <p class="qcm-popup-desc">Reconstruction de géométries de la chaleur à partir d’un processus scalaire universel en chaos de Wiener fini.</p>
+        <a href="https://zenodo.org/records/22092369" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur Zenodo &rarr;</a>
       </article>
     </div>
     <div class="article-popup-actions">
@@ -2394,6 +2404,12 @@
     <h2 class="section-title">Articles scientifiques</h2>
     <p class="section-desc">Une sélection de travaux autour des processus stochastiques, des équations aux dérivées partielles stochastiques, de l'estimation de paramètres et des approximations normales quantitatives.</p>
     <div class="articles-grid">
+      <a class="article-card" href="https://zenodo.org/records/22092369" target="_blank" rel="noopener">
+        <div class="article-authors">O.J. Assaad</div>
+        <h3 class="article-title">Heat Geometry from a Universal Scalar Process</h3>
+        <p class="article-journal"><strong>Zenodo preprint</strong>, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Soumis à <em>Annals of Mathematics</em>.</p>
+        <span class="article-doi">Lire sur Zenodo</span>
+      </a>
       <a class="article-card" href="https://arxiv.org/abs/2608.14475" target="_blank" rel="noopener">
         <div class="article-authors">O.J. Assaad</div>
         <h3 class="article-title">Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods</h3>
