@@ -449,7 +449,7 @@
     .qcm-meta { flex-direction: column; gap: 0.8rem; }
   }
 
-  /* ── Publication slides : dossier scientifique / cachet de soumission ── */
+  /* ── Publication slides : dossier scientifique / cachet éditorial ── */
   .hero-slide--paper {
     background:
       radial-gradient(circle at 84% 18%, rgba(var(--accent-rgb),0.16), transparent 34%),
@@ -1005,13 +1005,6 @@
     color: var(--deep);
     font-family: 'DM Sans', sans-serif;
     font-size: 0.78rem;
-  }
-  .article-popup-meta .article-popup-submission {
-    background: var(--deep);
-    border-color: var(--deep);
-    color: var(--bg-light-alt);
-    font-weight: 700;
-    box-shadow: 0 8px 22px rgba(var(--deep-rgb),0.18);
   }
   .article-popup-actions {
     display: flex;
@@ -2132,7 +2125,7 @@
   </div>
   -->
 
-  <!-- ── Slide 2 : Publication Annals of Mathematics ── -->
+  <!-- ── Slide 2 : Publication ── -->
   <div class="hero-slide hero-slide--paper hero-slide--paper-alt">
     <div class="paper-visual" aria-hidden="true">
       <div class="paper-sheet">
@@ -2142,7 +2135,6 @@
     <div class="hero-slide-content paper-content">
       <p class="paper-kicker">Nouvelle prépublication</p>
       <h2 class="paper-title">Heat Geometry from a <em>Universal Scalar Process</em></h2>
-      <div class="paper-venue" data-prefix="Soumis à">Annals of Mathematics</div>
       <div class="paper-meta">
         <span>O.J. Assaad</span>
         <span>Publié le 25 août 2026</span>
@@ -2150,13 +2142,13 @@
       </div>
       <p class="paper-copy">Reconstruction de géométries de la chaleur à partir d’un processus scalaire universel en chaos de Wiener fini.</p>
       <div class="paper-actions">
-        <a class="paper-btn paper-btn--primary" href="https://zenodo.org/records/22092369" target="_blank" rel="noopener">Lire sur Zenodo</a>
+        <a class="paper-btn paper-btn--primary" href="articles/Heat%20Geometry.pdf" target="_blank" rel="noopener">Lire l'article</a>
         <a class="paper-btn paper-btn--ghost" href="publications.html">Voir les publications</a>
       </div>
     </div>
   </div>
 
-  <!-- ── Slide 3 : Publication Advances in Mathematics ── -->
+  <!-- ── Slide 3 : Publication ── -->
   <div class="hero-slide hero-slide--paper">
     <div class="paper-visual" aria-hidden="true">
       <div class="paper-sheet">
@@ -2166,10 +2158,9 @@
     <div class="hero-slide-content paper-content">
       <p class="paper-kicker">Nouvelle prépublication</p>
       <h2 class="paper-title">Finite Gaussian Reconstruction of <em>Polynomial Orbits</em></h2>
-      <div class="paper-venue" data-prefix="Soumis à">Advances in Mathematics</div>
       <div class="paper-meta">
         <span>O.J. Assaad</span>
-        <span>Soumis le 14 août 2026</span>
+        <span>Prépublication du 14 août 2026</span>
         <span>arXiv:2608.14475</span>
       </div>
       <p class="paper-copy">Reconstruction finie des orbites orthogonales de polynômes à partir de moments gaussiens corrélés et de périodes oscillatoires.</p>
@@ -2180,7 +2171,7 @@
     </div>
   </div>
 
-  <!-- ── Slide 4 : Publication Annals of Probability ── -->
+  <!-- ── Slide 4 : Publication ── -->
   <div class="hero-slide hero-slide--paper hero-slide--paper-alt">
     <div class="paper-visual" aria-hidden="true">
       <div class="paper-sheet">
@@ -2190,10 +2181,9 @@
     <div class="hero-slide-content paper-content">
       <p class="paper-kicker">Nouvelle prépublication</p>
       <h2 class="paper-title">Weak Limits of <em>Wiener Chaos</em></h2>
-      <div class="paper-venue" data-prefix="Soumis aux">Annals of Probability</div>
       <div class="paper-meta">
         <span>O.J. Assaad</span>
-        <span>Soumis le 12 août 2026</span>
+        <span>Prépublication du 12 août 2026</span>
         <span>arXiv:2608.12492</span>
       </div>
       <p class="paper-copy">Primitive-Fock Classification and Hilbert-Stein Extraction : limites faibles du chaos de Wiener et structures de Fock associées.</p>
@@ -2265,18 +2255,17 @@
   <div class="qcm-popup article-popup" role="dialog" aria-modal="true" aria-labelledby="articlePopupTitle">
     <button class="qcm-popup-close" id="articlePopupClose" aria-label="Fermer">&times;</button>
     <div class="qcm-popup-label">Nouvel article</div>
-    <h2 class="qcm-popup-title" id="articlePopupTitle">Dernière soumission</h2>
+    <h2 class="qcm-popup-title" id="articlePopupTitle">Dernière prépublication</h2>
     <div class="article-popup-list">
       <article class="article-popup-card">
         <h3>Heat Geometry from a Universal Scalar Process</h3>
         <div class="article-popup-meta">
           <span>O.J. Assaad</span>
           <span>Publié le 25 août 2026</span>
-          <span class="article-popup-submission">Soumis à Annals of Mathematics</span>
           <span>DOI: 10.5281/zenodo.22092369</span>
         </div>
         <p class="qcm-popup-desc">Reconstruction de géométries de la chaleur à partir d’un processus scalaire universel en chaos de Wiener fini.</p>
-        <a href="https://zenodo.org/records/22092369" class="qcm-popup-cta" target="_blank" rel="noopener">Lire sur Zenodo &rarr;</a>
+        <a href="articles/Heat%20Geometry.pdf" class="qcm-popup-cta" target="_blank" rel="noopener">Lire l'article &rarr;</a>
       </article>
     </div>
     <div class="article-popup-actions">
@@ -2404,22 +2393,22 @@
     <h2 class="section-title">Articles scientifiques</h2>
     <p class="section-desc">Une sélection de travaux autour des processus stochastiques, des équations aux dérivées partielles stochastiques, de l'estimation de paramètres et des approximations normales quantitatives.</p>
     <div class="articles-grid">
-      <a class="article-card" href="https://zenodo.org/records/22092369" target="_blank" rel="noopener">
+      <a class="article-card" href="articles/Heat%20Geometry.pdf" target="_blank" rel="noopener">
         <div class="article-authors">O.J. Assaad</div>
         <h3 class="article-title">Heat Geometry from a Universal Scalar Process</h3>
-        <p class="article-journal"><strong>Zenodo preprint</strong>, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369. Soumis à <em>Annals of Mathematics</em>.</p>
-        <span class="article-doi">Lire sur Zenodo</span>
+        <p class="article-journal"><strong>Zenodo preprint</strong>, publié le 25 août 2026. DOI: 10.5281/zenodo.22092369.</p>
+        <span class="article-doi">Lire l'article</span>
       </a>
       <a class="article-card" href="https://arxiv.org/abs/2608.14475" target="_blank" rel="noopener">
         <div class="article-authors">O.J. Assaad</div>
         <h3 class="article-title">Finite Gaussian Reconstruction of Polynomial Orbits: From Correlated Moments to Oscillatory Periods</h3>
-        <p class="article-journal"><strong>arXiv:2608.14475</strong>, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, soumis le 14 août 2026. Soumis à <em>Advances in Mathematics</em>.</p>
+        <p class="article-journal"><strong>arXiv:2608.14475</strong>, Mathematics - Probability, Commutative Algebra, Algebraic Geometry, prépublication du 14 août 2026.</p>
         <span class="article-doi">Lire sur arXiv</span>
       </a>
       <a class="article-card" href="https://arxiv.org/abs/2608.12492" target="_blank" rel="noopener">
         <div class="article-authors">O.J. Assaad</div>
         <h3 class="article-title">Weak Limits of Wiener Chaos: Primitive-Fock Classification and Hilbert-Stein Extraction</h3>
-        <p class="article-journal"><strong>arXiv:2608.12492</strong>, Mathematics - Probability, soumis le 12 août 2026. Soumis aux <em>Annals of Probability</em>.</p>
+        <p class="article-journal"><strong>arXiv:2608.12492</strong>, Mathematics - Probability, prépublication du 12 août 2026.</p>
         <span class="article-doi">Lire sur arXiv</span>
       </a>
       <a class="article-card" href="https://doi.org/10.1007/s11203-020-09219-z" target="_blank" rel="noopener">
